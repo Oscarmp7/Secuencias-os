@@ -1185,14 +1185,15 @@ const App = () => {
             </>
           ) : viewMode === 'home' || !selectedArtist ? (
             /* CASO 4: PANTALLA DE INICIO - Se muestra al abrir la app o al presionar "Inicio" */
-            <div className="flex flex-col items-center justify-center h-full text-center px-4">
+            <div className="flex flex-col items-center justify-start md:justify-center min-h-full text-center px-4 py-20 md:py-8">
               {/* Logo grande con efecto de gradiente y sombra */}
-              <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center mb-6 shadow-lg shadow-blue-500/20">
-                <Music size={48} className="text-white" />
+              <div className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center mb-4 md:mb-6 shadow-lg shadow-blue-500/20">
+                <Music size={40} className="md:hidden text-white" />
+                <Music size={48} className="hidden md:block text-white" />
               </div>
               
               {/* Texto de bienvenida */}
-              <h1 className="text-4xl font-bold mb-3">Bienvenido a Secuencias OS</h1>
+              <h1 className="text-3xl md:text-4xl font-bold mb-3">Bienvenido a Secuencias OS</h1>
               <p className="text-gray-400 text-lg mb-8 max-w-md">
                 Tu biblioteca de secuencias y charts musicales. 
                 Selecciona un artista del menú lateral para comenzar.

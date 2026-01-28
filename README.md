@@ -9,7 +9,7 @@
 
 **Tu biblioteca de secuencias y charts musicales**
 
-[Demo en Vivo](https://secuencias-os.vercel.app) · [Reportar Bug](../../issues) · [Solicitar Feature](../../issues)
+[Demo en Vivo](https://oscarmp7.github.io/Secuencias-os/) · [Reportar Bug](../../issues) · [Solicitar Feature](../../issues)
 
 </div>
 
