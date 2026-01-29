@@ -1072,7 +1072,11 @@ const App = () => {
                       className="flex items-center gap-3 md:gap-4 p-3 rounded-lg hover:bg-gray-900 transition-all duration-200"
                     >
                       {/* Icono: diferente para charts vs canciones */}
-                      <div className="w-10 h-10 flex-shrink-0 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
+                      <div className={`w-10 h-10 flex-shrink-0 rounded-lg flex items-center justify-center bg-gradient-to-br ${
+                        item.type === 'chart' 
+                          ? 'from-orange-500 to-red-600' 
+                          : 'from-blue-600 to-blue-800'
+                      }`}>
                         {item.type === 'chart' 
                           ? <FileText size={18} className="text-white" /> 
                           : <Music size={18} className="text-white" />
