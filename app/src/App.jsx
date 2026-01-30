@@ -329,6 +329,31 @@ const App = () => {
    */
   const [isMobile, setIsMobile] = useState(false);
 
+  /**
+   * 📜 recentArtists - Historial de artistas visitados recientemente
+   * 
+   * • Valor inicial: [] (array vacío)
+   * • Se carga desde localStorage al iniciar
+   * • Se actualiza cuando el usuario selecciona un artista
+   * • Máximo 4 artistas (los más recientes)
+   */
+  const [recentArtists, setRecentArtists] = useState([]);
+
+  /**
+   * 🎯 topArtists - Los artistas con más contenido (calculado una vez)
+   * 
+   * Se usa como fallback cuando no hay historial reciente.
+   */
+  const topArtists = useMemo(() => {
+    return [...data.artists]
+      .map(artist => ({
+        ...artist,
+        totalSongs: artist.albums.reduce((sum, album) => sum + album.songs.length, 0)
+      }))
+      .sort((a, b) => b.totalSongs - a.totalSongs)
+      .slice(0, 4);
+  }, []);
+
 
   // ╔═════════════════════════════════════════════════════════════════════════╗
   // ║                    📐 EFECTOS (useEffect) - RESPONSIVE                  ║
@@ -359,19 +384,24 @@ const App = () => {
    * el componente, pero el listener de resize sigue activo.
    */
   useEffect(() => {
+    // Variable para saber si es la primera carga
+    let isFirstLoad = true;
+    
     // Función que comprueba si es móvil (menos de 768px de ancho)
     const checkIfMobile = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
       
-      // En móvil, cerramos el sidebar por defecto para dar más espacio
-      if (mobile) {
+      // Solo cerrar el sidebar en la primera carga si es móvil
+      if (mobile && isFirstLoad) {
         setSidebarOpen(false);
+        isFirstLoad = false;
       }
     };
     
     // Comprobar al cargar la página
     checkIfMobile();
+    isFirstLoad = false;
     
     // Escuchar cambios de tamaño de ventana
     // "resize" se dispara cada vez que el usuario cambia el tamaño del navegador
@@ -381,6 +411,20 @@ const App = () => {
     // Esto previene memory leaks (fugas de memoria)
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []); // [] = solo ejecutar al montar el componente
+
+  /**
+   * 📂 Cargar historial reciente desde localStorage
+   */
+  useEffect(() => {
+    const saved = localStorage.getItem('recentArtists');
+    if (saved) {
+      try {
+        setRecentArtists(JSON.parse(saved));
+      } catch (e) {
+        console.error('Error parsing recentArtists:', e);
+      }
+    }
+  }, []);
 
 
   // ╔═════════════════════════════════════════════════════════════════════════╗
@@ -440,6 +484,22 @@ const App = () => {
     setSelectedArtist(artistId);
     setViewMode(mode);
     setExpandedAlbums({});
+    
+    // Guardar en historial reciente (solo para artistas, no charts)
+    if (mode === 'artists') {
+      const artist = data.artists.find(a => a.id === artistId);
+      if (artist) {
+        setRecentArtists(prev => {
+          // Quitar si ya existe (para moverlo al inicio)
+          const filtered = prev.filter(a => a.id !== artistId);
+          // Agregar al inicio y limitar a 4
+          const updated = [{ id: artist.id, name: artist.name }, ...filtered].slice(0, 4);
+          // Guardar en localStorage
+          localStorage.setItem('recentArtists', JSON.stringify(updated));
+          return updated;
+        });
+      }
+    }
     
     // En móvil, cerramos el sidebar automáticamente para mostrar el contenido
     // Esto mejora la UX porque el usuario no tiene que cerrar manualmente
@@ -691,48 +751,44 @@ const App = () => {
           - En MÓVIL: fixed, z-50, h-full, transform translate-x
           - En DESKTOP: relative, w-64 o w-0
           - transition-all duration-300 ease-out: Animación suave de deslizamiento
+          
+          SEMÁNTICA: Usamos <aside> porque es contenido complementario/navegación lateral
       */}
-      <div className={`
-        ${isMobile 
-          ? `fixed inset-y-0 left-0 z-50 w-72 transform transition-transform duration-300 ease-out
-             ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`
-          : `${sidebarOpen ? 'w-64' : 'w-0'} transition-all duration-300 ease-out`
-        }
-        bg-[#1a1a1a] border-r border-gray-800 flex flex-col overflow-hidden
-      `}>
+      <aside 
+        className={`
+          ${isMobile 
+            ? `fixed inset-y-0 left-0 z-50 w-72 transform transition-transform duration-300 ease-out
+               ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`
+            : `${sidebarOpen ? 'w-64' : 'w-0'} transition-all duration-300 ease-out`
+          }
+          bg-[#1a1a1a] border-r border-gray-800 flex flex-col overflow-hidden
+        `}
+        aria-label="Menú de navegación"
+      >
         
         {/* ─────────────────────────────────────────────────────────────────────
             🏷️ HEADER DEL SIDEBAR (Logo, título y botón cerrar en móvil)
             ───────────────────────────────────────────────────────────────────── */}
-        <div className="p-4 border-b border-gray-800">
-          <div className="flex items-center justify-between">
-            {/* Logo y nombre */}
-            <div className="flex items-center gap-3">
-              {/* 
-                El icono Music de Lucide React
-                - className="text-blue-500": Color azul (#3B82F6)
-                - size={28}: 28 píxeles de tamaño
-              */}
-              <Music className="text-blue-500" size={28} />
-              <h1 className="text-lg font-semibold">Secuencias OS</h1>
-            </div>
-            
-            {/* 
-              ✕ BOTÓN CERRAR (Solo visible en móvil)
-              
-              Este botón permite cerrar el sidebar en dispositivos móviles.
-              En desktop no se muestra porque el sidebar se cierra con el botón ☰ del header.
-            */}
-            {isMobile && (
-              <button 
-                onClick={() => setSidebarOpen(false)}
-                className="p-2 hover:bg-gray-800 rounded-lg transition-colors duration-200 active:scale-95"
-                aria-label="Cerrar menú"
-              >
-                <X size={20} className="text-gray-400" />
-              </button>
-            )}
+        <div className="px-4 h-[72px] flex items-center justify-center border-b border-gray-800 relative">
+          {/* Logo y nombre - centrado y sin wrap */}
+          <div className="flex items-center gap-3 whitespace-nowrap">
+            <Music className="text-blue-500 flex-shrink-0" size={28} />
+            <h1 className="text-lg font-semibold">Secuencias OS</h1>
           </div>
+          
+          {/* 
+            ✕ BOTÓN CERRAR (Solo visible en móvil)
+            Posicionado absolutamente para no afectar el centrado
+          */}
+          {isMobile && (
+            <button 
+              onClick={() => setSidebarOpen(false)}
+              className="p-2 hover:bg-gray-800 rounded-lg transition-colors duration-200 active:scale-95 absolute right-4"
+              aria-label="Cerrar menú"
+            >
+              <X size={20} className="text-gray-400" />
+            </button>
+          )}
         </div>
 
         {/* ─────────────────────────────────────────────────────────────────────
@@ -743,7 +799,7 @@ const App = () => {
           {/* ═══════════════════════════════════════════════════════════════════
               🎵 SECCIÓN: ARTISTAS
               ═══════════════════════════════════════════════════════════════════ */}
-          <div className="mb-4">
+          <section className="mb-4" aria-labelledby="artistas-heading">
             {/*
               BOTÓN DEL TÍTULO "ARTISTAS"
               
@@ -769,12 +825,12 @@ const App = () => {
               */}
               {artistsExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
               <Folder size={18} />
-              <span>ARTISTAS</span>
+              <span id="artistas-heading" className="flex-1 text-left">ARTISTAS</span>
               {/* 
                 ml-auto: margin-left automático (empuja este elemento a la derecha)
                 data.artists.length: número total de artistas (772)
               */}
-              <span className="ml-auto text-gray-500 text-xs">{data.artists.length}</span>
+              <span className="text-gray-500 text-xs tabular-nums">{data.artists.length}</span>
             </button>
             
             {/* 
@@ -839,7 +895,7 @@ const App = () => {
                 ))}
               </div>
             )}
-          </div>
+          </section>
 
           {/* ═══════════════════════════════════════════════════════════════════
               📄 SECCIÓN: CHARTS
@@ -851,14 +907,14 @@ const App = () => {
               - Usa data.charts en lugar de data.artists
               - Al hacer clic, setViewMode('charts') en lugar de 'artists'
           */}
-          <div className="mb-4">
+          <section className="mb-4" aria-labelledby="charts-heading">
             <button 
               onClick={() => setChartsExpanded(!chartsExpanded)}
               className="w-full flex items-center gap-2 px-3 py-2 text-blue-500 text-sm font-medium hover:bg-gray-800/50 rounded-lg transition-all duration-200"
             >
               {chartsExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
               <FileText size={18} />
-              <span>CHARTS</span>
+              <span id="charts-heading">CHARTS</span>
               <span className="ml-auto text-gray-500 text-xs">{data.charts.length}</span>
             </button>
             
@@ -887,9 +943,9 @@ const App = () => {
                 ))}
               </div>
             )}
-          </div>
+          </section>
         </nav>
-      </div>
+      </aside>
 
       {/* ═══════════════════════════════════════════════════════════════════════
           📺 CONTENIDO PRINCIPAL (Todo lo que no es el sidebar)
@@ -908,9 +964,11 @@ const App = () => {
         
         {/* ─────────────────────────────────────────────────────────────────────
             🎯 HEADER SUPERIOR (Buscador y botones)
+            
+            Altura fija de 72px para alinearse con el header del sidebar.
             ───────────────────────────────────────────────────────────────────── */}
-        <header className="bg-[#1a1a1a] border-b border-gray-800 p-4">
-          <div className="flex items-center justify-center gap-4">
+        <header className="bg-[#1a1a1a] border-b border-gray-800 px-4 h-[72px] flex items-center">
+          <div className="flex items-center justify-center gap-4 w-full">
             
             {/* 
               BOTÓN TOGGLE SIDEBAR
@@ -1022,8 +1080,10 @@ const App = () => {
             - Padding reducido en móvil (p-4 vs p-6)
             - scroll-smooth: Hace que el scroll automático sea suave
             - overscroll-contain: Evita que el scroll "rebote" al límite
+            
+            ESTILO: Usa la clase 'grain-bg' para un efecto de textura sutil
             ───────────────────────────────────────────────────────────────────── */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-[#0a0a0a] scroll-smooth overscroll-contain">
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 grain-bg scroll-smooth overscroll-contain">
           
           {/* ═══════════════════════════════════════════════════════════════════
               🔍 CASO 1: HAY RESULTADOS DE BÚSQUEDA
@@ -1216,20 +1276,20 @@ const App = () => {
                 - Móvil: grid-cols-1 (una columna, apilado vertical)
                 - Tablets y desktop (sm:): grid-cols-3 (lado a lado)
               */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8 w-full max-w-lg sm:max-w-none">
-                <div className="bg-[#1a1a1a] rounded-xl p-4 border border-gray-800 transition-all duration-200 hover:border-blue-500/30">
+              <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-8 w-full max-w-2xl">
+                <div className="glass-card rounded-xl p-4 transition-all duration-200">
                   <div className="text-2xl sm:text-3xl font-bold text-blue-500">
                     {data.stats.totalArtists}
                   </div>
                   <div className="text-sm text-gray-400">Artistas</div>
                 </div>
-                <div className="bg-[#1a1a1a] rounded-xl p-4 border border-gray-800 transition-all duration-200 hover:border-blue-500/30">
+                <div className="glass-card rounded-xl p-4 transition-all duration-200">
                   <div className="text-2xl sm:text-3xl font-bold text-blue-500">
                     {data.stats.totalSongs.toLocaleString()}
                   </div>
                   <div className="text-sm text-gray-400">Secuencias</div>
                 </div>
-                <div className="bg-[#1a1a1a] rounded-xl p-4 border border-gray-800 transition-all duration-200 hover:border-blue-500/30">
+                <div className="glass-card rounded-xl p-4 transition-all duration-200">
                   <div className="text-2xl sm:text-3xl font-bold text-blue-500">
                     {data.stats.totalCharts.toLocaleString()}
                   </div>
@@ -1238,46 +1298,45 @@ const App = () => {
               </div>
 
               {/* 
-                🌟 ARTISTAS POPULARES (Accesos Directos)
+                🌟 ARTISTAS RECIENTES / DESTACADOS
                 
-                Mostramos algunos artistas populares como botones.
-                Al hacer clic, se selecciona ese artista directamente.
+                Mostramos artistas dinámicamente:
+                - Si el usuario ya visitó artistas: "BUSCADOS RECIENTEMENTE" (localStorage)
+                - Si es nuevo: "ARTISTAS DESTACADOS" (los que tienen más canciones)
                 
-                NOTA: Hardcodeamos los nombres porque sabemos cuáles son populares.
-                Si un nombre no existe en data.artists, no se muestra (return null).
+                El historial se guarda automáticamente cuando el usuario selecciona un artista.
+                Máximo 4 artistas mostrados.
                 
                 RESPONSIVE:
                 - Móvil: grid-cols-1 (una columna)
                 - Desktop (sm:): grid-cols-2 (dos columnas)
               */}
-              <div className="text-left w-full max-w-lg">
-                <h3 className="text-sm font-medium text-gray-500 mb-3">ARTISTAS POPULARES</h3>
+              <div className="w-full max-w-lg">
+                <h3 className="text-sm font-medium text-gray-500 mb-3 text-center">
+                  {recentArtists.length > 0 ? 'BUSCADOS RECIENTEMENTE' : 'ARTISTAS DESTACADOS'}
+                </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {/* 
-                    Mapeamos un array de nombres y buscamos cada uno en data.artists.
-                    Si el artista existe, mostramos un botón para él.
+                    Si hay historial reciente, mostrar esos artistas.
+                    Si no, mostrar los artistas con más contenido.
                   */}
-                  {['Hillsong Worship', 'Elevation Worship', 'Bethel Music', 'Maverick City Music'].map(name => {
-                    const artist = data.artists.find(a => a.name === name);
-                    // Si no encontramos el artista, no renderizar nada
-                    if (!artist) return null;
-                    
-                    return (
-                      <button
-                        key={artist.id}
-                        onClick={() => { 
-                          setSelectedArtist(artist.id); 
-                          setViewMode('artists'); 
-                        }}
-                        className="flex items-center gap-3 p-3 bg-[#1a1a1a] hover:bg-gray-800 rounded-lg transition-all duration-200 active:scale-[0.98] text-left"
-                      >
-                        <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Music size={18} className="text-white" />
-                        </div>
-                        <span className="font-medium truncate">{artist.name}</span>
-                      </button>
-                    );
-                  })}
+                  {(recentArtists.length > 0 
+                    ? recentArtists.map(recent => data.artists.find(a => a.id === recent.id)).filter(Boolean)
+                    : topArtists
+                  ).map(artist => (
+                    <button
+                      key={artist.id}
+                      onClick={() => { 
+                        handleSelectArtist(artist.id, 'artists');
+                      }}
+                      className="glass-card flex items-center gap-3 p-3 rounded-lg transition-all duration-200 active:scale-[0.98] text-left"
+                    >
+                      <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Music size={18} className="text-white" />
+                      </div>
+                      <span className="font-medium truncate">{artist.name}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
@@ -1468,10 +1527,15 @@ export default App;
 
    📐 MODIFICAR LAYOUT:
    ─────────────────────────────────────────────────────────────────────────────
-   • Ancho del sidebar: Busca "w-64" (256px) y cámbialo
+   • Ancho del sidebar: Busca "w-64" (256px) o "w-72" (288px en móvil)
+   • Altura del header: Busca "h-[72px]"
    • Espaciado: Los números en "p-4" (padding) y "m-4" (margin) son:
      1 = 4px, 2 = 8px, 3 = 12px, 4 = 16px, 6 = 24px, 8 = 32px
    • Para centrar algo: usa "flex items-center justify-center"
+
+   💾 LOCALSTORAGE:
+   ─────────────────────────────────────────────────────────────────────────────
+   • recentArtists: Últimos 4 artistas visitados (se muestra en pantalla inicio)
 
    🌙 CLASES DE TAILWIND MÁS USADAS:
    ─────────────────────────────────────────────────────────────────────────────
