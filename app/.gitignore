@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Email config (contiene contraseñas)
+.email-config.json
+dead-links.json
+check-history.json
+duplicates.json
