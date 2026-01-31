@@ -2,26 +2,28 @@
  * App.jsx
  *
  * Este componente es el "cerebro" de la app.
- * Aquí coordinamos estados globales (tema, búsqueda, navegación)
+ * Aqui coordinamos estados globales (tema, busqueda, navegacion)
  * y enviamos props a los componentes hijos.
  */
 
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import data from './data.json';
 import Sidebar from './components/Sidebar';
 import HeaderBar from './components/HeaderBar';
 import MainContent from './components/MainContent';
+import useDebouncedValue from './hooks/useDebouncedValue';
+import { buildSearchIndex, searchInIndex } from './utils/searchIndex';
 
 // Guardamos referencias a los datos para evitar re-crear arrays en cada render.
 const artists = data.artists;
 const charts = data.charts;
 const stats = data.stats;
 
-// Mapas por ID = búsquedas O(1) (más rápido que .find).
+// Mapas por ID = busquedas O(1) (mas rapido que .find).
 const artistById = new Map(artists.map((artist) => [artist.id, artist]));
 const chartById = new Map(charts.map((artist) => [artist.id, artist]));
 
-// Calculamos los artistas con más canciones una sola vez.
+// Calculamos los artistas con mas canciones una sola vez.
 const topArtists = [...artists]
   .map((artist) => ({
     ...artist,
@@ -34,8 +36,13 @@ const App = () => {
   // Estado del tema. "dark" ya existe, "light" se agrega con CSS variables.
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
 
-  // Búsqueda y navegación.
+  // Busqueda y navegacion.
   const [searchQuery, setSearchQuery] = useState('');
+  const debouncedQuery = useDebouncedValue(searchQuery, 180);
+  const [searchResults, setSearchResults] = useState(null);
+  // Guarda la consulta que genero los resultados actuales (para evitar desfasajes).
+  const [searchResultsQuery, setSearchResultsQuery] = useState('');
+
   const [selectedArtist, setSelectedArtist] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [artistsExpanded, setArtistsExpanded] = useState(true);
@@ -44,6 +51,11 @@ const App = () => {
   const [expandedAlbums, setExpandedAlbums] = useState({});
   const [isMobile, setIsMobile] = useState(false);
   const [recentArtists, setRecentArtists] = useState([]);
+
+  // Referencias para el worker de busqueda (si el navegador lo soporta).
+  const searchWorkerRef = useRef(null);
+  const searchRequestId = useRef(0);
+  const searchIndexRef = useRef(null);
 
   /**
    * Efecto para aplicar el tema al <html>.
@@ -56,8 +68,8 @@ const App = () => {
   }, [theme]);
 
   /**
-   * Detectamos si es móvil para ajustar el sidebar.
-   * Esta lógica vive aquí para que todos los hijos reciban el estado correcto.
+   * Detectamos si es movil para ajustar el sidebar.
+   * Esta logica vive aqui para que todos los hijos reciban el estado correcto.
    */
   useEffect(() => {
     const updateIsMobile = () => {
@@ -87,6 +99,76 @@ const App = () => {
       }
     }
   }, []);
+
+  /**
+   * Inicializamos un Web Worker para busqueda si el navegador lo soporta.
+   * Esto evita que una busqueda grande bloquee el hilo principal (UI).
+   */
+  useEffect(() => {
+    if (typeof Worker === 'undefined') return undefined;
+
+    const worker = new Worker(new URL('./workers/searchWorker.js', import.meta.url), {
+      type: 'module',
+    });
+
+    searchWorkerRef.current = worker;
+
+    // Enviamos la data una sola vez para construir el indice en el worker.
+    worker.postMessage({ type: 'init', payload: { artists, charts } });
+
+    const handleMessage = (event) => {
+      const { type, payload, requestId, query } = event.data || {};
+      if (type === 'results' && requestId === searchRequestId.current) {
+        setSearchResults(payload);
+        setSearchResultsQuery(query);
+      }
+    };
+
+    worker.addEventListener('message', handleMessage);
+
+    return () => {
+      worker.removeEventListener('message', handleMessage);
+      worker.terminate();
+    };
+  }, []);
+
+  /**
+   * Busqueda global optimizada:
+   * - Debounce: esperamos un poco antes de buscar.
+   * - Indice precalculado: no recorremos toda la data en cada tecla.
+   * - Worker: si existe, la busqueda corre fuera del hilo de la UI.
+   */
+  useEffect(() => {
+    const trimmedQuery = debouncedQuery.trim();
+
+    if (trimmedQuery.length < 2) {
+      // Invalida busquedas pendientes del worker.
+      searchRequestId.current += 1;
+      setSearchResults(null);
+      setSearchResultsQuery('');
+      return;
+    }
+
+    const worker = searchWorkerRef.current;
+    if (worker) {
+      const nextRequestId = searchRequestId.current + 1;
+      searchRequestId.current = nextRequestId;
+      worker.postMessage({
+        type: 'search',
+        payload: { query: trimmedQuery, limit: 50, requestId: nextRequestId },
+      });
+      return;
+    }
+
+    // Fallback si no hay worker: usamos el indice en memoria.
+    if (!searchIndexRef.current) {
+      searchIndexRef.current = buildSearchIndex(artists, charts);
+    }
+
+    const results = searchInIndex(searchIndexRef.current, trimmedQuery, 50);
+    setSearchResults(results);
+    setSearchResultsQuery(trimmedQuery);
+  }, [debouncedQuery]);
 
   // Callbacks estables (useCallback) = menos renders en hijos memoizados.
   const toggleSidebar = useCallback(() => {
@@ -118,7 +200,7 @@ const App = () => {
 
   /**
    * Selecciona artista y modo.
-   * También guarda historial (máx. 4) y cierra sidebar en móvil.
+   * Tambien guarda historial (max. 4) y cierra sidebar en movil.
    */
   const handleSelectArtist = useCallback(
     (artistId, mode = 'artists') => {
@@ -145,7 +227,7 @@ const App = () => {
     [isMobile]
   );
 
-  // Volver al home limpia búsqueda y selección.
+  // Volver al home limpia busqueda y seleccion.
   const handleGoHome = useCallback(() => {
     setSelectedArtist(null);
     setViewMode('home');
@@ -178,49 +260,6 @@ const App = () => {
     return hasRecentArtists ? recentArtistObjects : topArtists;
   }, [hasRecentArtists, recentArtistObjects, topArtists]);
 
-  /**
-   * Búsqueda global.
-   * Usamos useMemo para recalcular solo cuando cambia el texto.
-   */
-  const searchResults = useMemo(() => {
-    if (!searchQuery || searchQuery.length < 2) return null;
-
-    const query = searchQuery.toLowerCase();
-    const results = [];
-
-    artists.forEach((artist) => {
-      artist.albums.forEach((album) => {
-        album.songs.forEach((song) => {
-          if (
-            song.name.toLowerCase().includes(query) ||
-            artist.name.toLowerCase().includes(query)
-          ) {
-            results.push({
-              ...song,
-              artistName: artist.name,
-              artistId: artist.id,
-              albumName: album.name,
-            });
-          }
-        });
-      });
-    });
-
-    charts.forEach((artist) => {
-      artist.charts.forEach((chart) => {
-        if (chart.name.toLowerCase().includes(query) || artist.name.toLowerCase().includes(query)) {
-          results.push({
-            ...chart,
-            artistName: artist.name,
-            type: 'chart',
-          });
-        }
-      });
-    });
-
-    return results.slice(0, 50);
-  }, [searchQuery]);
-
   return (
     <div className="flex h-screen bg-[var(--bg)] text-[var(--text)] overflow-hidden theme-smooth">
       <Sidebar
@@ -240,7 +279,7 @@ const App = () => {
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <HeaderBar
-          searchQuery={searchQuery}
+          searchResultsQuery={searchResultsQuery}
           onSearchChange={handleSearchChange}
           onClearSearch={clearSearch}
           onToggleSidebar={toggleSidebar}

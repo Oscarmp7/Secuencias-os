@@ -1,13 +1,17 @@
 /**
  * Sidebar.jsx
  *
- * Menú lateral con secciones colapsables (artistas y charts).
+ * Menu lateral con secciones colapsables (artistas y charts).
  * Usa React.memo para evitar renders innecesarios.
+ * Incluye una lista virtualizada para mantener el scroll fluido.
  */
 
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Music, X, ChevronDown, ChevronRight, Folder, FileText } from 'lucide-react';
+import VirtualList from './VirtualList';
+
+const ROW_HEIGHT = 44;
 
 const Sidebar = memo(function Sidebar({
   // Props que llegan desde App.
@@ -28,7 +32,7 @@ const Sidebar = memo(function Sidebar({
 
   return (
     <>
-      {/* Overlay en móvil: al hacer clic cerramos el sidebar */}
+      {/* Overlay en movil: al hacer clic cerramos el sidebar */}
       {isMobile && sidebarOpen && (
         <div
           className="fixed inset-0 bg-[var(--overlay)] z-40 transition-opacity duration-300 ease-out"
@@ -67,9 +71,9 @@ const Sidebar = memo(function Sidebar({
           )}
         </div>
 
-        {/* Navegación principal */}
+        {/* Navegacion principal */}
         <nav className="flex-1 overflow-y-auto p-3">
-          {/* Sección ARTISTAS */}
+          {/* Seccion ARTISTAS */}
           <section className="mb-4" aria-labelledby="artistas-heading">
             <button
               onClick={onToggleArtists}
@@ -86,12 +90,16 @@ const Sidebar = memo(function Sidebar({
             </button>
 
             {artistsExpanded && (
-              <div className="mt-1 max-h-[40vh] overflow-y-auto">
-                {artists.map((artist) => (
+              <VirtualList
+                items={artists}
+                itemHeight={ROW_HEIGHT}
+                overscan={6}
+                className="mt-1 max-h-[40vh]"
+                renderItem={(artist) => (
                   <button
-                    key={artist.id}
+                    type="button"
                     onClick={() => onSelectArtist(artist.id, 'artists')}
-                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all duration-200 active:scale-[0.98] ${
+                    className={`w-full h-full flex items-center gap-2 px-3 rounded-lg text-sm transition-all duration-200 active:scale-[0.98] ${
                       selectedArtist === artist.id && viewMode === 'artists'
                         ? 'bg-[var(--accent-soft)] text-[var(--accent)]'
                         : 'text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--hover)]'
@@ -107,12 +115,12 @@ const Sidebar = memo(function Sidebar({
                     />
                     <span className="truncate">{artist.name}</span>
                   </button>
-                ))}
-              </div>
+                )}
+              />
             )}
           </section>
 
-          {/* Sección CHARTS */}
+          {/* Seccion CHARTS */}
           <section className="mb-4" aria-labelledby="charts-heading">
             <button
               onClick={onToggleCharts}
@@ -125,12 +133,16 @@ const Sidebar = memo(function Sidebar({
             </button>
 
             {chartsExpanded && (
-              <div className="mt-1 max-h-[40vh] overflow-y-auto">
-                {charts.map((artist) => (
+              <VirtualList
+                items={charts}
+                itemHeight={ROW_HEIGHT}
+                overscan={6}
+                className="mt-1 max-h-[40vh]"
+                renderItem={(artist) => (
                   <button
-                    key={artist.id}
+                    type="button"
                     onClick={() => onSelectArtist(artist.id, 'charts')}
-                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all duration-200 active:scale-[0.98] ${
+                    className={`w-full h-full flex items-center gap-2 px-3 rounded-lg text-sm transition-all duration-200 active:scale-[0.98] ${
                       selectedArtist === artist.id && viewMode === 'charts'
                         ? 'bg-[var(--chart-accent-soft)] text-[var(--chart-accent)]'
                         : 'text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--hover)]'
@@ -146,8 +158,8 @@ const Sidebar = memo(function Sidebar({
                     />
                     <span className="truncate">{artist.name}</span>
                   </button>
-                ))}
-              </div>
+                )}
+              />
             )}
           </section>
         </nav>

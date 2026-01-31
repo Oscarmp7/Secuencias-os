@@ -18,7 +18,7 @@ import ArtistView from './views/ArtistView';
 
 const MainContent = memo(function MainContent({
   searchResults,
-  searchQuery,
+  searchResultsQuery,
   viewMode,
   selectedArtist,
   currentArtist,
@@ -35,7 +35,7 @@ const MainContent = memo(function MainContent({
   return (
     <main className="flex-1 overflow-y-auto p-4 md:p-6 grain-bg scroll-smooth overscroll-contain">
       {searchResults && searchResults.length > 0 ? (
-        <SearchResultsView searchResults={searchResults} searchQuery={searchQuery} />
+        <SearchResultsView searchResults={searchResults} searchQuery={searchResultsQuery} />
       ) : searchResults && searchResults.length === 0 ? (
         <div className="text-center py-12">
           <Search size={48} className="mx-auto text-[var(--text-subtle)] mb-4" />

@@ -7,27 +7,28 @@
 
 Tu biblioteca de secuencias y charts musicales.
 
-## Descripción
+## Descripcion
 
-Secuencias OS es una aplicación web para explorar y descargar secuencias musicales y charts de una biblioteca extensa. La UI está optimizada para desktop y mobile, con soporte para tema claro/oscuro e idioma.
+Secuencias OS es una aplicacion web para explorar y descargar secuencias musicales y charts de una biblioteca extensa. La UI esta optimizada para desktop y mobile, con soporte para tema claro/oscuro e idioma.
 
-## Características
+## Caracteristicas
 
-- 776 artistas con su catálogo completo
-- 2,154 álbumes organizados por artista
+- 776 artistas con su catalogo completo
+- 2,154 albumes organizados por artista
 - 6,289 secuencias disponibles para descarga
 - 9,787 charts en formato PDF
-- Búsqueda en tiempo real por artista, álbum o canción
-- Tema oscuro y claro con transición suave
+- Busqueda optimizada (debounce + indice precalculado + Web Worker)
+- Sidebar virtualizada para listas grandes
+- Tema oscuro y claro con transicion suave
 - Selector de idioma (ES/EN/PT)
-- Diseño 100% responsive
+- Diseno 100% responsive
 
-## Inicio rápido
+## Inicio rapido
 
 Requisitos:
 - Node.js v18 o superior
 
-Instalación:
+Instalacion:
 
 ```bash
 cd app
@@ -35,12 +36,12 @@ npm install
 npm run dev
 ```
 
-La aplicación quedará disponible en:
+La aplicacion quedara disponible en:
 ```
 http://localhost:5173/Secuencias-os/
 ```
 
-Build de producción:
+Build de produccion:
 
 ```bash
 cd app
@@ -48,15 +49,22 @@ npm run build
 npm run preview
 ```
 
-## Stack tecnológico
+Deploy (GitHub Pages):
 
-| Tecnología | Propósito |
+```bash
+cd app
+npm run deploy
+```
+
+## Stack tecnologico
+
+| Tecnologia | Proposito |
 |-----------|-----------|
 | React 19 | UI con hooks modernos |
 | Vite 7 | Bundler con HMR |
 | Tailwind CSS 3 | Estilos utility-first |
-| Lucide React | Iconografía |
-| i18next + react-i18next | Internacionalización |
+| Lucide React | Iconografia |
+| i18next + react-i18next | Internacionalizacion |
 | ESLint | Linting |
 
 ## Estructura del proyecto
@@ -72,6 +80,12 @@ Secuencias pagina/
     │   ├── index.css
     │   ├── main.jsx
     │   ├── data.json
+    │   ├── hooks/
+    │   │   └── useDebouncedValue.js
+    │   ├── utils/
+    │   │   └── searchIndex.js
+    │   ├── workers/
+    │   │   └── searchWorker.js
     │   ├── components/
     │   └── locales/
     ├── public/
@@ -80,23 +94,25 @@ Secuencias pagina/
     └── tailwind.config.js
 ```
 
-## Scripts útiles
+## Scripts utiles
 
 - `npm run dev`: desarrollo con HMR
-- `npm run build`: build optimizado para producción
-- `npm run preview`: previsualización del build
+- `npm run build`: build optimizado para produccion
+- `npm run preview`: previsualizacion del build
+- `npm run deploy`: publica en GitHub Pages (gh-pages)
 
 ## Notas para mantenimiento
 
 - Los datos viven en `app/src/data.json`.
 - El tema (dark/light) se controla por variables CSS en `app/src/index.css`.
 - Las traducciones viven en `app/src/locales/*`.
+- La busqueda usa un indice precalculado y, si esta disponible, un Web Worker.
 - El historial de artistas recientes se guarda en `localStorage`.
 
 ## Contribuir
 
 1. Haz fork del repositorio
 2. Crea una rama (`git checkout -b feature/nueva-caracteristica`)
-3. Commit tus cambios (`git commit -m "Añadir nueva característica"`)
+3. Commit tus cambios (`git commit -m "Agregar nueva caracteristica"`)
 4. Push a la rama (`git push origin feature/nueva-caracteristica`)
 5. Abre un Pull Request
