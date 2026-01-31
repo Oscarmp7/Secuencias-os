@@ -1,156 +1,102 @@
-# 🎵 Secuencias OS
+# Secuencias OS
 
-<div align="center">
+[![React](https://img.shields.io/badge/React-19.0-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-7.3-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vite.dev/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-![React](https://img.shields.io/badge/React-19.0-61DAFB?style=for-the-badge&logo=react&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-7.3-646CFF?style=for-the-badge&logo=vite&logoColor=white)
-![TailwindCSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+Tu biblioteca de secuencias y charts musicales.
 
-**Tu biblioteca de secuencias y charts musicales**
+## Descripción
 
-[Demo en Vivo](https://secuencias-os.vercel.app) · [Reportar Bug](../../issues) · [Solicitar Feature](../../issues)
+Secuencias OS es una aplicación web para explorar y descargar secuencias musicales y charts de una biblioteca extensa. La UI está optimizada para desktop y mobile, con soporte para tema claro/oscuro e idioma.
 
-</div>
+## Características
 
----
+- 776 artistas con su catálogo completo
+- 2,154 álbumes organizados por artista
+- 6,289 secuencias disponibles para descarga
+- 9,787 charts en formato PDF
+- Búsqueda en tiempo real por artista, álbum o canción
+- Tema oscuro y claro con transición suave
+- Selector de idioma (ES/EN/PT)
+- Diseño 100% responsive
 
-## 📖 Descripción
+## Inicio rápido
 
-**Secuencias OS** es una aplicación web moderna que permite explorar y descargar secuencias musicales y charts de una extensa biblioteca. Diseñada con una interfaz elegante estilo Spotify, ofrece una experiencia de usuario fluida tanto en desktop como en dispositivos móviles.
+Requisitos:
+- Node.js v18 o superior
 
-### ✨ Características
-
-- 🎤 **772 Artistas** con su catálogo completo
-- 💿 **2,154 Álbumes** organizados por artista
-- 🎶 **6,289 Secuencias** disponibles para descarga
-- 📄 **9,787 Charts** en formato PDF
-- 🔍 **Búsqueda en tiempo real** por artista, álbum o canción
-- 📱 **Diseño 100% responsive** optimizado para móviles
-- 🌙 **Tema oscuro** elegante y moderno
-- ⚡ **Rendimiento optimizado** con carga instantánea
-
----
-
-## 🚀 Inicio Rápido
-
-### Prerrequisitos
-
-- [Node.js](https://nodejs.org/) v18 o superior
-- npm o yarn
-
-### Instalación
+Instalación:
 
 ```bash
-# Clonar el repositorio
-git clone https://github.com/tu-usuario/secuencias-os.git
-
-# Entrar al directorio
-cd secuencias-os
-
-# Instalar dependencias
+cd app
 npm install
-
-# Iniciar servidor de desarrollo
 npm run dev
 ```
 
-La aplicación estará disponible en `http://localhost:5173`
+La aplicación quedará disponible en:
+```
+http://localhost:5173/Secuencias-os/
+```
 
-### Build para Producción
+Build de producción:
 
 ```bash
-# Generar build optimizado
+cd app
 npm run build
-
-# Previsualizar build
 npm run preview
 ```
 
----
-
-## 🛠️ Stack Tecnológico
+## Stack tecnológico
 
 | Tecnología | Propósito |
-|------------|-----------|
-| **React 19** | Biblioteca UI con hooks modernos |
-| **Vite 7** | Bundler ultrarrápido con HMR |
-| **Tailwind CSS 3** | Framework CSS utility-first |
-| **Lucide React** | Iconos SVG elegantes |
-| **ESLint** | Linting y calidad de código |
+|-----------|-----------|
+| React 19 | UI con hooks modernos |
+| Vite 7 | Bundler con HMR |
+| Tailwind CSS 3 | Estilos utility-first |
+| Lucide React | Iconografía |
+| i18next + react-i18next | Internacionalización |
+| ESLint | Linting |
 
----
-
-## 📁 Estructura del Proyecto
+## Estructura del proyecto
 
 ```
-secuencias-os/
-├── public/
-│   └── data.json          # Base de datos de artistas, álbumes y canciones
-├── src/
-│   ├── App.jsx            # Componente principal (documentado para principiantes)
-│   ├── App.css            # Estilos específicos del componente
-│   ├── index.css          # Estilos globales y animaciones
-│   └── main.jsx           # Punto de entrada de React
-├── index.html             # Template HTML
-├── tailwind.config.js     # Configuración de Tailwind
-├── vite.config.js         # Configuración de Vite
-└── package.json           # Dependencias y scripts
+Secuencias pagina/
+├── README.md
+└── app/
+    ├── index.html
+    ├── src/
+    │   ├── App.jsx
+    │   ├── i18n.js
+    │   ├── index.css
+    │   ├── main.jsx
+    │   ├── data.json
+    │   ├── components/
+    │   └── locales/
+    ├── public/
+    ├── package.json
+    ├── vite.config.js
+    └── tailwind.config.js
 ```
 
----
+## Scripts útiles
 
-## 📚 Documentación del Código
+- `npm run dev`: desarrollo con HMR
+- `npm run build`: build optimizado para producción
+- `npm run preview`: previsualización del build
 
-El código fuente está **extensivamente documentado** con comentarios explicativos diseñados para desarrolladores principiantes en React. Cada concepto importante está explicado:
+## Notas para mantenimiento
 
-- ✅ Hooks de React (`useState`, `useMemo`, `useEffect`)
-- ✅ Renderizado condicional
-- ✅ Manejo de eventos
-- ✅ Clases de Tailwind CSS
-- ✅ Patrones de diseño responsive
-- ✅ Optimización de rendimiento
+- Los datos viven en `app/src/data.json`.
+- El tema (dark/light) se controla por variables CSS en `app/src/index.css`.
+- Las traducciones viven en `app/src/locales/*`.
+- El historial de artistas recientes se guarda en `localStorage`.
 
----
-
-## 📱 Responsive Design
-
-La aplicación implementa un diseño completamente responsive:
-
-| Breakpoint | Comportamiento |
-|------------|----------------|
-| `< 768px` | Sidebar como overlay deslizante, botones compactos |
-| `≥ 768px` | Sidebar fijo lateral, interfaz completa |
-| `≥ 1024px` | Layout optimizado para pantallas grandes |
-
----
-
-## 🤝 Contribuir
-
-Las contribuciones son bienvenidas. Para cambios importantes:
+## Contribuir
 
 1. Haz fork del repositorio
 2. Crea una rama (`git checkout -b feature/nueva-caracteristica`)
-3. Commit tus cambios (`git commit -m 'Añadir nueva característica'`)
+3. Commit tus cambios (`git commit -m "Añadir nueva característica"`)
 4. Push a la rama (`git push origin feature/nueva-caracteristica`)
 5. Abre un Pull Request
-
----
-
-## 📄 Licencia
-
-Distribuido bajo la licencia MIT. Ver `LICENSE` para más información.
-
----
-
-## 👨‍💻 Autor
-
-Desarrollado con ❤️ para la comunidad musical
-
----
-
-<div align="center">
-
-**⭐ Si este proyecto te fue útil, considera darle una estrella ⭐**
-
-</div>

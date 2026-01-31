@@ -2,15 +2,124 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ═══════════════════════════════════════════════════════════════════════════════
-   🎨 ESTILOS GLOBALES - Secuencias OS
+/*
+  =============================================================
+  🎨 THEME TOKENS (Dark/Light)
+  -------------------------------------------------------------
+  Usamos variables CSS para cambiar de tema sin reescribir clases.
+  El tema se controla con: document.documentElement[data-theme]
+  =============================================================
+*/
+:root {
+  /* Colores base (tema oscuro por defecto) */
+  --bg: #121212;
+  --sidebar: #1a1a1a;
+  --header: #1a1a1a;
+  --surface: #0f0f0f;
+  --panel: #1a1a1a;
+  --panel-hover: #222222;
+
+  /* Texto */
+  --text: #e5e7eb;         /* similar a gray-200 */
+  --text-muted: #9ca3af;   /* gray-400 */
+  --text-subtle: #6b7280;  /* gray-500 */
+
+  /* Bordes y hover */
+  --border: #1f2937;       /* gray-800 */
+  --hover: rgba(255, 255, 255, 0.06);
+
+  /* Inputs */
+  --input-bg: #2a2a2a;
+  --input-border: #374151; /* gray-700 */
+  --input-border-focus: #3b82f6;
+
+  /* Acentos */
+  --accent: #3b82f6;       /* blue-500 */
+  --accent-strong: #2563eb;/* blue-600 */
+  --accent-strong-hover: #1d4ed8; /* blue-700 */
+  --accent-soft: rgba(59, 130, 246, 0.2);
+  --accent-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+
+  /* Acento charts (naranja/rojo) */
+  --chart-accent: #f97316;           /* orange-500 */
+  --chart-accent-strong: #ea580c;    /* orange-600 */
+  --chart-accent-strong-hover: #c2410c; /* orange-700 */
+  --chart-accent-soft: rgba(249, 115, 22, 0.18);
+
+  /* Cards */
+  --card-bg: rgba(255, 255, 255, 0.02);
+  --card-hover: rgba(255, 255, 255, 0.04);
+  --card-border: rgba(255, 255, 255, 0.05);
+  --card-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+
+  /* Overlay */
+  --overlay: rgba(0, 0, 0, 0.6);
+
+  /* Scrollbar */
+  --scrollbar-thumb: #3b3b3b;
+  --scrollbar-thumb-hover: #4a4a4a;
+
+  /* Grain */
+  --grain-opacity: 0.03;
+}
+
+/* Tema claro */
+[data-theme='light'] {
+  --bg: #f4f6fb;
+  --sidebar: #ffffff;
+  --header: #ffffff;
+  --surface: #ffffff;
+  --panel: #f7f9fd;
+  --panel-hover: #edf1f7;
+
+  --text: #1f2937;         /* gray-800 */
+  --text-muted: #6b7280;   /* gray-500 */
+  --text-subtle: #94a3b8;  /* slate-400 */
+
+  --border: #cfd6e3;       /* darker outline for light UI */
+  --hover: #f1f5f9;        /* slate-100 */
+
+  --input-bg: #f1f5f9;
+  --input-border: #c3cfdd; /* stronger outline for inputs */
+  --input-border-focus: #3b82f6;
+
+  --accent: #3b82f6;
+  --accent-strong: #2563eb;
+  --accent-strong-hover: #1d4ed8;
+  --accent-soft: rgba(59, 130, 246, 0.15);
+  --accent-shadow: 0 10px 24px rgba(59, 130, 246, 0.2);
+
+  --card-bg: #ffffff;
+  --card-hover: #f4f6fb;
+  --card-border: #cfd6e3;
+  --card-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+
+  --overlay: rgba(15, 23, 42, 0.15);
+
+  --scrollbar-thumb: #cbd5f5;
+  --scrollbar-thumb-hover: #94a3b8;
+
+  --grain-opacity: 0.01;
+}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   ðŸŽ¨ ESTILOS GLOBALES - Secuencias OS
    
    Estos estilos se aplican a toda la aplicación y mejoran la experiencia
    de usuario en todos los dispositivos.
-   ═══════════════════════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 html, body, #root {
   height: 100%;
+}
+
+/* Permite que los controles nativos (select, inputs) adapten su UI */
+html[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+html[data-theme='light'] {
+  color-scheme: light;
 }
 
 html {
@@ -23,8 +132,8 @@ html {
 
 body {
   margin: 0;
-  background: #121212;
-  color: rgba(255,255,255,.87);
+  background: var(--bg);
+  color: var(--text);
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   
   /* 
@@ -41,6 +150,26 @@ body {
   overscroll-behavior: contain;
 }
 
+/*
+  🌈 TRANSICIÓN SUAVE ENTRE TEMAS
+  Usamos transiciones cortas y solo en propiedades visuales clave
+  para que se vea fluido sin cargar la CPU.
+*/
+.theme-smooth,
+.theme-smooth * {
+  transition-property: background-color, color, border-color, box-shadow;
+  transition-duration: 180ms;
+  transition-timing-function: ease;
+}
+
+/* Accesibilidad: si el usuario prefiere menos animación, la reducimos. */
+@media (prefers-reduced-motion: reduce) {
+  .theme-smooth,
+  .theme-smooth * {
+    transition-duration: 0ms;
+  }
+}
+
 /* 
   🎯 MEJORAS PARA DISPOSITIVOS TÁCTILES
   
@@ -53,6 +182,20 @@ body {
 button, a {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+}
+
+/*
+  🎛️ SELECTS (Idioma)
+  Estilizamos el <select> y sus opciones para que encajen en dark/light.
+*/
+select {
+  color: var(--text);
+  background-color: var(--surface);
+}
+
+select option {
+  color: var(--text);
+  background-color: var(--surface);
 }
 
 /*
@@ -74,18 +217,18 @@ button, a {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3b3b3b;
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #4a4a4a;
+  background: var(--scrollbar-thumb-hover);
 }
 
 /* Firefox scrollbar styling */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #3b3b3b transparent;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
 }
 
 /*
@@ -178,14 +321,14 @@ button, a {
 }
 
 /*
-  � EFECTO GRAIN/RUIDO SUTIL
+  🌫️ EFECTO GRAIN/RUIDO SUTIL
   
   Crea una textura granulada muy sutil que añade profundidad
   sin distraer. Está muy de moda en diseños modernos.
 */
 .grain-bg {
   position: relative;
-  background: #0a0a0a;
+  background: var(--bg);
 }
 
 .grain-bg::before {
@@ -195,7 +338,7 @@ button, a {
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.03;
+  opacity: var(--grain-opacity);
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
@@ -207,13 +350,14 @@ button, a {
   Muy sutil para no distraer del contenido.
 */
 .glass-card {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--card-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
 }
 
 .glass-card:hover {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(59, 130, 246, 0.25);
+  background: var(--card-hover);
+  border-color: var(--accent-soft);
 }

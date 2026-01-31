@@ -1,0 +1,45 @@
+{
+  "brand": "Secuencias OS",
+  "nav": {
+    "artists": "ARTISTS",
+    "charts": "CHARTS"
+  },
+  "actions": {
+    "home": "Home",
+    "download": "Download"
+  },
+  "aria": {
+    "navigation": "Navigation menu",
+    "closeMenu": "Close menu",
+    "toggleMenu": "Toggle menu",
+    "clearSearch": "Clear search",
+    "toggleTheme": "Toggle theme",
+    "languageSelect": "Select language"
+  },
+  "search": {
+    "placeholder": "Search song, artist or album...",
+    "resultsTitle": "Search results",
+    "resultsFor": "{{count}} results for \"{{query}}\"",
+    "noResultsTitle": "No results found",
+    "noResultsSubtitle": "Try different search terms"
+  },
+  "home": {
+    "welcomeTitle": "Welcome to Secuencias OS",
+    "welcomeSubtitle": "Your library of sequences and music charts. Select an artist from the sidebar to start.",
+    "statsArtists": "Artists",
+    "statsSequences": "Sequences",
+    "statsCharts": "Charts",
+    "recentTitle": "RECENTLY SEARCHED",
+    "featuredTitle": "FEATURED ARTISTS"
+  },
+  "charts": {
+    "available": "{{count}} charts available",
+    "pdf": "PDF Chart"
+  },
+  "artist": {
+    "stats": "{{albums}} albums • {{songs}} songs",
+    "songCount": "{{count}} songs",
+    "sequenceLabel": "Sequence",
+    "fileLabel": "File"
+  }
+}

@@ -5,20 +5,50 @@
 const fs = require('fs');
 const path = require('path');
 
-// Leer el archivo HTML
-const htmlPath = path.join(__dirname, '..', 'index.html');
-const html = fs.readFileSync(htmlPath, 'utf-8');
+// Resolver archivo de entrada (HTML exportado o JSON)
+const args = process.argv.slice(2);
+const inputIndex = args.indexOf('--input');
+const inputArg = inputIndex !== -1 ? args[inputIndex + 1] : null;
+const inputPath = inputArg
+    ? (path.isAbsolute(inputArg) ? inputArg : path.resolve(process.cwd(), inputArg))
+    : path.join(__dirname, 'index.html');
 
-// Extraer el array searchData usando regex
-const searchDataMatch = html.match(/const searchData = (\[[\s\S]*?\]);/);
-
-if (!searchDataMatch) {
-    console.error('No se encontró searchData en el HTML');
+if (!fs.existsSync(inputPath)) {
+    console.error(`Archivo no encontrado: ${inputPath}`);
+    console.error('Usa: node extract-data.cjs --input ruta/al/export.html');
     process.exit(1);
 }
 
-// Parsear el JSON
-const searchData = JSON.parse(searchDataMatch[1]);
+const rawInput = fs.readFileSync(inputPath, 'utf-8');
+
+let searchData = null;
+
+// Si es JSON, intentar parsear directo
+if (inputPath.toLowerCase().endsWith('.json')) {
+    const parsed = JSON.parse(rawInput);
+    if (Array.isArray(parsed)) {
+        searchData = parsed;
+    } else if (Array.isArray(parsed.searchData)) {
+        searchData = parsed.searchData;
+    }
+}
+
+// Si no es JSON (o no coincidió), buscar en HTML/JS
+if (!searchData) {
+    const searchDataMatch = rawInput.match(/const searchData = (\[[\s\S]*?\]);/);
+    if (searchDataMatch) {
+        searchData = JSON.parse(searchDataMatch[1]);
+    }
+}
+
+if (!searchData) {
+    console.error('No se encontró searchData en el archivo de entrada.');
+    console.error('Asegúrate de pasar el HTML exportado que contiene `const searchData = [...]`');
+    console.error('o un JSON con el array en la raíz o en la propiedad `searchData`.');
+    process.exit(1);
+}
+
+console.log(`Archivo de entrada: ${inputPath}`);
 console.log(`Total de items encontrados: ${searchData.length}`);
 
 // Filtrar solo items dentro de MULTITRACKS (secuencias) y CHARTS
