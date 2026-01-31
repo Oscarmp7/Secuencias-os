@@ -5,11 +5,15 @@
     "charts": "CHARTS"
   },
   "actions": {
-    "home": "Início",
+    "home": "InÃ­cio",
     "download": "Baixar"
   },
+  "labels": {
+    "language": "Idioma",
+    "theme": "Tema"
+  },
   "aria": {
-    "navigation": "Menu de navegação",
+    "navigation": "Menu de navegaÃ§Ã£o",
     "closeMenu": "Fechar menu",
     "toggleMenu": "Alternar menu",
     "clearSearch": "Limpar busca",
@@ -17,7 +21,7 @@
     "languageSelect": "Selecionar idioma"
   },
   "search": {
-    "placeholder": "Buscar música, artista ou álbum...",
+    "placeholder": "Buscar mÃºsica, artista ou Ã¡lbum...",
     "resultsTitle": "Resultados da busca",
     "resultsFor": "{{count}} resultados para \"{{query}}\"",
     "noResultsTitle": "Nenhum resultado encontrado",
@@ -25,21 +29,21 @@
   },
   "home": {
     "welcomeTitle": "Bem-vindo ao Secuencias OS",
-    "welcomeSubtitle": "Sua biblioteca de sequências e charts musicais. Selecione um artista no menu lateral para começar.",
+    "welcomeSubtitle": "Sua biblioteca de sequÃªncias e charts musicais. Selecione um artista no menu lateral para comeÃ§ar.",
     "statsArtists": "Artistas",
-    "statsSequences": "Sequências",
+    "statsSequences": "SequÃªncias",
     "statsCharts": "Charts",
     "recentTitle": "BUSCADOS RECENTEMENTE",
     "featuredTitle": "ARTISTAS EM DESTAQUE"
   },
   "charts": {
-    "available": "{{count}} charts disponíveis",
+    "available": "{{count}} charts disponÃ­veis",
     "pdf": "PDF Chart"
   },
   "artist": {
-    "stats": "{{albums}} álbuns • {{songs}} músicas",
-    "songCount": "{{count}} músicas",
-    "sequenceLabel": "Sequência",
+    "stats": "{{albums}} Ã¡lbuns â€¢ {{songs}} mÃºsicas",
+    "songCount": "{{count}} mÃºsicas",
+    "sequenceLabel": "SequÃªncia",
     "fileLabel": "Arquivo"
   }
 }

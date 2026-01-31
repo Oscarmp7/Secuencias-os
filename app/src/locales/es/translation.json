@@ -8,6 +8,10 @@
     "home": "Inicio",
     "download": "Descargar"
   },
+  "labels": {
+    "language": "Idioma",
+    "theme": "Tema"
+  },
   "aria": {
     "navigation": "Menú de navegación",
     "closeMenu": "Cerrar menú",
