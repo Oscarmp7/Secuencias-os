@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { Music, X, ChevronDown, ChevronRight, Folder, FileText } from 'lucide-react';
 import VirtualList from './VirtualList';
 
+// Altura de cada fila para la lista virtualizada (px).
 const ROW_HEIGHT = 44;
 
 const Sidebar = memo(function Sidebar({
@@ -32,22 +33,25 @@ const Sidebar = memo(function Sidebar({
 
   return (
     <>
-      {/* Overlay en movil: al hacer clic cerramos el sidebar */}
-      {isMobile && sidebarOpen && (
+      {/* Overlay en movil: siempre montado para animar opacidad sin parpadeo */}
+      {isMobile && (
         <div
-          className="fixed inset-0 bg-[var(--overlay)] z-40 transition-opacity duration-300 ease-out"
-          onClick={onCloseSidebar}
+          className={`fixed inset-0 bg-[var(--overlay)] z-40 transition-opacity duration-300 ease-out ${
+            sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
+          onClick={sidebarOpen ? onCloseSidebar : undefined}
           aria-hidden="true"
         />
       )}
 
+      {/* Sidebar: en mobile usamos translate (GPU), en desktop usamos width */}
       <aside
         className={`
           ${
             isMobile
-              ? `fixed inset-y-0 left-0 z-50 w-72 transform transition-transform duration-300 ease-out
+              ? `fixed inset-y-0 left-0 z-50 w-72 transform transition-transform duration-300 ease-in-out
                  ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`
-              : `${sidebarOpen ? 'w-64' : 'w-0'} transition-all duration-300 ease-out`
+              : `${sidebarOpen ? 'w-64' : 'w-0'} transition-[width] duration-300 ease-in-out`
           }
           bg-[var(--sidebar)] border-r border-[var(--border)] flex flex-col overflow-hidden
         `}

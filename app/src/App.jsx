@@ -36,6 +36,10 @@ const App = () => {
   // Estado del tema. "dark" ya existe, "light" se agrega con CSS variables.
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
 
+  // Detectamos mobile una sola vez al iniciar para evitar el "flash" del sidebar.
+  // Si el ancho ya es pequeno, iniciamos con el menu cerrado.
+  const initialIsMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
+
   // Busqueda y navegacion.
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedQuery = useDebouncedValue(searchQuery, 180);
@@ -44,18 +48,22 @@ const App = () => {
   const [searchResultsQuery, setSearchResultsQuery] = useState('');
 
   const [selectedArtist, setSelectedArtist] = useState(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  // Sidebar inicia abierto solo si NO estamos en mobile.
+  const [sidebarOpen, setSidebarOpen] = useState(!initialIsMobile);
   const [artistsExpanded, setArtistsExpanded] = useState(true);
   const [chartsExpanded, setChartsExpanded] = useState(false);
   const [viewMode, setViewMode] = useState('home');
   const [expandedAlbums, setExpandedAlbums] = useState({});
-  const [isMobile, setIsMobile] = useState(false);
+  // Estado de breakpoint, basado en el ancho actual.
+  const [isMobile, setIsMobile] = useState(initialIsMobile);
   const [recentArtists, setRecentArtists] = useState([]);
 
   // Referencias para el worker de busqueda (si el navegador lo soporta).
   const searchWorkerRef = useRef(null);
   const searchRequestId = useRef(0);
   const searchIndexRef = useRef(null);
+  // Guardamos el ultimo estado mobile para detectar cambios reales.
+  const wasMobileRef = useRef(initialIsMobile);
 
   /**
    * Efecto para aplicar el tema al <html>.
@@ -73,13 +81,17 @@ const App = () => {
    */
   useEffect(() => {
     const updateIsMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      const nextIsMobile = window.innerWidth < 768;
+      setIsMobile(nextIsMobile);
+
+      // Solo reaccionamos si el breakpoint cambia (evita saltos innecesarios).
+      if (nextIsMobile !== wasMobileRef.current) {
+        wasMobileRef.current = nextIsMobile;
+        setSidebarOpen(!nextIsMobile);
+      }
     };
 
     updateIsMobile();
-    if (window.innerWidth < 768) {
-      setSidebarOpen(false);
-    }
 
     window.addEventListener('resize', updateIsMobile);
     return () => window.removeEventListener('resize', updateIsMobile);
@@ -279,7 +291,8 @@ const App = () => {
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <HeaderBar
-          searchResultsQuery={searchResultsQuery}
+          // Buscador controlado: usa el texto real que el usuario escribe.
+          searchQuery={searchQuery}
           onSearchChange={handleSearchChange}
           onClearSearch={clearSearch}
           onToggleSidebar={toggleSidebar}
@@ -290,7 +303,8 @@ const App = () => {
 
         <MainContent
           searchResults={searchResults}
-          searchQuery={searchQuery}
+          // Usa el query "debounced" que genero estos resultados.
+          searchResultsQuery={searchResultsQuery}
           viewMode={viewMode}
           selectedArtist={selectedArtist}
           currentArtist={currentArtist}
