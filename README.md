@@ -21,6 +21,7 @@ Secuencias OS es una aplicacion web para explorar y descargar secuencias musical
 - Sidebar virtualizada para listas grandes
 - Tema oscuro y claro con transicion suave
 - Selector de idioma (ES/EN/PT)
+- Panel compacto de controles en mobile con switch de tema
 - Diseno 100% responsive
 
 ## Inicio rapido

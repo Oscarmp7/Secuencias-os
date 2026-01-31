@@ -64,7 +64,8 @@ const HeaderBar = memo(function HeaderBar({
   }, []);
 
   return (
-    <header className="bg-[var(--header)] border-b border-[var(--border)] px-4 h-[72px] flex items-center">
+    // Header un poco mas alto en mobile para que los controles respiren mejor.
+    <header className="bg-[var(--header)] border-b border-[var(--border)] px-4 h-[84px] md:h-[72px] flex items-center">
       <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 w-full">
         {/* Centro: menu + buscador + inicio (centrados) */}
         <div className="col-start-2 justify-self-center">
@@ -192,6 +193,7 @@ const HeaderBar = memo(function HeaderBar({
                 role="menu"
                 className="absolute right-0 mt-2 w-48 rounded-xl border border-[var(--border)] bg-[var(--surface)] shadow-[var(--card-shadow)] overflow-hidden z-50"
               >
+                {/* Seccion de idioma con chips para tocar rapido */}
                 <div className="px-3 py-2">
                   <div className="text-xs text-[var(--text-subtle)] mb-2">
                     {t('labels.language')}
@@ -214,27 +216,30 @@ const HeaderBar = memo(function HeaderBar({
                   </div>
                 </div>
 
-                <div className="border-t border-[var(--border)] px-3 py-2 flex items-center justify-between">
+                {/* Seccion de tema con switch compacto (menos espacio entre label y control) */}
+                <div className="border-t border-[var(--border)] px-3 py-2 flex items-center gap-3">
                   <span className="text-sm text-[var(--text)]">{t('labels.theme')}</span>
                   <button
+                    type="button"
+                    role="switch"
+                    aria-checked={theme === 'light'}
                     onClick={() => {
                       onToggleTheme();
                       setControlsOpen(false);
                     }}
-                    className="p-2 bg-[var(--panel)] border border-[var(--border)] rounded-full transition-all duration-200 active:scale-95"
+                    className={`relative inline-flex items-center w-11 h-6 rounded-full border transition-colors duration-200 ${
+                      theme === 'light'
+                        ? 'bg-[var(--chart-accent)] border-[var(--chart-accent)]'
+                        : 'bg-[var(--panel)] border-[var(--border)]'
+                    }`}
                     aria-label={t('aria.toggleTheme')}
                   >
-                    <div
-                      className={`transition-transform duration-300 ${
-                        theme === 'dark' ? 'rotate-0' : 'rotate-180'
+                    {/* "Bolita" del switch que se mueve con translate */}
+                    <span
+                      className={`inline-block w-5 h-5 rounded-full bg-white shadow transition-transform duration-200 ${
+                        theme === 'light' ? 'translate-x-5' : 'translate-x-0.5'
                       }`}
-                    >
-                      {theme === 'dark' ? (
-                        <Moon size={16} className="text-[var(--text)]" />
-                      ) : (
-                        <Sun size={16} className="text-[var(--chart-accent)]" />
-                      )}
-                    </div>
+                    />
                   </button>
                 </div>
               </div>
