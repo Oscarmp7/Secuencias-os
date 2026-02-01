@@ -69,7 +69,8 @@ const HeaderBar = memo(function HeaderBar({
       <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 w-full">
         {/* Centro: menu + buscador + inicio (centrados) */}
         <div className="col-start-2 justify-self-center">
-          <div className="flex items-center gap-4 w-[min(60vw,720px)] min-w-0">
+          {/* En mobile damos mas ancho al buscador para que se sienta comodo */}
+          <div className="flex items-center gap-4 w-[min(80vw,820px)] md:w-[min(60vw,720px)] min-w-0">
             <button
               onClick={onToggleSidebar}
               className="p-2 hover:bg-[var(--hover)] rounded-lg transition-colors"
@@ -155,14 +156,14 @@ const HeaderBar = memo(function HeaderBar({
               )}
             </div>
 
-            {/* Toggle de tema con animacion suave */}
+            {/* Toggle de tema con animacion suave y duracion consistente */}
             <button
               onClick={onToggleTheme}
               className="p-2 bg-[var(--surface)] border border-[var(--border)] rounded-full transition-all duration-200 active:scale-95"
               aria-label={t('aria.toggleTheme')}
             >
               <div
-                className={`transition-transform duration-300 ${
+                className={`transition-transform duration-200 ${
                   theme === 'dark' ? 'rotate-0' : 'rotate-180'
                 }`}
               >
@@ -216,8 +217,8 @@ const HeaderBar = memo(function HeaderBar({
                   </div>
                 </div>
 
-                {/* Seccion de tema con switch compacto (menos espacio entre label y control) */}
-                <div className="border-t border-[var(--border)] px-3 py-2 flex items-center gap-3">
+                {/* Seccion de tema con switch centrado (label + control como grupo) */}
+                <div className="border-t border-[var(--border)] px-3 py-3 flex items-center justify-center gap-3">
                   <span className="text-sm text-[var(--text)]">{t('labels.theme')}</span>
                   <button
                     type="button"
