@@ -66,11 +66,12 @@ const HeaderBar = memo(function HeaderBar({
   return (
     // Header un poco mas alto en mobile para que los controles respiren mejor.
     <header className="bg-[var(--header)] border-b border-[var(--border)] px-4 h-[84px] md:h-[72px] flex items-center">
-      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 w-full">
-        {/* Centro: menu + buscador + inicio (centrados) */}
-        <div className="col-start-2 justify-self-center">
+      {/* En mobile usamos layout en fila para alinear todo a la izquierda */}
+      <div className="w-full flex items-center justify-start md:grid md:grid-cols-[1fr_auto_1fr] md:gap-4">
+        {/* Centro: menu + buscador + inicio (centrados en desktop) */}
+        <div className="w-full md:col-start-2 md:justify-self-center">
           {/* En mobile damos mas ancho al buscador para que se sienta comodo */}
-          <div className="flex items-center gap-4 w-[min(80vw,820px)] md:w-[min(60vw,720px)] min-w-0">
+          <div className="flex items-center gap-3 w-full md:w-[min(60vw,720px)] min-w-0">
             <button
               onClick={onToggleSidebar}
               className="p-2 hover:bg-[var(--hover)] rounded-lg transition-colors"
@@ -80,7 +81,7 @@ const HeaderBar = memo(function HeaderBar({
             </button>
 
             {/* Buscador controlado: el valor vive en App y se actualiza via props */}
-            <div className="flex-1 min-w-0 max-w-xl relative">
+            <div className="flex-1 min-w-0 relative md:max-w-xl">
               <Search
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-subtle)]"
                 size={20}
@@ -110,13 +111,81 @@ const HeaderBar = memo(function HeaderBar({
               <Home size={18} />
               <span className="hidden md:inline text-sm font-medium">{t('actions.home')}</span>
             </button>
+
+            {/* Mobile: boton de ajustes dentro del grupo para centrar todo */}
+            <div ref={controlsRef} className="relative md:hidden">
+              <button
+                type="button"
+                onClick={() => setControlsOpen((prev) => !prev)}
+                className="p-2 bg-[var(--surface)] border border-[var(--border)] rounded-full transition-colors hover:bg-[var(--hover)]"
+                aria-label={t('aria.languageSelect')}
+                aria-haspopup="menu"
+                aria-expanded={controlsOpen}
+              >
+                <SlidersHorizontal size={18} />
+              </button>
+
+              {controlsOpen && (
+                <div
+                  role="menu"
+                  className="absolute right-0 mt-2 w-48 rounded-xl border border-[var(--border)] bg-[var(--surface)] shadow-[var(--card-shadow)] overflow-hidden z-50"
+                >
+                  {/* Seccion de idioma con chips para tocar rapido */}
+                  <div className="px-3 py-2">
+                    <div className="text-xs text-[var(--text-subtle)] mb-2">
+                      {t('labels.language')}
+                    </div>
+                    <div className="grid grid-cols-3 gap-2">
+                      {['es', 'en', 'pt'].map((lang) => (
+                        <button
+                          key={lang}
+                          type="button"
+                          onClick={() => handleLanguageChange(lang)}
+                          className={`px-2 py-1 rounded-full text-xs uppercase transition-colors ${
+                            currentLanguage === lang
+                              ? 'bg-[var(--accent-soft)] text-[var(--accent)]'
+                              : 'bg-[var(--panel)] text-[var(--text)] hover:bg-[var(--hover)]'
+                          }`}
+                        >
+                          {lang}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Seccion de tema con switch centrado (label + control como grupo) */}
+                  <div className="border-t border-[var(--border)] px-3 py-3 flex items-center justify-center gap-3">
+                    <span className="text-sm text-[var(--text)]">{t('labels.theme')}</span>
+                    <button
+                      type="button"
+                      role="switch"
+                      aria-checked={theme === 'light'}
+                      onClick={onToggleTheme}
+                      className={`relative inline-flex items-center w-11 h-6 rounded-full border transition-colors duration-200 ${
+                        theme === 'light'
+                          ? 'bg-[var(--chart-accent)] border-[var(--chart-accent)]'
+                          : 'bg-[var(--panel)] border-[var(--border)]'
+                      }`}
+                      aria-label={t('aria.toggleTheme')}
+                    >
+                      {/* "Bolita" del switch que se mueve con translate */}
+                      <span
+                        className={`inline-block w-5 h-5 rounded-full bg-white shadow transition-transform duration-200 ${
+                          theme === 'light' ? 'translate-x-5' : 'translate-x-0.5'
+                        }`}
+                      />
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Controles a la derecha: desktop con botones completos, mobile con menu compacto */}
-        <div className="col-start-3 justify-self-end flex items-center gap-2 pr-3 md:pr-4">
+        <div className="hidden md:flex col-start-3 justify-self-end items-center gap-2 pr-3 md:pr-4">
           {/* Desktop: selector de idioma + toggle de tema */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <div ref={langRef} className="relative">
               <button
                 type="button"
@@ -176,76 +245,6 @@ const HeaderBar = memo(function HeaderBar({
             </button>
           </div>
 
-          {/* Mobile: un solo boton que abre un panel compacto */}
-          <div ref={controlsRef} className="relative md:hidden">
-            <button
-              type="button"
-              onClick={() => setControlsOpen((prev) => !prev)}
-              className="p-2 bg-[var(--surface)] border border-[var(--border)] rounded-full transition-colors hover:bg-[var(--hover)]"
-              aria-label={t('aria.languageSelect')}
-              aria-haspopup="menu"
-              aria-expanded={controlsOpen}
-            >
-              <SlidersHorizontal size={18} />
-            </button>
-
-            {controlsOpen && (
-              <div
-                role="menu"
-                className="absolute right-0 mt-2 w-48 rounded-xl border border-[var(--border)] bg-[var(--surface)] shadow-[var(--card-shadow)] overflow-hidden z-50"
-              >
-                {/* Seccion de idioma con chips para tocar rapido */}
-                <div className="px-3 py-2">
-                  <div className="text-xs text-[var(--text-subtle)] mb-2">
-                    {t('labels.language')}
-                  </div>
-                  <div className="grid grid-cols-3 gap-2">
-                    {['es', 'en', 'pt'].map((lang) => (
-                      <button
-                        key={lang}
-                        type="button"
-                        onClick={() => handleLanguageChange(lang)}
-                        className={`px-2 py-1 rounded-full text-xs uppercase transition-colors ${
-                          currentLanguage === lang
-                            ? 'bg-[var(--accent-soft)] text-[var(--accent)]'
-                            : 'bg-[var(--panel)] text-[var(--text)] hover:bg-[var(--hover)]'
-                        }`}
-                      >
-                        {lang}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Seccion de tema con switch centrado (label + control como grupo) */}
-                <div className="border-t border-[var(--border)] px-3 py-3 flex items-center justify-center gap-3">
-                  <span className="text-sm text-[var(--text)]">{t('labels.theme')}</span>
-                  <button
-                    type="button"
-                    role="switch"
-                    aria-checked={theme === 'light'}
-                    onClick={() => {
-                      onToggleTheme();
-                      setControlsOpen(false);
-                    }}
-                    className={`relative inline-flex items-center w-11 h-6 rounded-full border transition-colors duration-200 ${
-                      theme === 'light'
-                        ? 'bg-[var(--chart-accent)] border-[var(--chart-accent)]'
-                        : 'bg-[var(--panel)] border-[var(--border)]'
-                    }`}
-                    aria-label={t('aria.toggleTheme')}
-                  >
-                    {/* "Bolita" del switch que se mueve con translate */}
-                    <span
-                      className={`inline-block w-5 h-5 rounded-full bg-white shadow transition-transform duration-200 ${
-                        theme === 'light' ? 'translate-x-5' : 'translate-x-0.5'
-                      }`}
-                    />
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </header>
