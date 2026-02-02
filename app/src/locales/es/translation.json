@@ -48,5 +48,8 @@
     "songCount": "{{count}} canciones",
     "sequenceLabel": "Secuencia",
     "fileLabel": "Archivo"
+  },
+  "songInfo": {
+    "key": "Tono"
   }
 }

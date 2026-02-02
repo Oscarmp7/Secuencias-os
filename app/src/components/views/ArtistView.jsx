@@ -66,9 +66,13 @@ const AlbumItem = memo(function AlbumItem({ album, isExpanded, onToggle }) {
                   <div className="font-medium text-[var(--text)] text-sm md:text-base truncate">
                     {song.name}
                   </div>
-                  <div className="text-xs text-[var(--text-subtle)] hidden md:block">
-                    {song.type === 'sequence' ? t('artist.sequenceLabel') : t('artist.fileLabel')}
-                  </div>
+                  {(song.tonalidad || song.bpm || song.compas) && (
+                    <div className="text-xs text-[var(--text-subtle)] hidden md:flex items-center gap-2">
+                      {song.tonalidad && <span className="bg-[var(--bg-tertiary)] px-1.5 py-0.5 rounded">{t('songInfo.key')}: {song.tonalidad}</span>}
+                      {song.bpm && <span className="bg-[var(--bg-tertiary)] px-1.5 py-0.5 rounded">{song.bpm} BPM</span>}
+                      {song.compas && <span className="bg-[var(--bg-tertiary)] px-1.5 py-0.5 rounded">{song.compas}</span>}
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex gap-2 flex-shrink-0">
