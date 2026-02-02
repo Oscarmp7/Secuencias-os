@@ -7,9 +7,21 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
 
-    <!-- Isotipo de marca para favicon/app icon -->
-    <link rel="icon" type="image/svg+xml" href="./src/assets/logo-icon.svg" />
-    <link rel="apple-touch-icon" href="./src/assets/logo-icon.svg" />
+    <!-- Favicon segun tema del navegador (light/dark) -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="%BASE_URL%assets/logo-icon.svg"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="%BASE_URL%assets/logo-icon-dark.svg"
+      media="(prefers-color-scheme: dark)"
+    />
+    <!-- Apple usa un solo icono: dejamos el isotipo claro -->
+    <link rel="apple-touch-icon" href="%BASE_URL%assets/logo-icon.svg" />
 
     <!-- SEO base -->
     <title>Worship Box</title>

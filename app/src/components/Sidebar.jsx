@@ -63,7 +63,11 @@ const Sidebar = memo(function Sidebar({
         aria-label={t('aria.navigation')}
       >
         {/* Header del sidebar */}
-        <div className="px-4 h-[72px] flex items-center justify-center border-b border-[var(--border)] relative">
+        <div
+          className={`h-[72px] flex items-center justify-center border-b border-[var(--border)] relative ${
+            isMobile ? 'pl-4 pr-12' : 'px-4'
+          }`}
+        >
           {/* Logo principal sin fondo para respetar el SVG transparente */}
           <img src={sidebarLogo} alt={t('brand')} className="brand-logo-full h-9 w-auto max-w-[210px]" />
 

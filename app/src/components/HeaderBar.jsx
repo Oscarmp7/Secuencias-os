@@ -13,6 +13,7 @@ import {
   Menu,
   Sun,
   Moon,
+  X,
   Globe,
   ChevronDown,
   SlidersHorizontal,
@@ -96,10 +97,10 @@ const HeaderBar = memo(function HeaderBar({
               {searchQuery && (
                 <button
                   onClick={onClearSearch}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text-subtle)] hover:text-[var(--text)]"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text-subtle)] hover:text-[var(--text)] w-6 h-6 flex items-center justify-center rounded-full"
                   aria-label={t('aria.clearSearch')}
                 >
-                  x
+                  <X size={14} />
                 </button>
               )}
             </div>
