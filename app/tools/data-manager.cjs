@@ -2085,7 +2085,257 @@ function cleanupDuplicates() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-//   🎛️ MENÚ PRINCIPAL
+//   � EXTRAER METADATOS DE NOMBRES DE ARCHIVO
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Extrae metadatos (BPM, tonalidad, compás) de los nombres de archivo
+ * Patrones comunes:
+ * - "Song Name-Album-Key-BPM.00bpm"
+ * - "Song Name 120BPM 4/4 C"
+ * - "Artist - Song (Key)"
+ */
+function extractMetadata() {
+  console.log(`\n${c.cyan}🎵 Extrayendo metadatos de nombres de archivo...${c.reset}\n`);
+  
+  const data = readDataJson();
+  
+  // Patrones para extraer BPM
+  const bpmPatterns = [
+    /[-_\s](\d{2,3})\.?\d*\s*bpm/i,           // "135.00bpm" o "135bpm"
+    /[-_\s](\d{2,3})\s*BPM/i,                  // "120 BPM"
+    /BPM\s*[-_:]?\s*(\d{2,3})/i,               // "BPM: 120" o "BPM-120"
+    /(\d{2,3})BPM/i,                            // "120BPM" junto
+    /[-_](\d{2,3})[-_]/,                        // "-120-" entre guiones (si está con tonalidad)
+  ];
+  
+  // Patrones para extraer tonalidad
+  const keyPatterns = [
+    // Notación americana con accidentales
+    /[-_\s]((?:A|B|C|D|E|F|G)(?:#|b)?(?:m|M|maj|min|Major|Minor)?)\s*[-_\.\d]/i,
+    /[-_\s]((?:A|B|C|D|E|F|G)(?:#|b)?(?:m|M|maj|min|Major|Minor)?)\s*$/i,
+    /\(((?:A|B|C|D|E|F|G)(?:#|b)?(?:m|M)?)\)/i,  // "(C)" o "(Am)"
+    // Bemoles específicos
+    /[-_\s](Ab|Bb|Cb|Db|Eb|Fb|Gb)(?:m|M)?\s*[-_\.\d]/i,
+    /[-_\s](Ab|Bb|Cb|Db|Eb|Fb|Gb)(?:m|M)?\s*$/i,
+    // Notación latina
+    /[-_\s](Do|Re|Mi|Fa|Sol|La|Si)(?:#|b)?(?:\s*(?:Mayor|Menor|m|M))?\s*[-_\.\d]/i,
+    /[-_\s](Do|Re|Mi|Fa|Sol|La|Si)(?:#|b)?(?:\s*(?:Mayor|Menor|m|M))?\s*$/i,
+  ];
+  
+  // Patrones para extraer compás
+  const timeSignaturePatterns = [
+    /(\d\/\d)/,                    // "4/4", "3/4", "6/8"
+    /[-_\s](\d)[-_](\d)[-_\s]/,   // "-4-4-" como separador
+  ];
+  
+  // Mapeo de tonalidades latinas a americanas
+  const latinToAmerican = {
+    'do': 'C', 'dom': 'Cm',
+    're': 'D', 'rem': 'Dm',
+    'mi': 'E', 'mim': 'Em',
+    'fa': 'F', 'fam': 'Fm',
+    'sol': 'G', 'solm': 'Gm',
+    'la': 'A', 'lam': 'Am',
+    'si': 'B', 'sim': 'Bm',
+  };
+  
+  // Normalizar tonalidad
+  function normalizeKey(key) {
+    if (!key) return null;
+    
+    let normalized = key.trim();
+    
+    // Convertir notación latina a americana
+    const lowerKey = normalized.toLowerCase();
+    for (const [latin, american] of Object.entries(latinToAmerican)) {
+      if (lowerKey.startsWith(latin)) {
+        normalized = american + normalized.slice(latin.length);
+        break;
+      }
+    }
+    
+    // Normalizar formato: Mayúscula + accidental + m/M
+    normalized = normalized.replace(/major|Mayor|maj/gi, '');
+    normalized = normalized.replace(/minor|Menor|min/gi, 'm');
+    
+    // Asegurar que la nota base esté en mayúscula
+    if (normalized.length > 0) {
+      normalized = normalized[0].toUpperCase() + normalized.slice(1).toLowerCase();
+    }
+    
+    // Limpiar
+    normalized = normalized.replace(/\s+/g, '');
+    
+    return normalized || null;
+  }
+  
+  // Estadísticas
+  let stats = {
+    bpmExtracted: 0,
+    keyExtracted: 0,
+    timeExtracted: 0,
+    alreadyHadBpm: 0,
+    alreadyHadKey: 0,
+    alreadyHadTime: 0,
+    totalSongs: 0,
+    songsUpdated: 0
+  };
+  
+  const examples = {
+    bpm: [],
+    key: [],
+    time: []
+  };
+  
+  // Procesar cada canción
+  if (data.artists) {
+    data.artists.forEach(artist => {
+      if (artist.albums) {
+        artist.albums.forEach(album => {
+          if (album.songs) {
+            album.songs.forEach(song => {
+              stats.totalSongs++;
+              let updated = false;
+              
+              // Usar fullName si existe, sino name
+              const nameToAnalyze = song.fullName || song.name || '';
+              
+              // Extraer BPM
+              if (song.bpm) {
+                stats.alreadyHadBpm++;
+              } else {
+                for (const pattern of bpmPatterns) {
+                  const match = nameToAnalyze.match(pattern);
+                  if (match && match[1]) {
+                    const bpm = parseInt(match[1]);
+                    // Validar rango razonable de BPM (40-220)
+                    if (bpm >= 40 && bpm <= 220) {
+                      song.bpm = bpm;
+                      stats.bpmExtracted++;
+                      updated = true;
+                      if (examples.bpm.length < 5) {
+                        examples.bpm.push({ name: song.name, bpm, source: nameToAnalyze.substring(0, 60) });
+                      }
+                      break;
+                    }
+                  }
+                }
+              }
+              
+              // Extraer tonalidad
+              if (song.tonalidad) {
+                stats.alreadyHadKey++;
+              } else {
+                for (const pattern of keyPatterns) {
+                  const match = nameToAnalyze.match(pattern);
+                  if (match && match[1]) {
+                    const key = normalizeKey(match[1]);
+                    if (key && key.length >= 1 && key.length <= 4) {
+                      song.tonalidad = key;
+                      stats.keyExtracted++;
+                      updated = true;
+                      if (examples.key.length < 5) {
+                        examples.key.push({ name: song.name, key, source: nameToAnalyze.substring(0, 60) });
+                      }
+                      break;
+                    }
+                  }
+                }
+              }
+              
+              // Extraer compás
+              if (song.compas) {
+                stats.alreadyHadTime++;
+              } else {
+                for (const pattern of timeSignaturePatterns) {
+                  const match = nameToAnalyze.match(pattern);
+                  if (match) {
+                    let timeSignature;
+                    if (match[1] && match[1].includes('/')) {
+                      timeSignature = match[1];
+                    } else if (match[1] && match[2]) {
+                      timeSignature = `${match[1]}/${match[2]}`;
+                    }
+                    
+                    // Validar compases comunes
+                    const validTimes = ['2/4', '3/4', '4/4', '5/4', '6/4', '6/8', '7/8', '12/8'];
+                    if (timeSignature && validTimes.includes(timeSignature)) {
+                      song.compas = timeSignature;
+                      stats.timeExtracted++;
+                      updated = true;
+                      if (examples.time.length < 5) {
+                        examples.time.push({ name: song.name, time: timeSignature, source: nameToAnalyze.substring(0, 60) });
+                      }
+                      break;
+                    }
+                  }
+                }
+              }
+              
+              if (updated) {
+                stats.songsUpdated++;
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+  
+  // Mostrar resultados
+  console.log(`${c.bold}📊 RESULTADOS DE EXTRACCIÓN:${c.reset}\n`);
+  
+  console.log(`${c.bold}BPM:${c.reset}`);
+  console.log(`  • Ya tenían BPM: ${c.dim}${stats.alreadyHadBpm}${c.reset}`);
+  console.log(`  • Extraídos ahora: ${c.green}${stats.bpmExtracted}${c.reset}`);
+  if (examples.bpm.length > 0) {
+    console.log(`  ${c.dim}Ejemplos:${c.reset}`);
+    examples.bpm.forEach(ex => {
+      console.log(`    ${c.cyan}${ex.name}${c.reset} → ${c.yellow}${ex.bpm} BPM${c.reset}`);
+    });
+  }
+  
+  console.log(`\n${c.bold}TONALIDAD:${c.reset}`);
+  console.log(`  • Ya tenían tonalidad: ${c.dim}${stats.alreadyHadKey}${c.reset}`);
+  console.log(`  • Extraídas ahora: ${c.green}${stats.keyExtracted}${c.reset}`);
+  if (examples.key.length > 0) {
+    console.log(`  ${c.dim}Ejemplos:${c.reset}`);
+    examples.key.forEach(ex => {
+      console.log(`    ${c.cyan}${ex.name}${c.reset} → ${c.yellow}${ex.key}${c.reset}`);
+    });
+  }
+  
+  console.log(`\n${c.bold}COMPÁS:${c.reset}`);
+  console.log(`  • Ya tenían compás: ${c.dim}${stats.alreadyHadTime}${c.reset}`);
+  console.log(`  • Extraídos ahora: ${c.green}${stats.timeExtracted}${c.reset}`);
+  if (examples.time.length > 0) {
+    console.log(`  ${c.dim}Ejemplos:${c.reset}`);
+    examples.time.forEach(ex => {
+      console.log(`    ${c.cyan}${ex.name}${c.reset} → ${c.yellow}${ex.time}${c.reset}`);
+    });
+  }
+  
+  console.log(`\n${c.bold}RESUMEN:${c.reset}`);
+  console.log(`  • Total canciones: ${stats.totalSongs}`);
+  console.log(`  • Canciones actualizadas: ${c.green}${stats.songsUpdated}${c.reset}`);
+  console.log(`  • Datos extraídos: ${c.green}${stats.bpmExtracted + stats.keyExtracted + stats.timeExtracted}${c.reset}`);
+  
+  // Guardar si hubo cambios
+  if (stats.songsUpdated > 0) {
+    data.lastUpdated = new Date().toISOString();
+    createBackup();
+    saveDataJson(data);
+    console.log(`\n${c.green}✓ Datos guardados exitosamente!${c.reset}\n`);
+  } else {
+    console.log(`\n${c.yellow}ℹ No se encontraron nuevos metadatos para extraer.${c.reset}\n`);
+  }
+  
+  return stats;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//   �🎛️ MENÚ PRINCIPAL
 // ═══════════════════════════════════════════════════════════════════════════════
 
 async function showMainMenu() {
@@ -2104,9 +2354,12 @@ async function showMainMenu() {
   ${c.cyan}1.${c.reset} 📤 Exportar data.json a Excel
   ${c.cyan}2.${c.reset} 📥 Importar cambios desde Excel
   ${c.cyan}3.${c.reset} 📝 Agregar campos nuevos al data.json
-  ${c.cyan}4.${c.reset} 🔗 Enlazar charts con canciones (automático)
-  ${c.cyan}7.${c.reset} 🔍 Buscar duplicados (solo ver)
-  ${c.cyan}8.${c.reset} 💾 Crear backup manual
+  ${c.cyan}4.${c.reset} 🔗 Enlazar charts con canciones
+  ${c.cyan}5.${c.reset} 🗜️  Simplificar charts (1 por secuencia)
+  ${c.cyan}6.${c.reset} 🧹 Limpiar duplicados y covers
+  ${c.cyan}7.${c.reset} 🎵 Extraer metadatos (BPM, tonalidad)
+  ${c.cyan}8.${c.reset} 🔍 Buscar duplicados (solo ver)
+  ${c.cyan}9.${c.reset} 💾 Crear backup manual
   
   ${c.cyan}0.${c.reset} 🚪 Salir
 `);
@@ -2145,11 +2398,16 @@ async function showMainMenu() {
         break;
         
       case '7':
-        findDuplicates();
+        extractMetadata();
         await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
         break;
         
       case '8':
+        findDuplicates();
+        await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
+        break;
+        
+      case '9':
         createBackup();
         await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
         break;
@@ -2191,6 +2449,9 @@ async function main() {
   } else if (args.includes('--cleanup-duplicates')) {
     showBanner();
     cleanupDuplicates();
+  } else if (args.includes('--extract-metadata')) {
+    showBanner();
+    extractMetadata();
   } else if (args.includes('--find-duplicates')) {
     showBanner();
     findDuplicates();
@@ -2198,15 +2459,16 @@ async function main() {
     showBanner();
     console.log(`
 ${c.bold}USO:${c.reset}
-  node tools/data-manager.cjs                    Menú interactivo
-  node tools/data-manager.cjs --export           Exportar a Excel
-  node tools/data-manager.cjs --import           Importar desde Excel
-  node tools/data-manager.cjs --add-fields       Agregar campos nuevos al JSON
-  node tools/data-manager.cjs --link-charts      Enlazar charts con canciones
-  node tools/data-manager.cjs --cleanup-charts   Simplificar charts (1 por secuencia)
+  node tools/data-manager.cjs                       Menú interactivo
+  node tools/data-manager.cjs --export              Exportar a Excel
+  node tools/data-manager.cjs --import              Importar desde Excel
+  node tools/data-manager.cjs --add-fields          Agregar campos nuevos al JSON
+  node tools/data-manager.cjs --link-charts         Enlazar charts con canciones
+  node tools/data-manager.cjs --cleanup-charts      Simplificar charts (1 por secuencia)
   node tools/data-manager.cjs --cleanup-duplicates  Limpiar duplicados y covers
-  node tools/data-manager.cjs --find-duplicates  Buscar duplicados (solo ver)
-  node tools/data-manager.cjs --help             Mostrar esta ayuda
+  node tools/data-manager.cjs --extract-metadata    Extraer BPM/tonalidad de nombres
+  node tools/data-manager.cjs --find-duplicates     Buscar duplicados (solo ver)
+  node tools/data-manager.cjs --help                Mostrar esta ayuda
 `);
   } else {
     await showMainMenu();
