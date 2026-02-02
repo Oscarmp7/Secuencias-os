@@ -97,3 +97,7 @@ worship-box/
 
 - Rama principal remota: `react-migration`
 - Rama de deploy: `gh-pages`
+
+## Handoff
+
+- Ver `HANDOFF.md` en la raiz del repo para contexto tecnico completo.
