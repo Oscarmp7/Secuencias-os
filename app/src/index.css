@@ -3,15 +3,11 @@
 @tailwind utilities;
 
 /*
-  =============================================================
-  🎨 THEME TOKENS (Dark/Light)
-  -------------------------------------------------------------
-  Usamos variables CSS para cambiar de tema sin reescribir clases.
-  El tema se controla con: document.documentElement[data-theme]
-  =============================================================
+  Theme tokens (dark by default).
+  We switch theme with: html[data-theme="dark|light"].
 */
 :root {
-  /* Colores base (tema oscuro por defecto) */
+  /* Base surfaces */
   --bg: #121212;
   --sidebar: #1a1a1a;
   --header: #1a1a1a;
@@ -19,31 +15,31 @@
   --panel: #1a1a1a;
   --panel-hover: #222222;
 
-  /* Texto */
-  --text: #e5e7eb;         /* similar a gray-200 */
-  --text-muted: #9ca3af;   /* gray-400 */
-  --text-subtle: #6b7280;  /* gray-500 */
+  /* Text */
+  --text: #e5e7eb;
+  --text-muted: #9ca3af;
+  --text-subtle: #6b7280;
 
-  /* Bordes y hover */
-  --border: #1f2937;       /* gray-800 */
+  /* Borders + hover */
+  --border: #1f2937;
   --hover: rgba(255, 255, 255, 0.06);
 
   /* Inputs */
   --input-bg: #2a2a2a;
-  --input-border: #374151; /* gray-700 */
+  --input-border: #374151;
   --input-border-focus: #3b82f6;
 
-  /* Acentos */
-  --accent: #3b82f6;       /* blue-500 */
-  --accent-strong: #2563eb;/* blue-600 */
-  --accent-strong-hover: #1d4ed8; /* blue-700 */
+  /* Main accent */
+  --accent: #3b82f6;
+  --accent-strong: #2563eb;
+  --accent-strong-hover: #1d4ed8;
   --accent-soft: rgba(59, 130, 246, 0.2);
   --accent-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
 
-  /* Acento charts (naranja/rojo) */
-  --chart-accent: #f97316;           /* orange-500 */
-  --chart-accent-strong: #ea580c;    /* orange-600 */
-  --chart-accent-strong-hover: #c2410c; /* orange-700 */
+  /* Charts accent */
+  --chart-accent: #f97316;
+  --chart-accent-strong: #ea580c;
+  --chart-accent-strong-hover: #c2410c;
   --chart-accent-soft: rgba(249, 115, 22, 0.18);
 
   /* Cards */
@@ -59,11 +55,11 @@
   --scrollbar-thumb: #3b3b3b;
   --scrollbar-thumb-hover: #4a4a4a;
 
-  /* Grain */
+  /* Grain intensity */
   --grain-opacity: 0.03;
 }
 
-/* Tema claro */
+/* Light theme tokens */
 [data-theme='light'] {
   --bg: #f4f6fb;
   --sidebar: #ffffff;
@@ -72,15 +68,15 @@
   --panel: #f7f9fd;
   --panel-hover: #edf1f7;
 
-  --text: #1f2937;         /* gray-800 */
-  --text-muted: #6b7280;   /* gray-500 */
-  --text-subtle: #94a3b8;  /* slate-400 */
+  --text: #1f2937;
+  --text-muted: #6b7280;
+  --text-subtle: #94a3b8;
 
-  --border: #cfd6e3;       /* darker outline for light UI */
-  --hover: #f1f5f9;        /* slate-100 */
+  --border: #cfd6e3;
+  --hover: #f1f5f9;
 
   --input-bg: #f1f5f9;
-  --input-border: #c3cfdd; /* stronger outline for inputs */
+  --input-border: #c3cfdd;
   --input-border-focus: #3b82f6;
 
   --accent: #3b82f6;
@@ -102,18 +98,14 @@
   --grain-opacity: 0.01;
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ðŸŽ¨ ESTILOS GLOBALES - Secuencias OS
-   
-   Estos estilos se aplican a toda la aplicación y mejoran la experiencia
-   de usuario en todos los dispositivos.
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
-
-html, body, #root {
+/* Global base styles */
+html,
+body,
+#root {
   height: 100%;
 }
 
-/* Permite que los controles nativos (select, inputs) adapten su UI */
+/* Let browser native controls follow the selected theme */
 html[data-theme='dark'] {
   color-scheme: dark;
 }
@@ -123,10 +115,7 @@ html[data-theme='light'] {
 }
 
 html {
-  /* 
-    scroll-behavior: smooth - Hace que los saltos de scroll sean animados
-    en lugar de instantáneos. Mejora mucho la experiencia de usuario.
-  */
+  /* Smooth in-page scroll for better UX. */
   scroll-behavior: smooth;
 }
 
@@ -135,35 +124,41 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  
-  /* 
-    -webkit-font-smoothing: Suaviza las fuentes en navegadores WebKit (Chrome, Safari)
-    -moz-osx-font-smoothing: Lo mismo para Firefox en macOS
-  */
+
+  /* Better font rendering on common engines. */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  
-  /*
-    overscroll-behavior: contain - Evita el "efecto rebote" al llegar
-    al final del scroll, especialmente importante en móviles.
-  */
+
+  /* Prevent overscroll bounce feel on mobile. */
   overscroll-behavior: contain;
 }
 
 /*
-  🌈 TRANSICIÓN SUAVE ENTRE TEMAS
-  Usamos transiciones cortas y solo en propiedades visuales clave
-  para que se vea fluido sin cargar la CPU.
+  Brand logos:
+  - Keep proportion consistent.
+  - Preserve original brand colors (#23272e and #3b82f6).
+*/
+.brand-logo-full,
+.brand-logo-icon {
+  display: block;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transition: transform 200ms ease;
+}
+
+/*
+  Smooth dark/light transition.
+  Restrict to visual properties to keep it light on CPU/GPU.
 */
 .theme-smooth,
 .theme-smooth * {
-  /* Velocidad unica para dark/light (consistencia visual) */
   transition-property: background-color, color, border-color, box-shadow;
   transition-duration: 200ms;
   transition-timing-function: ease;
 }
 
-/* Accesibilidad: si el usuario prefiere menos animación, la reducimos. */
+/* Respect users who prefer reduced motion. */
 @media (prefers-reduced-motion: reduce) {
   .theme-smooth,
   .theme-smooth * {
@@ -171,24 +166,14 @@ body {
   }
 }
 
-/* 
-  🎯 MEJORAS PARA DISPOSITIVOS TÁCTILES
-  
-  -webkit-tap-highlight-color: Elimina el highlight azul/gris que aparece
-  al tocar elementos en dispositivos móviles iOS/Android.
-  
-  touch-action: manipulation - Desactiva el doble-tap para zoom,
-  haciendo que los toques respondan más rápido (sin esperar 300ms).
-*/
-button, a {
+/* Touch UX: remove tap highlight and speed up tap response. */
+button,
+a {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
 
-/*
-  🎛️ SELECTS (Idioma)
-  Estilizamos el <select> y sus opciones para que encajen en dark/light.
-*/
+/* Native select styling for both themes. */
 select {
   color: var(--text);
   background-color: var(--surface);
@@ -199,15 +184,7 @@ select option {
   background-color: var(--surface);
 }
 
-/*
-  📜 SCROLLBARS PERSONALIZADAS
-  
-  Por defecto, las scrollbars del navegador son muy anchas y feas.
-  Con estos estilos las hacemos más sutiles y elegantes.
-  
-  NOTA: Esto solo funciona en navegadores WebKit (Chrome, Safari, Edge).
-  Firefox tiene su propio sistema (scrollbar-width, scrollbar-color).
-*/
+/* Custom scrollbars (WebKit based browsers). */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -226,20 +203,13 @@ select option {
   background: var(--scrollbar-thumb-hover);
 }
 
-/* Firefox scrollbar styling */
+/* Firefox scrollbar fallback. */
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-thumb) transparent;
 }
 
-/*
-  ✨ ANIMACIONES PERSONALIZADAS
-  
-  Estas clases de animación se pueden usar en cualquier elemento
-  para darle efectos de entrada/salida suaves.
-*/
-
-/* Fade in desde abajo - útil para modales y popups */
+/* Entry animation from bottom. */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -251,13 +221,17 @@ select option {
   }
 }
 
-/* Fade in simple */
+/* Simple fade in. */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-/* Slide in desde la izquierda - para el sidebar en móvil */
+/* Sidebar slide animation helper. */
 @keyframes slideInLeft {
   from {
     transform: translateX(-100%);
@@ -267,7 +241,7 @@ select option {
   }
 }
 
-/* Clases de utilidad para aplicar las animaciones */
+/* Utility classes for reusable animations. */
 .animate-fade-in-up {
   animation: fadeInUp 0.3s ease-out forwards;
 }
@@ -280,38 +254,23 @@ select option {
   animation: slideInLeft 0.3s ease-out forwards;
 }
 
-/*
-  📱 MEJORAS ESPECÍFICAS PARA MÓVIL
-  
-  En dispositivos pequeños, algunos ajustes adicionales mejoran la UX:
-  - Textos más legibles
-  - Botones con mejor área de toque
-*/
+/* Mobile tweak: avoid iOS zoom when focusing text fields. */
 @media (max-width: 768px) {
-  /* Previene el zoom al enfocar inputs en iOS */
-  input[type="text"],
-  input[type="search"],
-  input[type="email"],
-  input[type="password"] {
+  input[type='text'],
+  input[type='search'],
+  input[type='email'],
+  input[type='password'] {
     font-size: 16px !important;
   }
 }
 
-/*
-  🔄 TRANSICIONES SUAVES POR DEFECTO
-  
-  Agrega transiciones a elementos interactivos comunes
-  para que los cambios de estado sean suaves.
-*/
-button, a {
+/* Micro interaction on press/hover capable elements. */
+button,
+a {
   transition: transform 0.15s ease-out;
 }
 
-/*
-  🎭 CLASE PARA OCULTAR SCROLLBAR PERO MANTENER FUNCIONALIDAD
-  
-  Útil para contenedores donde queremos scroll pero sin mostrar la barra.
-*/
+/* Hide scrollbar but keep scroll behavior active. */
 .hide-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -321,12 +280,7 @@ button, a {
   display: none;
 }
 
-/*
-  🌫️ EFECTO GRAIN/RUIDO SUTIL
-  
-  Crea una textura granulada muy sutil que añade profundidad
-  sin distraer. Está muy de moda en diseños modernos.
-*/
+/* Subtle grain texture overlay. */
 .grain-bg {
   position: relative;
   background: var(--bg);
@@ -344,12 +298,7 @@ button, a {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
 
-/*
-  💠 GLASSMORPHISM CARD
-  
-  Efecto de cristal esmerilado con blur y transparencia.
-  Muy sutil para no distraer del contenido.
-*/
+/* Glass card surface used across home/search/cards. */
 .glass-card {
   background: var(--card-bg);
   backdrop-filter: blur(12px);

@@ -1,26 +1,37 @@
 /**
  * HomeView.jsx
  *
- * Pantalla de bienvenida con estadísticas y artistas destacados/recientes.
+ * Pantalla de bienvenida con resumen de estadisticas
+ * y lista de artistas recientes/destacados.
  */
 
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Music } from 'lucide-react';
+import brandIcon from '../../assets/logo-icon.svg';
+import brandIconDark from '../../assets/logo-icon-dark.svg';
 
 const HomeView = memo(function HomeView({
   stats,
   homeArtists,
   hasRecentArtists,
+  theme,
   onSelectArtist,
 }) {
   const { t } = useTranslation();
 
+  // En dark usamos la variante con trazo claro para mantener contraste.
+  const homeBrandIcon = theme === 'dark' ? brandIconDark : brandIcon;
+
   return (
     <div className="flex flex-col items-center justify-center min-h-full text-center px-4 py-12 sm:py-0">
-      <div className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center mb-4 md:mb-6 shadow-[var(--accent-shadow)]">
-        <Music size={40} className="md:hidden text-white" />
-        <Music size={48} className="hidden md:block text-white" />
+      {/* Isotipo centrado de Worship Box en la portada. */}
+      <div className="mb-4 md:mb-6">
+        <img
+          src={homeBrandIcon}
+          alt={`${t('brand')} icon`}
+          className="brand-logo-icon h-28 md:h-32 w-auto object-contain"
+        />
       </div>
 
       <h1 className="text-3xl md:text-4xl font-bold mb-3">{t('home.welcomeTitle')}</h1>

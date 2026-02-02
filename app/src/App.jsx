@@ -283,6 +283,8 @@ const App = () => {
         viewMode={viewMode}
         artists={artists}
         charts={charts}
+        // El sidebar usa theme para elegir logo normal o logo dark.
+        theme={theme}
         onToggleArtists={toggleArtistsExpanded}
         onToggleCharts={toggleChartsExpanded}
         onSelectArtist={handleSelectArtist}
@@ -314,6 +316,8 @@ const App = () => {
           stats={stats}
           homeArtists={homeArtists}
           hasRecentArtists={hasRecentArtists}
+          // Home usa theme para cambiar el isotipo segun contraste.
+          theme={theme}
           onSelectArtist={handleSelectArtist}
         />
       </div>

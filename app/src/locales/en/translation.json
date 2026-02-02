@@ -1,5 +1,5 @@
 {
-  "brand": "Secuencias OS",
+  "brand": "Worship Box",
   "nav": {
     "artists": "ARTISTS",
     "charts": "CHARTS"
@@ -28,7 +28,7 @@
     "noResultsSubtitle": "Try different search terms"
   },
   "home": {
-    "welcomeTitle": "Welcome to Secuencias OS",
+    "welcomeTitle": "Welcome to Worship Box",
     "welcomeSubtitle": "Your library of sequences and music charts. Select an artist from the sidebar to start.",
     "statsArtists": "Artists",
     "statsSequences": "Sequences",

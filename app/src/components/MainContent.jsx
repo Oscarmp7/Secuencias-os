@@ -1,11 +1,12 @@
 /**
  * MainContent.jsx
  *
- * Decide qué vista renderizar según el estado:
- * - Resultados de búsqueda
- * - Charts
- * - Home
- * - Artista seleccionado
+ * Este componente decide que pantalla mostrar segun el estado global.
+ * Prioridad de render:
+ * 1) resultados de busqueda,
+ * 2) vista de charts,
+ * 3) home,
+ * 4) artista seleccionado.
  */
 
 import { memo } from 'react';
@@ -28,6 +29,7 @@ const MainContent = memo(function MainContent({
   stats,
   homeArtists,
   hasRecentArtists,
+  theme,
   onSelectArtist,
 }) {
   const { t } = useTranslation();
@@ -45,10 +47,12 @@ const MainContent = memo(function MainContent({
       ) : viewMode === 'charts' ? (
         <ChartsView chartArtist={currentChart} />
       ) : viewMode === 'home' || !selectedArtist ? (
+        // En Home enviamos theme para usar la variante correcta del isotipo.
         <HomeView
           stats={stats}
           homeArtists={homeArtists}
           hasRecentArtists={hasRecentArtists}
+          theme={theme}
           onSelectArtist={onSelectArtist}
         />
       ) : (

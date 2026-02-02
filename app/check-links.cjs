@@ -1,7 +1,7 @@
 /**
  * ╔═══════════════════════════════════════════════════════════════════════════════╗
  * ║                                                                               ║
- * ║   🔗 SECUENCIAS OS - HERRAMIENTA DE GESTIÓN DE ENLACES                        ║
+ * ║   🔗 WORSHIP BOX - HERRAMIENTA DE GESTION DE ENLACES                        ║
  * ║                                                                               ║
  * ║   Herramienta completa para verificar, analizar y mantener los enlaces        ║
  * ║   de Google Drive en tu biblioteca de secuencias.                             ║
@@ -240,7 +240,7 @@ function showBanner() {
   console.log(`
 ${c.cyan}${c.bold}╔═══════════════════════════════════════════════════════════════╗
 ║                                                               ║
-║   ${c.white}🔗 SECUENCIAS OS - HERRAMIENTA DE GESTIÓN${c.cyan}                   ║
+║   ${c.white}🔗 WORSHIP BOX - HERRAMIENTA DE GESTION${c.cyan}                   ║
 ║                                                               ║
 ╚═══════════════════════════════════════════════════════════════╝${c.reset}
 `);
@@ -641,7 +641,7 @@ async function sendEmailReport(results, stats) {
     <body>
       <div class="container">
         <div class="header">
-          <h1>🔗 Reporte Secuencias OS</h1>
+          <h1>🔗 Reporte Worship Box</h1>
           <p>${formatDate(new Date())}</p>
         </div>
         
@@ -692,7 +692,7 @@ async function sendEmailReport(results, stats) {
         </div>
         
         <div class="footer">
-          <p>Generado automáticamente por Secuencias OS</p>
+          <p>Generado automáticamente por Worship Box</p>
           <p>Este reporte se envía semanalmente</p>
         </div>
       </div>
@@ -704,7 +704,7 @@ async function sendEmailReport(results, stats) {
     await transporter.sendMail({
       from: emailConfig.email,
       to: emailConfig.email,
-      subject: `🔗 Secuencias OS - Reporte de Salud: ${healthPercent}%`,
+      subject: `🔗 Worship Box - Reporte de Salud: ${healthPercent}%`,
       html: html
     });
     

@@ -8,7 +8,9 @@
 
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Music, X, ChevronDown, ChevronRight, Folder, FileText } from 'lucide-react';
+import { X, ChevronDown, ChevronRight, Folder, FileText } from 'lucide-react';
+import brandLogo from '../assets/logo.svg';
+import brandLogoDark from '../assets/logo-dark.svg';
 import VirtualList from './VirtualList';
 
 // Altura de cada fila para la lista virtualizada (px).
@@ -24,12 +26,15 @@ const Sidebar = memo(function Sidebar({
   viewMode,
   artists,
   charts,
+  theme,
   onToggleArtists,
   onToggleCharts,
   onSelectArtist,
   onCloseSidebar,
 }) {
   const { t } = useTranslation();
+  // Elegimos variante de logo segun tema para mantener contraste real.
+  const sidebarLogo = theme === 'dark' ? brandLogoDark : brandLogo;
 
   return (
     <>
@@ -59,10 +64,8 @@ const Sidebar = memo(function Sidebar({
       >
         {/* Header del sidebar */}
         <div className="px-4 h-[72px] flex items-center justify-center border-b border-[var(--border)] relative">
-          <div className="flex items-center gap-3 whitespace-nowrap">
-            <Music className="text-[var(--accent)] flex-shrink-0" size={28} />
-            <h1 className="text-lg font-semibold">{t('brand')}</h1>
-          </div>
+          {/* Logo principal sin fondo para respetar el SVG transparente */}
+          <img src={sidebarLogo} alt={t('brand')} className="brand-logo-full h-9 w-auto max-w-[210px]" />
 
           {isMobile && (
             <button

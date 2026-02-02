@@ -2,26 +2,39 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    
-    <!-- Favicon con emoji de música (usando SVG inline) -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>" />
-    
-    <!-- Meta tags para móvil y PWA -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="theme-color" content="#121212" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    
-    <!-- SEO y compartir en redes -->
-    <meta name="description" content="Tu biblioteca de secuencias y charts musicales. 772 artistas, 6289 secuencias, 9787 charts." />
-    <meta name="keywords" content="secuencias, charts, música, worship, partituras, descargar" />
-    
-    <!-- Open Graph para compartir -->
-    <meta property="og:title" content="Secuencias OS" />
-    <meta property="og:description" content="Tu biblioteca de secuencias y charts musicales" />
+
+    <!-- Isotipo de marca para favicon/app icon -->
+    <link rel="icon" type="image/svg+xml" href="./src/assets/logo-icon.svg" />
+    <link rel="apple-touch-icon" href="./src/assets/logo-icon.svg" />
+
+    <!-- SEO base -->
+    <title>Worship Box</title>
+    <meta
+      name="description"
+      content="Worship Box: tu biblioteca de secuencias y charts musicales para explorar y descargar."
+    />
+    <meta name="keywords" content="worship box, secuencias, charts, musica, worship, partituras, descargar" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Worship Box" />
+    <meta property="og:description" content="Tu biblioteca de secuencias y charts musicales." />
     <meta property="og:type" content="website" />
-    
-    <title>Secuencias OS</title>
+    <meta property="og:url" content="https://oscarmp7.github.io/worship-box/" />
+    <!-- Para redes usamos solo isotipo (logo-icon), en URL absoluta para mejor compatibilidad -->
+    <meta property="og:image" content="https://oscarmp7.github.io/worship-box/assets/logo-icon.svg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="1200" />
+    <meta property="og:image:alt" content="Isotipo de Worship Box" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Worship Box" />
+    <meta name="twitter:description" content="Tu biblioteca de secuencias y charts musicales." />
+    <meta name="twitter:image" content="https://oscarmp7.github.io/worship-box/assets/logo-icon.svg" />
   </head>
   <body>
     <div id="root"></div>

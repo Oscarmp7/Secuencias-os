@@ -1,9 +1,9 @@
 {
-  "name": "secuencias-os",
+  "name": "worship-box",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "homepage": "https://Oscarmp7.github.io/Secuencias-os",
+  "homepage": "https://oscarmp7.github.io/worship-box",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
