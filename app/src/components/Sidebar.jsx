@@ -65,6 +65,7 @@ const Sidebar = memo(function Sidebar({
         {/* Header del sidebar */}
         <div
           className={`h-[72px] flex items-center justify-center border-b border-[var(--border)] relative ${
+            // En mobile damos espacio extra a la derecha para que la "X" no pegue al logo.
             isMobile ? 'pl-4 pr-12' : 'px-4'
           }`}
         >

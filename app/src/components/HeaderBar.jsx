@@ -100,6 +100,7 @@ const HeaderBar = memo(function HeaderBar({
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text-subtle)] hover:text-[var(--text)] w-6 h-6 flex items-center justify-center rounded-full"
                   aria-label={t('aria.clearSearch')}
                 >
+                  {/* Icono real en lugar de letra para centrar mejor y mejorar UX */}
                   <X size={14} />
                 </button>
               )}
