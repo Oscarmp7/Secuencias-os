@@ -6,7 +6,10 @@
   },
   "actions": {
     "home": "Home",
-    "download": "Download"
+    "download": "Download",
+    "sequence": "Sequence",
+    "chart": "Chart",
+    "downloadChart": "Download chart"
   },
   "labels": {
     "language": "Language",

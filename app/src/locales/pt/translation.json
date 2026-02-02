@@ -6,7 +6,10 @@
   },
   "actions": {
     "home": "Início",
-    "download": "Baixar"
+    "download": "Baixar",
+    "sequence": "Sequência",
+    "chart": "Chart",
+    "downloadChart": "Baixar chart"
   },
   "labels": {
     "language": "Idioma",

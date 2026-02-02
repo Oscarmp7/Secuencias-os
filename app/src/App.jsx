@@ -16,7 +16,18 @@ import { buildSearchIndex, searchInIndex } from './utils/searchIndex';
 
 // Guardamos referencias a los datos para evitar re-crear arrays en cada render.
 const artists = data.artists;
-const charts = data.charts;
+const charts = data.charts || [];
+
+// Contar charts vinculados a canciones (con chartUrl)
+const totalChartsLinked = artists.reduce(
+  (sum, artist) =>
+    sum + (artist.albums || []).reduce(
+      (albumSum, album) => albumSum + album.songs.filter(s => s.chartUrl).length,
+      0
+    ),
+  0
+);
+
 // Calculamos estadisticas desde la data real para evitar desfasajes con data.stats.
 const stats = {
   totalArtists: artists.length,
@@ -25,12 +36,11 @@ const stats = {
       sum + (artist.albums || []).reduce((albumSum, album) => albumSum + album.songs.length, 0),
     0
   ),
-  totalCharts: charts.reduce((sum, artist) => sum + (artist.charts || []).length, 0),
+  totalCharts: totalChartsLinked,
 };
 
 // Mapas por ID = busquedas O(1) (mas rapido que .find).
 const artistById = new Map(artists.map((artist) => [artist.id, artist]));
-const chartById = new Map(charts.map((artist) => [artist.id, artist]));
 
 // Calculamos los artistas con mas canciones una sola vez.
 const topArtists = [...artists]
@@ -60,7 +70,6 @@ const App = () => {
   // Sidebar inicia abierto solo si NO estamos en mobile.
   const [sidebarOpen, setSidebarOpen] = useState(!initialIsMobile);
   const [artistsExpanded, setArtistsExpanded] = useState(true);
-  const [chartsExpanded, setChartsExpanded] = useState(false);
   const [viewMode, setViewMode] = useState('home');
   const [expandedAlbums, setExpandedAlbums] = useState({});
   // Estado de breakpoint, basado en el ancho actual.
@@ -208,10 +217,6 @@ const App = () => {
     setArtistsExpanded((prev) => !prev);
   }, []);
 
-  const toggleChartsExpanded = useCallback(() => {
-    setChartsExpanded((prev) => !prev);
-  }, []);
-
   const toggleAlbum = useCallback((albumId) => {
     setExpandedAlbums((prev) => ({
       ...prev,
@@ -266,9 +271,8 @@ const App = () => {
     setSearchQuery('');
   }, []);
 
-  // Artista y charts actuales por ID.
+  // Artista actual por ID.
   const currentArtist = selectedArtist ? artistById.get(selectedArtist) : null;
-  const currentChart = selectedArtist ? chartById.get(selectedArtist) : null;
 
   // Convertimos el historial en objetos completos.
   const recentArtistObjects = useMemo(() => {
@@ -287,15 +291,12 @@ const App = () => {
         isMobile={isMobile}
         sidebarOpen={sidebarOpen}
         artistsExpanded={artistsExpanded}
-        chartsExpanded={chartsExpanded}
         selectedArtist={selectedArtist}
         viewMode={viewMode}
         artists={artists}
-        charts={charts}
         // El sidebar usa theme para elegir logo normal o logo dark.
         theme={theme}
         onToggleArtists={toggleArtistsExpanded}
-        onToggleCharts={toggleChartsExpanded}
         onSelectArtist={handleSelectArtist}
         onCloseSidebar={closeSidebar}
       />
@@ -319,7 +320,6 @@ const App = () => {
           viewMode={viewMode}
           selectedArtist={selectedArtist}
           currentArtist={currentArtist}
-          currentChart={currentChart}
           expandedAlbums={expandedAlbums}
           onToggleAlbum={toggleAlbum}
           stats={stats}

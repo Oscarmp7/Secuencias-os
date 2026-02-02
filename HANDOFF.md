@@ -3,7 +3,8 @@
 Date: 2026-02-02
 
 ## 1) Project objective
-Build a fast, clean UX web app to browse a large library of sequences and music charts.
+Build a fast, clean UX web app to browse a large library of music sequences.
+Charts (PDF) are now integrated directly into songs - no separate section.
 Focus on responsive UI, dark/light theme, and multilingual support.
 
 ## 2) Stack and tools
@@ -13,68 +14,128 @@ Focus on responsive UI, dark/light theme, and multilingual support.
 - lucide-react for UI icons
 - Web Worker for search performance
 - GitHub Pages deploy via gh-pages
+- xlsx-js-style for Excel data management
 
 ## 3) Current architecture (key folders/files)
+
+```
 Root:
-- README.md
-- HANDOFF.md (this file)
+├── README.md
+├── HANDOFF.md (this file)
+└── app/
+    ├── index.html (meta/OG, favicon)
+    ├── vite.config.js (base /worship-box/)
+    ├── package.json (scripts + gh-pages)
+    ├── check-links.cjs (drive link health tool)
+    ├── tools/
+    │   └── data-manager.cjs (Excel import/export, cleanup)
+    ├── src/
+    │   ├── App.jsx (global state)
+    │   ├── main.jsx (entry point)
+    │   ├── i18n.js (i18n config)
+    │   ├── index.css (theme tokens)
+    │   ├── data.json (6240 songs, 709 charts)
+    │   ├── components/
+    │   │   ├── HeaderBar.jsx (search + lang + theme)
+    │   │   ├── Sidebar.jsx (artist list)
+    │   │   ├── MainContent.jsx (view router)
+    │   │   ├── VirtualList.jsx (performance)
+    │   │   └── views/
+    │   │       ├── HomeView.jsx (stats + featured)
+    │   │       ├── ArtistView.jsx (albums + songs)
+    │   │       └── SearchResultsView.jsx
+    │   ├── hooks/
+    │   │   └── useDebouncedValue.js
+    │   ├── utils/
+    │   │   └── searchIndex.js
+    │   ├── workers/
+    │   │   └── searchWorker.js
+    │   ├── locales/ (es, en, pt)
+    │   └── assets/ (logos)
+    └── public/ (favicons)
+```
 
-App:
-- app/index.html (meta/OG, favicon setup)
-- app/vite.config.js (base /worship-box/, asset naming)
-- app/package.json (scripts + gh-pages deploy)
-- app/src/App.jsx (global state + orchestration)
-- app/src/components/HeaderBar.jsx (search + language + theme)
-- app/src/components/Sidebar.jsx (sidebar + brand logo)
-- app/src/components/MainContent.jsx (view routing)
-- app/src/components/views/HomeView.jsx (stats cards + featured artists)
-- app/src/utils/searchIndex.js + app/src/workers/searchWorker.js
-- app/src/i18n.js (i18n config)
-- app/src/index.css (theme tokens + global styles)
-- app/src/locales/*/translation.json
-- app/src/data.json (source of truth for library)
-- app/src/assets/ (logo variants)
-- app/public/ (favicons)
-- app/check-links.cjs (drive link health tool)
+## 4) Data structure (data.json)
 
-## 4) What is finished
-- Full rebrand to Worship Box (meta, assets, docs)
+```json
+{
+  "artists": [{
+    "id": "driveId",
+    "name": "Artist Name",
+    "albums": [{
+      "id": "driveId",
+      "name": "Album Name",
+      "songs": [{
+        "id": "driveId",
+        "name": "Song Name",
+        "downloadUrl": "https://drive.google.com/...",
+        "chartUrl": "https://drive.google.com/..." // optional
+        "chartName": "Chart Name" // optional
+      }]
+    }]
+  }],
+  "charts": [...] // Legacy, kept for search indexing
+}
+```
+
+## 5) What is finished
+- Full rebrand to Worship Box
 - Dark/light theme with smooth transitions
-- Language selector (ES/EN/PT) + mobile control panel UX
-- Logos wired for light/dark variants
+- Language selector (ES/EN/PT)
 - Search optimized with debounce + index + worker
 - Sidebar virtualized for large lists
-- Deployed to GitHub Pages (gh-pages)
+- Charts integrated into songs (chartUrl field)
+- Dual download buttons: Sequence (blue) + Chart (orange)
+- Excel-based data management (tools/data-manager.cjs)
+- Deployed to GitHub Pages
 
-## 5) What is pending
-- Optional: add favicon PNG/ICO for max browser compatibility
-- Optional: split JS bundle (warning about large chunk)
+## 6) Key commands
 
-## 6) Key technical decisions
+```bash
+# Development
+npm run dev
+
+# Build & Deploy
+npm run build
+npm run deploy
+
+# Data management
+node tools/data-manager.cjs              # Interactive menu
+node tools/data-manager.cjs --export     # Export to Excel
+node tools/data-manager.cjs --import     # Import from Excel
+node tools/data-manager.cjs --cleanup-charts  # Simplify charts
+node tools/data-manager.cjs --link-charts     # Auto-link charts
+
+# Link health check
+node check-links.cjs
+```
+
+## 7) Key technical decisions
 - Vite base set to /worship-box/ for GitHub Pages
-- Stats shown on cards are computed from data.json (not from data.stats)
+- Stats computed from data.json (not from data.stats)
 - Dark theme logos are separate SVGs (no CSS invert)
-- Favicons served from app/public for reliable build output
+- Charts simplified: 1 chart per song, linked via chartUrl
+- Charts section removed from sidebar (simplified UX)
+- Songs with charts show 2 buttons: Sequence + Chart
 
-## 7) Conventions used
+## 8) Conventions used
 - Comments explain intent and UX decisions
 - Tailwind for layout, CSS variables for theming
 - React.memo + useCallback to reduce re-renders
-- data.json is the single source of truth for library
+- data.json is the single source of truth
 
-## 8) Known issues / fragile points
-- Favicon caching in browsers (requires hard refresh after updates)
-- Build warning about large chunk (not breaking, but could be optimized)
-- data.stats is no longer authoritative (kept for legacy, ignored)
+## 9) Known issues
+- Build warning about large chunk (can optimize with manualChunks)
+- Favicon caching in browsers (requires hard refresh)
 
-## 9) Recommended next steps (ordered)
-1. (Optional) Add favicon.ico and 32x32 png to app/public and update index.html.
-2. (Optional) Add manualChunks or dynamic imports to reduce bundle size.
-3. Add a small script/test to compare data.json counts vs UI stats.
+## 10) Recommended next steps
+1. Run `npm run build && npm run deploy` to publish changes
+2. (Optional) Add manualChunks for bundle splitting
+3. (Optional) Add more favicons for max browser compatibility
 
 ## Repo and deploy
 - Repo: https://github.com/Oscarmp7/worship-box
-- Main remote branch: react-migration
-- Deploy branch: gh-pages
-- Live URL: https://oscarmp7.github.io/worship-box/
+- Branch: react-migration
+- Deploy: gh-pages
+- Live: https://oscarmp7.github.io/worship-box/
 

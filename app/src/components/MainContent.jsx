@@ -4,16 +4,14 @@
  * Este componente decide que pantalla mostrar segun el estado global.
  * Prioridad de render:
  * 1) resultados de busqueda,
- * 2) vista de charts,
- * 3) home,
- * 4) artista seleccionado.
+ * 2) home,
+ * 3) artista seleccionado.
  */
 
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Search } from 'lucide-react';
 import SearchResultsView from './views/SearchResultsView';
-import ChartsView from './views/ChartsView';
 import HomeView from './views/HomeView';
 import ArtistView from './views/ArtistView';
 
@@ -23,7 +21,6 @@ const MainContent = memo(function MainContent({
   viewMode,
   selectedArtist,
   currentArtist,
-  currentChart,
   expandedAlbums,
   onToggleAlbum,
   stats,
@@ -44,8 +41,6 @@ const MainContent = memo(function MainContent({
           <h2 className="text-xl font-semibold mb-2">{t('search.noResultsTitle')}</h2>
           <p className="text-[var(--text-muted)]">{t('search.noResultsSubtitle')}</p>
         </div>
-      ) : viewMode === 'charts' ? (
-        <ChartsView chartArtist={currentChart} />
       ) : viewMode === 'home' || !selectedArtist ? (
         // En Home enviamos theme para usar la variante correcta del isotipo.
         <HomeView

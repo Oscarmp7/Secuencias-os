@@ -1,14 +1,14 @@
 /**
  * Sidebar.jsx
  *
- * Menu lateral con secciones colapsables (artistas y charts).
+ * Menu lateral con lista de artistas.
  * Usa React.memo para evitar renders innecesarios.
  * Incluye una lista virtualizada para mantener el scroll fluido.
  */
 
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { X, ChevronDown, ChevronRight, Folder, FileText } from 'lucide-react';
+import { X, ChevronDown, ChevronRight, Folder } from 'lucide-react';
 import brandLogo from '../assets/logo.svg';
 import brandLogoDark from '../assets/logo-dark.svg';
 import VirtualList from './VirtualList';
@@ -21,14 +21,11 @@ const Sidebar = memo(function Sidebar({
   isMobile,
   sidebarOpen,
   artistsExpanded,
-  chartsExpanded,
   selectedArtist,
   viewMode,
   artists,
-  charts,
   theme,
   onToggleArtists,
-  onToggleCharts,
   onSelectArtist,
   onCloseSidebar,
 }) {
@@ -106,7 +103,7 @@ const Sidebar = memo(function Sidebar({
                 items={artists}
                 itemHeight={ROW_HEIGHT}
                 overscan={6}
-                className="mt-1 max-h-[40vh]"
+                className="mt-1 max-h-[70vh]"
                 renderItem={(artist) => (
                   <button
                     type="button"
@@ -122,49 +119,6 @@ const Sidebar = memo(function Sidebar({
                       className={
                         selectedArtist === artist.id && viewMode === 'artists'
                           ? 'text-[var(--accent)]'
-                          : 'text-[var(--text-subtle)]'
-                      }
-                    />
-                    <span className="truncate">{artist.name}</span>
-                  </button>
-                )}
-              />
-            )}
-          </section>
-
-          {/* Seccion CHARTS */}
-          <section className="mb-4" aria-labelledby="charts-heading">
-            <button
-              onClick={onToggleCharts}
-              className="w-full flex items-center gap-2 px-3 py-2 text-[var(--chart-accent)] text-sm font-medium hover:bg-[var(--hover)] rounded-lg transition-all duration-200"
-            >
-              {chartsExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
-              <FileText size={18} />
-              <span id="charts-heading">{t('nav.charts')}</span>
-              <span className="ml-auto text-[var(--text-subtle)] text-xs">{charts.length}</span>
-            </button>
-
-            {chartsExpanded && (
-              <VirtualList
-                items={charts}
-                itemHeight={ROW_HEIGHT}
-                overscan={6}
-                className="mt-1 max-h-[40vh]"
-                renderItem={(artist) => (
-                  <button
-                    type="button"
-                    onClick={() => onSelectArtist(artist.id, 'charts')}
-                    className={`w-full h-full flex items-center gap-2 px-3 rounded-lg text-sm transition-all duration-200 active:scale-[0.98] ${
-                      selectedArtist === artist.id && viewMode === 'charts'
-                        ? 'bg-[var(--chart-accent-soft)] text-[var(--chart-accent)]'
-                        : 'text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--hover)]'
-                    }`}
-                  >
-                    <ChevronRight
-                      size={14}
-                      className={
-                        selectedArtist === artist.id && viewMode === 'charts'
-                          ? 'text-[var(--chart-accent)]'
                           : 'text-[var(--text-subtle)]'
                       }
                     />

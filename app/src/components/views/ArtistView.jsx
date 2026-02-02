@@ -72,6 +72,20 @@ const AlbumItem = memo(function AlbumItem({ album, isExpanded, onToggle }) {
                 </div>
 
                 <div className="flex gap-2 flex-shrink-0">
+                  {/* Botón de Chart (naranja, si tiene) */}
+                  {song.chartUrl && (
+                    <a
+                      href={song.chartUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-3 md:px-4 py-2 bg-[var(--chart-accent-strong)] hover:bg-[var(--chart-accent-strong-hover)] rounded-lg transition-all duration-200 active:scale-95 text-sm text-white"
+                      title={song.chartName || t('actions.downloadChart')}
+                    >
+                      <Download size={16} />
+                      <span className="hidden md:inline">{t('actions.chart')}</span>
+                    </a>
+                  )}
+                  {/* Botón de Secuencia (azul) */}
                   <a
                     href={song.downloadUrl}
                     target="_blank"
@@ -79,7 +93,7 @@ const AlbumItem = memo(function AlbumItem({ album, isExpanded, onToggle }) {
                     className="flex items-center gap-2 px-3 md:px-4 py-2 bg-[var(--accent-strong)] hover:bg-[var(--accent-strong-hover)] rounded-lg transition-all duration-200 active:scale-95 text-sm text-white"
                   >
                     <Download size={16} />
-                    <span className="hidden md:inline">{t('actions.download')}</span>
+                    <span className="hidden md:inline">{t('actions.sequence')}</span>
                   </a>
                 </div>
               </div>

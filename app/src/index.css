@@ -38,6 +38,7 @@
 
   /* Charts accent */
   --chart-accent: #f97316;
+  --chart-accent-hover: #ea580c;
   --chart-accent-strong: #ea580c;
   --chart-accent-strong-hover: #c2410c;
   --chart-accent-soft: rgba(249, 115, 22, 0.18);
