@@ -17,7 +17,16 @@ import { buildSearchIndex, searchInIndex } from './utils/searchIndex';
 // Guardamos referencias a los datos para evitar re-crear arrays en cada render.
 const artists = data.artists;
 const charts = data.charts;
-const stats = data.stats;
+// Calculamos estadisticas desde la data real para evitar desfasajes con data.stats.
+const stats = {
+  totalArtists: artists.length,
+  totalSongs: artists.reduce(
+    (sum, artist) =>
+      sum + (artist.albums || []).reduce((albumSum, album) => albumSum + album.songs.length, 0),
+    0
+  ),
+  totalCharts: charts.reduce((sum, artist) => sum + (artist.charts || []).length, 0),
+};
 
 // Mapas por ID = busquedas O(1) (mas rapido que .find).
 const artistById = new Map(artists.map((artist) => [artist.id, artist]));
