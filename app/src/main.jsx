@@ -5,6 +5,9 @@ import './index.css';
 import './i18n';
 import App from './App.jsx';
 
+// Build version timestamp for cache busting
+console.log('Worship Box v2.1.0 - Build:', Date.now());
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     {/* StrictMode ayuda a detectar errores comunes en desarrollo */}

@@ -1,5 +1,5 @@
 /**
- * App.jsx
+ * App.jsx - v2.1.0
  *
  * Este componente es el "cerebro" de la app.
  * Aqui coordinamos estados globales (tema, busqueda, navegacion)
