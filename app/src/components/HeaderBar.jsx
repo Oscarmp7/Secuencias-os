@@ -47,7 +47,7 @@ const HeaderBar = memo(function HeaderBar({
     i18n.changeLanguage(nextLang);
     localStorage.setItem('language', nextLang);
     setLangOpen(false);
-    setControlsOpen(false);
+    // En mobile mantenemos el panel abierto para que el usuario pueda seguir ajustando (UX).
   };
 
   // Cerrar menus si se hace clic fuera.
