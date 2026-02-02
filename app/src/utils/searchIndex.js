@@ -37,27 +37,16 @@ export const buildSearchIndex = (artists, charts) => {
           artistId: artist.id,
           albumName,
           downloadUrl: song.downloadUrl,
+          chartUrl: song.chartUrl || null,
+          chartName: song.chartName || null,
           haystack: normalizeText(`${song.name} ${artistName} ${albumName}`),
         });
       });
     });
   });
 
-  charts.forEach((artist) => {
-    const artistName = artist.name || '';
-
-    artist.charts.forEach((chart) => {
-      index.push({
-        id: chart.id,
-        type: 'chart',
-        name: chart.name,
-        artistName,
-        artistId: artist.id,
-        downloadUrl: chart.downloadUrl,
-        haystack: normalizeText(`${chart.name} ${artistName}`),
-      });
-    });
-  });
+  // Charts legacy - ya no necesarios para búsqueda separada
+  // Los charts ahora están integrados en songs via chartUrl
 
   return index;
 };
