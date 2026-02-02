@@ -22,7 +22,7 @@
  * node tools/data-manager.cjs --export           → Exportar a Excel
  * node tools/data-manager.cjs --import           → Importar desde Excel
  * node tools/data-manager.cjs --add-fields       → Agregar campos nuevos al JSON
- * node tools/data-manager.cjs --find-duplicates  → Buscar duplicados
+  ${c.cyan}7.${c.reset} 🔍 Buscar duplicados (solo ver)
  * 
  * REQUISITOS:
  * ───────────
@@ -398,11 +398,27 @@ function exportToExcel() {
   }
   
   // ─────────────────────────────────────────────────────────────────────────────
-  // HOJA 1: SECUENCIAS (canciones) - CON COLUMNA "TieneChart"
+  // HOJA 1: SECUENCIAS (canciones) - TODAS LAS COLUMNAS DE DATA.JSON
   // ─────────────────────────────────────────────────────────────────────────────
   const songHeaders = [
-    'Accion', 'TieneChart', 'Artista', 'Album', 'Cancion', 'CancionID',
-    'DriveID', 'Compas', 'BPM', 'Tonalidad', 'Duracion', 'TipoSecuencia', 'Comentarios'
+    'Accion',           // Acciones: Agregar, Eliminar, Principal
+    'TieneChart',       // ✓ si tiene chart PDF
+    'Artista',          // Nombre del artista
+    'Album',            // Nombre del álbum
+    'Cancion',          // Nombre de la canción (sin extensión)
+    'NombreArchivo',    // fullName - nombre completo del archivo
+    'Tipo',             // type - sequence, chart, etc.
+    'CancionID',        // id único de la canción
+    'DriveID',          // ID de Google Drive
+    'LinkDescarga',     // downloadUrl
+    'Compas',           // 4/4, 3/4, 6/8, etc.
+    'BPM',              // Beats por minuto
+    'Tonalidad',        // Do, Re, Mi, etc.
+    'Duracion',         // Duración de la canción
+    'TipoSecuencia',    // Original, Cover, Usuario, IA
+    'Comentarios',      // Notas adicionales
+    'ChartUrl',         // URL del chart PDF (si existe)
+    'ChartName'         // Nombre del archivo chart
   ];
   
   const songsData = [];
@@ -412,21 +428,26 @@ function exportToExcel() {
         artist.albums.forEach(album => {
           if (album.songs) {
             album.songs.forEach(song => {
-              const hasChart = songsWithCharts.has(song.id) || songsWithCharts.has(song.driveId);
+              const hasChart = song.chartUrl ? true : (songsWithCharts.has(song.id) || songsWithCharts.has(song.driveId));
               songsData.push([
-                '',                              // Accion
-                hasChart ? '✓' : '',            // TieneChart
-                artist.name,                     // Artista
-                album.name,                      // Album
-                song.name,                       // Cancion
-                song.id,                         // CancionID
-                song.driveId || song.id,         // DriveID
-                song.compas || '',               // Compas
-                song.bpm || '',                  // BPM
-                song.tonalidad || '',            // Tonalidad
-                song.duracion || '',             // Duracion
-                song.tipoSecuencia || '',        // TipoSecuencia
-                song.comentarios || ''           // Comentarios
+                '',                                    // Accion
+                hasChart ? '✓' : '',                  // TieneChart
+                artist.name,                           // Artista
+                album.name,                            // Album
+                song.name,                             // Cancion
+                song.fullName || '',                   // NombreArchivo
+                song.type || 'sequence',               // Tipo
+                song.id,                               // CancionID
+                song.driveId || song.id,               // DriveID
+                song.downloadUrl || '',                // LinkDescarga
+                song.compas || '',                     // Compas
+                song.bpm || '',                        // BPM
+                song.tonalidad || '',                  // Tonalidad
+                song.duracion || '',                   // Duracion
+                song.tipoSecuencia || '',              // TipoSecuencia
+                song.comentarios || '',                // Comentarios
+                song.chartUrl || '',                   // ChartUrl
+                song.chartName || ''                   // ChartName
               ]);
             });
           }
@@ -468,23 +489,23 @@ function exportToExcel() {
   }
   
   // ─────────────────────────────────────────────────────────────────────────────
-  // HOJA 3: INSTRUCCIONES
+  // HOJA 3: INSTRUCCIONES - GUÍA COMPLETA
   // ─────────────────────────────────────────────────────────────────────────────
   const instructionsData = [
     ['🎵 WORSHIP BOX - GESTOR DE DATOS'],
     [''],
-    ['═══════════════════════════════════════════════════════════════'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
     ['📋 COLUMNA "ACCIÓN" - Opciones disponibles:'],
-    ['═══════════════════════════════════════════════════════════════'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
     [''],
     ['   (vacío)     →  No hacer cambios, mantener registro'],
     ['   Agregar     →  Agregar como nuevo registro'],
     ['   Eliminar    →  Eliminar este registro'],
     ['   Principal   →  Conservar esta versión, eliminar duplicados'],
     [''],
-    ['═══════════════════════════════════════════════════════════════'],
-    ['🎼 COLUMNA "TIPO SECUENCIA" - Opciones disponibles:'],
-    ['═══════════════════════════════════════════════════════════════'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    ['🎼 COLUMNA "TIPO SECUENCIA" - Clasificación del contenido:'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
     [''],
     ['   Original    →  Secuencia oficial del artista/productor'],
     ['   Cover       →  Versión cover de otro artista'],
@@ -492,30 +513,113 @@ function exportToExcel() {
     ['   IA          →  Generada por inteligencia artificial'],
     ['   (vacío)     →  Sin clasificar'],
     [''],
-    ['═══════════════════════════════════════════════════════════════'],
-    ['📊 COLUMNAS DE ESTADO (solo lectura):'],
-    ['═══════════════════════════════════════════════════════════════'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    ['📁 COLUMNAS DEL ARCHIVO - Datos del archivo:'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
     [''],
-    ['   TieneChart  →  ✓ = tiene chart PDF asociado'],
+    ['   Cancion        →  Nombre limpio de la canción (para mostrar)'],
+    ['   NombreArchivo  →  Nombre completo del archivo (con extensión)'],
+    ['   Tipo           →  "sequence" para secuencias, "chart" para PDFs'],
+    ['   DriveID        →  ID único del archivo en Google Drive (OBLIGATORIO)'],
+    ['   LinkDescarga   →  URL de descarga directa (se genera automático si vacío)'],
+    [''],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    ['🎵 COLUMNAS MUSICALES - Información de la canción:'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    [''],
+    ['   Compas      →  4/4, 3/4, 6/8, etc.'],
+    ['   BPM         →  Número de beats por minuto'],
+    ['   Tonalidad   →  Do, Re, Mi, Fa, Sol, La, Si (mayor o menor)'],
+    ['   Duracion    →  Formato MM:SS o texto libre'],
+    [''],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    ['📄 COLUMNAS DEL CHART PDF - Enlace a partitura:'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    [''],
+    ['   ChartUrl    →  URL de descarga del PDF del chart'],
+    ['   ChartName   →  Nombre del archivo PDF del chart'],
+    [''],
+    ['   💡 Si añades un ChartUrl válido, aparecerá el botón naranja'],
+    ['      de "Descargar Chart" junto a la secuencia en la app'],
+    [''],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    ['📊 COLUMNAS DE ESTADO (solo lectura):'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    [''],
+    ['   TieneChart  →  ✓ = tiene chart PDF asociado (calculado)'],
     ['   Enlazado    →  ✓ = tiene secuencia, ✗ = sin secuencia'],
     [''],
     ['🎨 COLORES:'],
-    ['   🟢 Verde    →  Enlazado correctamente'],
-    ['   🔴 Rojo     →  Sin enlazar'],
+    ['   🟢 Verde    →  Enlazado correctamente / Tiene chart'],
+    ['   🔴 Rojo     →  Sin enlazar / Sin chart'],
     ['   🟡 Amarillo →  Columna de Acción'],
     [''],
-    ['═══════════════════════════════════════════════════════════════'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    ['➕ PARA AGREGAR UNA NUEVA CANCIÓN:'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    [''],
+    ['   1. Añade una nueva fila al final de la hoja "Secuencias"'],
+    ['   2. Pon "Agregar" en la columna Accion'],
+    ['   3. CAMPOS OBLIGATORIOS:'],
+    ['      • Artista     - Nombre del artista (usa exacto si ya existe)'],
+    ['      • Album       - Nombre del álbum (usa exacto si ya existe)'],
+    ['      • Cancion     - Nombre de la canción'],
+    ['      • DriveID     - ID del archivo en Google Drive'],
+    [''],
+    ['   4. CAMPOS OPCIONALES (recomendados):'],
+    ['      • NombreArchivo  - Nombre completo con extensión'],
+    ['      • Tipo           - "sequence" (por defecto)'],
+    ['      • LinkDescarga   - Se genera automático si lo dejas vacío'],
+    ['      • Campos musicales: Compas, BPM, Tonalidad, Duracion'],
+    ['      • TipoSecuencia  - Original, Cover, Usuario, IA'],
+    ['      • ChartUrl/ChartName - Si tienes el PDF del chart'],
+    [''],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    ['❌ PARA ELIMINAR UNA CANCIÓN:'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    [''],
+    ['   1. Busca la canción en la hoja "Secuencias"'],
+    ['   2. Pon "Eliminar" en la columna Accion'],
+    ['   3. Guarda e importa'],
+    [''],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    ['✏️ PARA EDITAR UNA CANCIÓN:'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    [''],
+    ['   1. Busca la canción en la hoja "Secuencias"'],
+    ['   2. Modifica los campos que desees (excepto IDs)'],
+    ['   3. Pon "Agregar" en Accion (reemplazará la existente por DriveID)'],
+    ['   4. Guarda e importa'],
+    [''],
+    ['═══════════════════════════════════════════════════════════════════════════'],
     ['🔄 DESPUÉS DE EDITAR:'],
-    ['═══════════════════════════════════════════════════════════════'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
     [''],
-    ['   1. Guarda este archivo (Ctrl+S)'],
-    ['   2. Ejecuta: node tools/data-manager.cjs --import'],
-    ['   3. Revisa el reporte de cambios'],
+    ['   1. Guarda este archivo Excel (Ctrl+S)'],
+    ['   2. Abre terminal en /app'],
+    ['   3. Ejecuta: node tools/data-manager.cjs --import'],
+    ['   4. Revisa el reporte de cambios'],
+    ['   5. Si todo está bien, haz commit y deploy'],
     [''],
-    ['💡 TIPS:'],
-    ['   • Usa filtros de Excel para buscar por Artista'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    ['💡 TIPS Y TRUCOS:'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    [''],
+    ['   • Usa filtros de Excel para buscar por Artista o Album'],
     ['   • Ctrl+H para reemplazos masivos'],
-    ['   • NO modifiques IDs existentes']
+    ['   • NO modifiques CancionID ni DriveID de registros existentes'],
+    ['   • Para obtener DriveID: abre el archivo en Drive, el ID está en la URL'],
+    ['   • Ejemplo URL: drive.google.com/file/d/ESTE_ES_EL_ID/view'],
+    ['   • La columna TieneChart se actualiza automáticamente'],
+    [''],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    ['⚠️ IMPORTANTE - NO HACER:'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    [''],
+    ['   ❌ No modifiques los IDs de registros existentes'],
+    ['   ❌ No elimines las columnas de encabezado'],
+    ['   ❌ No cambies el nombre de las hojas'],
+    ['   ❌ No uses tildes diferentes (usa las del archivo original)']
   ];
   
   // ─────────────────────────────────────────────────────────────────────────────
@@ -637,15 +741,20 @@ function exportToExcel() {
     { wch: 12 },  // TieneChart
     { wch: 22 },  // Artista
     { wch: 28 },  // Album
-    { wch: 40 },  // Cancion
+    { wch: 35 },  // Cancion
+    { wch: 40 },  // NombreArchivo (fullName)
+    { wch: 12 },  // Tipo
     { wch: 36 },  // CancionID
     { wch: 36 },  // DriveID
+    { wch: 55 },  // LinkDescarga (URL)
     { wch: 8 },   // Compas
     { wch: 8 },   // BPM
     { wch: 10 },  // Tonalidad
     { wch: 10 },  // Duracion
     { wch: 12 },  // TipoSecuencia
-    { wch: 25 }   // Comentarios
+    { wch: 25 },  // Comentarios
+    { wch: 55 },  // ChartUrl
+    { wch: 40 }   // ChartName
   ];
   
   chartsSheet['!cols'] = [
@@ -686,7 +795,7 @@ function exportToExcel() {
   // ─────────────────────────────────────────────────────────────────────────────
   // CONFIGURAR AUTOFILTER
   // ─────────────────────────────────────────────────────────────────────────────
-  songsSheet['!autofilter'] = { ref: `A1:M${songsData.length + 1}` };
+  songsSheet['!autofilter'] = { ref: `A1:R${songsData.length + 1}` };
   chartsSheet['!autofilter'] = { ref: `A1:K${chartsData.length + 1}` };
   
   // Altura de filas
@@ -905,7 +1014,9 @@ function addSong(data, row, report) {
     tonalidad: row['Tonalidad'] || null,
     duracion: row['Duracion'] || null,
     tipoSecuencia: row['TipoSecuencia'] || null,
-    comentarios: row['Comentarios'] || null
+    comentarios: row['Comentarios'] || null,
+    chartUrl: row['ChartUrl'] || null,
+    chartName: row['ChartName'] || null
   };
   
   album.songs.push(newSong);
@@ -1193,7 +1304,6 @@ function findDuplicates() {
   const duplicates = [];
   const songMap = new Map();
   
-  // Buscar duplicados en canciones
   if (data.artists) {
     data.artists.forEach(artist => {
       if (artist.albums) {
@@ -1753,6 +1863,228 @@ function cleanupCharts() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+//   🧹 LIMPIAR SECUENCIAS DUPLICADAS Y COVERS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Limpia secuencias duplicadas (misma canción en diferentes tonalidades) y covers
+ * Criterios:
+ * - Elimina covers (canciones con "cover" en el nombre)
+ * - Elimina duplicados exactos (mismo nombre exacto)
+ * - Para canciones con diferentes tonalidades, mantiene solo 1 (preferir sin sufijo de tonalidad)
+ */
+function cleanupDuplicates() {
+  console.log(`\n${c.cyan}🧹 Limpiando secuencias duplicadas y covers...${c.reset}\n`);
+  
+  const data = readDataJson();
+  
+  // Patrones para detectar tonalidad en el nombre
+  const tonalityPatterns = [
+    /\s*[-_]\s*(Do|Re|Mi|Fa|Sol|La|Si|C|D|E|F|G|A|B)(#|b)?\s*$/i,
+    /\s*\((Do|Re|Mi|Fa|Sol|La|Si|C|D|E|F|G|A|B)(#|b)?\)\s*$/i,
+    /\s*[-_]\s*(Do|Re|Mi|Fa|Sol|La|Si|C|D|E|F|G|A|B)(#|b)?(m|M|Mayor|Menor|Major|Minor)?\s*$/i,
+    /\s*[-_]\s*(Ab|Bb|Db|Eb|Gb|A#|C#|D#|F#|G#)\s*$/i,
+    /\s*[-_]\s*(Cm|Dm|Em|Fm|Gm|Am|Bm)\s*$/i
+  ];
+  
+  // Patrones para detectar covers
+  const coverPatterns = [
+    /\bcover\s*\d*\b/i,
+    /\bcov\s*\d*\b/i,
+    /_cover_?\d*/i,
+    /\bcover$/i
+  ];
+  
+  // Patrones para detectar versiones numeradas
+  const versionPatterns = [
+    /\s+\d+\s*$/,        // "Cancion 1", "Cancion 2"
+    /\s+v\d+\s*$/i,      // "Cancion v1", "Cancion v2"
+    /\s+ver\.?\s*\d+$/i  // "Cancion ver 1"
+  ];
+  
+  // Función para normalizar nombre (quitar tonalidad, versión, etc.)
+  function normalizeName(name) {
+    let normalized = name;
+    
+    // Quitar tonalidades del final
+    for (const pattern of tonalityPatterns) {
+      normalized = normalized.replace(pattern, '');
+    }
+    
+    // Quitar versiones numeradas
+    for (const pattern of versionPatterns) {
+      normalized = normalized.replace(pattern, '');
+    }
+    
+    // Normalizar espacios y convertir a minúsculas
+    return normalized.trim().toLowerCase().replace(/\s+/g, ' ');
+  }
+  
+  // Función para verificar si es un cover
+  function isCover(name) {
+    return coverPatterns.some(pattern => pattern.test(name));
+  }
+  
+  // Función para calcular "calidad" de una canción (para elegir la mejor)
+  function getSongScore(song) {
+    let score = 100;
+    
+    // Penalizar si tiene sufijo de tonalidad
+    for (const pattern of tonalityPatterns) {
+      if (pattern.test(song.name)) {
+        score -= 10;
+        break;
+      }
+    }
+    
+    // Penalizar si tiene versión numerada
+    for (const pattern of versionPatterns) {
+      if (pattern.test(song.name)) {
+        score -= 5;
+        break;
+      }
+    }
+    
+    // Preferir nombres más cortos (más limpios)
+    score -= song.name.length * 0.1;
+    
+    // Preferir los que tienen chartUrl
+    if (song.chartUrl) score += 20;
+    
+    // Preferir los que tienen más metadatos
+    if (song.tonalidad) score += 5;
+    if (song.bpm) score += 5;
+    if (song.compas) score += 5;
+    
+    return score;
+  }
+  
+  let totalSongs = 0;
+  let coversRemoved = 0;
+  let duplicatesRemoved = 0;
+  const removedDetails = {
+    covers: [],
+    duplicates: []
+  };
+  
+  // Procesar cada artista
+  if (data.artists) {
+    data.artists.forEach(artist => {
+      if (artist.albums) {
+        artist.albums.forEach(album => {
+          if (album.songs && album.songs.length > 0) {
+            const originalCount = album.songs.length;
+            totalSongs += originalCount;
+            
+            // Paso 1: Eliminar covers
+            const nonCovers = album.songs.filter(song => {
+              if (isCover(song.name)) {
+                coversRemoved++;
+                removedDetails.covers.push(`${artist.name} - ${album.name} - ${song.name}`);
+                return false;
+              }
+              return true;
+            });
+            
+            // Paso 2: Agrupar por nombre normalizado para detectar duplicados
+            const groups = new Map();
+            
+            nonCovers.forEach(song => {
+              const key = normalizeName(song.name);
+              if (!groups.has(key)) {
+                groups.set(key, []);
+              }
+              groups.get(key).push(song);
+            });
+            
+            // Paso 3: De cada grupo, elegir la mejor versión
+            const cleanedSongs = [];
+            
+            groups.forEach((songs, normalizedName) => {
+              if (songs.length === 1) {
+                // Solo hay una versión
+                cleanedSongs.push(songs[0]);
+              } else {
+                // Hay múltiples versiones - elegir la mejor
+                songs.sort((a, b) => getSongScore(b) - getSongScore(a));
+                const best = songs[0];
+                cleanedSongs.push(best);
+                
+                // Registrar los eliminados
+                for (let i = 1; i < songs.length; i++) {
+                  duplicatesRemoved++;
+                  removedDetails.duplicates.push(
+                    `${artist.name} - ${album.name} - ${songs[i].name} (conservado: ${best.name})`
+                  );
+                }
+              }
+            });
+            
+            // Actualizar el álbum
+            album.songs = cleanedSongs;
+          }
+        });
+      }
+    });
+  }
+  
+  // Actualizar estadísticas
+  const newTotalSongs = data.artists.reduce((sum, artist) => {
+    return sum + (artist.albums?.reduce((aSum, album) => aSum + (album.songs?.length || 0), 0) || 0);
+  }, 0);
+  
+  data.stats.totalSongs = newTotalSongs;
+  data.lastUpdated = new Date().toISOString();
+  
+  // Mostrar resumen
+  console.log(`${c.bold}📊 ANÁLISIS:${c.reset}`);
+  console.log(`  • Secuencias analizadas: ${totalSongs}`);
+  console.log(`  • Covers encontrados: ${c.yellow}${coversRemoved}${c.reset}`);
+  console.log(`  • Duplicados encontrados: ${c.yellow}${duplicatesRemoved}${c.reset}`);
+  console.log(`  • Total a eliminar: ${c.red}${coversRemoved + duplicatesRemoved}${c.reset}`);
+  console.log(`  • Secuencias restantes: ${c.green}${newTotalSongs}${c.reset}\n`);
+  
+  // Mostrar detalles
+  if (removedDetails.covers.length > 0) {
+    console.log(`${c.yellow}📋 COVERS ELIMINADOS (${removedDetails.covers.length}):${c.reset}`);
+    removedDetails.covers.slice(0, 20).forEach(item => {
+      console.log(`  ${c.dim}• ${item}${c.reset}`);
+    });
+    if (removedDetails.covers.length > 20) {
+      console.log(`  ${c.dim}... y ${removedDetails.covers.length - 20} más${c.reset}`);
+    }
+    console.log('');
+  }
+  
+  if (removedDetails.duplicates.length > 0) {
+    console.log(`${c.yellow}📋 DUPLICADOS ELIMINADOS (${removedDetails.duplicates.length}):${c.reset}`);
+    removedDetails.duplicates.slice(0, 30).forEach(item => {
+      console.log(`  ${c.dim}• ${item}${c.reset}`);
+    });
+    if (removedDetails.duplicates.length > 30) {
+      console.log(`  ${c.dim}... y ${removedDetails.duplicates.length - 30} más${c.reset}`);
+    }
+    console.log('');
+  }
+  
+  // Guardar
+  createBackup();
+  saveDataJson(data);
+  
+  console.log(`${c.green}✓ Limpieza completada!${c.reset}`);
+  console.log(`  • Secuencias antes: ${c.dim}${totalSongs}${c.reset}`);
+  console.log(`  • Secuencias ahora: ${c.green}${newTotalSongs}${c.reset}`);
+  console.log(`  • Reducción: ${c.yellow}${totalSongs - newTotalSongs}${c.reset} (${((totalSongs - newTotalSongs) / totalSongs * 100).toFixed(1)}%)\n`);
+  
+  return { 
+    coversRemoved, 
+    duplicatesRemoved, 
+    totalRemoved: coversRemoved + duplicatesRemoved,
+    finalCount: newTotalSongs 
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 //   🎛️ MENÚ PRINCIPAL
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -1772,9 +2104,9 @@ async function showMainMenu() {
   ${c.cyan}1.${c.reset} 📤 Exportar data.json a Excel
   ${c.cyan}2.${c.reset} 📥 Importar cambios desde Excel
   ${c.cyan}3.${c.reset} 📝 Agregar campos nuevos al data.json
-  ${c.cyan}4.${c.reset} � Enlazar charts con canciones (automático)
-  ${c.cyan}5.${c.reset} 🔍 Buscar duplicados
-  ${c.cyan}6.${c.reset} 💾 Crear backup manual
+  ${c.cyan}4.${c.reset} 🔗 Enlazar charts con canciones (automático)
+  ${c.cyan}7.${c.reset} 🔍 Buscar duplicados (solo ver)
+  ${c.cyan}8.${c.reset} 💾 Crear backup manual
   
   ${c.cyan}0.${c.reset} 🚪 Salir
 `);
@@ -1808,11 +2140,16 @@ async function showMainMenu() {
         break;
         
       case '6':
-        findDuplicates();
+        cleanupDuplicates();
         await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
         break;
         
       case '7':
+        findDuplicates();
+        await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
+        break;
+        
+      case '8':
         createBackup();
         await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
         break;
@@ -1851,6 +2188,9 @@ async function main() {
   } else if (args.includes('--cleanup-charts')) {
     showBanner();
     cleanupCharts();
+  } else if (args.includes('--cleanup-duplicates')) {
+    showBanner();
+    cleanupDuplicates();
   } else if (args.includes('--find-duplicates')) {
     showBanner();
     findDuplicates();
@@ -1858,14 +2198,15 @@ async function main() {
     showBanner();
     console.log(`
 ${c.bold}USO:${c.reset}
-  node tools/data-manager.cjs              Menú interactivo
-  node tools/data-manager.cjs --export     Exportar a Excel
-  node tools/data-manager.cjs --import     Importar desde Excel
-  node tools/data-manager.cjs --add-fields Agregar campos nuevos al JSON
-  node tools/data-manager.cjs --link-charts Enlazar charts con canciones
-  node tools/data-manager.cjs --cleanup-charts Simplificar charts (1 por secuencia)
-  node tools/data-manager.cjs --find-duplicates Buscar duplicados
-  node tools/data-manager.cjs --help       Mostrar esta ayuda
+  node tools/data-manager.cjs                    Menú interactivo
+  node tools/data-manager.cjs --export           Exportar a Excel
+  node tools/data-manager.cjs --import           Importar desde Excel
+  node tools/data-manager.cjs --add-fields       Agregar campos nuevos al JSON
+  node tools/data-manager.cjs --link-charts      Enlazar charts con canciones
+  node tools/data-manager.cjs --cleanup-charts   Simplificar charts (1 por secuencia)
+  node tools/data-manager.cjs --cleanup-duplicates  Limpiar duplicados y covers
+  node tools/data-manager.cjs --find-duplicates  Buscar duplicados (solo ver)
+  node tools/data-manager.cjs --help             Mostrar esta ayuda
 `);
   } else {
     await showMainMenu();
