@@ -196,7 +196,7 @@ const ResourcesView = memo(function ResourcesView({ selectedCategory = null, onC
       </div>
 
       {/* Filtros y búsqueda - Centralizados */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-8 items-center justify-center">
+      <div className="flex flex-col sm:flex-row gap-4 mb-8 items-center justify-center px-2">
         {/* Búsqueda */}
         <div className="relative flex-1 max-w-md w-full">
           <Search size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-subtle)]" />
@@ -211,8 +211,8 @@ const ResourcesView = memo(function ResourcesView({ selectedCategory = null, onC
         </div>
 
         {/* Filtro por categoría */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 flex-shrink-0">
-          <Filter size={18} className="text-[var(--text-subtle)] flex-shrink-0" />
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 flex-shrink-0 pl-1">
+          <Filter size={18} className="text-[var(--text-subtle)] flex-shrink-0 hidden sm:block" />
           <button
             onClick={() => handleFilterChange('all')}
             className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`}

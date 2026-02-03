@@ -77,7 +77,7 @@ const App = () => {
   const [selectedArtist, setSelectedArtist] = useState(null);
   // Sidebar inicia abierto solo si NO estamos en mobile.
   const [sidebarOpen, setSidebarOpen] = useState(!initialIsMobile);
-  const [artistsExpanded, setArtistsExpanded] = useState(true);
+  const [artistsExpanded, setArtistsExpanded] = useState(false);
   const [viewMode, setViewMode] = useState('home');
   const [expandedAlbums, setExpandedAlbums] = useState({});
   // Estado de breakpoint, basado en el ancho actual.
@@ -271,6 +271,7 @@ const App = () => {
     setViewMode('home');
     setSearchQuery('');
     setShowContributeForm(false);
+    setSelectedResourceCategory(null);
     if (isMobile) {
       setSidebarOpen(false);
     }
