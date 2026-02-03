@@ -19,7 +19,7 @@ const normalizeText = (value) => {
  * Construye el indice de busqueda (solo una vez).
  * Cada item tiene un "haystack" ya normalizado para comparar rapido.
  */
-export const buildSearchIndex = (artists, charts) => {
+export const buildSearchIndex = (artists) => {
   const index = [];
 
   artists.forEach((artist) => {

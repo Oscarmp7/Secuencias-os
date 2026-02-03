@@ -1,24 +1,39 @@
 # Worship Box
 
-Biblioteca web de secuencias y charts musicales.
+Biblioteca web de secuencias, charts musicales y recursos para producción.
 
-## Descripcion
+## Descripción
 
-Worship Box es una app React + Vite para explorar artistas, buscar canciones y descargar charts.
-El proyecto esta optimizado para desktop y mobile, con tema dark/light e internacionalizacion.
+Worship Box es una app React + Vite para explorar artistas, buscar canciones, descargar secuencias/charts
+y acceder a recursos de software para producción musical.
+El proyecto está optimizado para desktop y mobile, con tema dark/light e internacionalización.
 
-## Caracteristicas principales
+## Características principales
 
-- Catalogo grande (artistas, secuencias y charts)
-- Busqueda optimizada (debounce + indice + Web Worker)
+### Biblioteca Musical
+- Catálogo extenso (776+ artistas, 5,900+ secuencias y 700+ charts)
+- Búsqueda optimizada (debounce + índice + Web Worker)
 - Sidebar virtualizado para listas extensas
-- Tema dark/light con transicion suave
+- Charts integrados directamente en canciones
+
+### Recursos y Software
+- Sección de recursos: DAWs, Plugins y Utilidades
+- Sistema de categorías con filtros
+- Soporte para múltiples servicios de descarga (Google Drive, MEGA, TeraBox, MediaFire, Dropbox, OneDrive)
+
+### Formulario de Aportes
+- Contribución de secuencias, software y sugerencias
+- Validación de URLs de múltiples servicios
+- Soporte para archivos adjuntos (.zip, .rar hasta 20MB)
+- Sistema anti-spam (cooldown de 1 minuto)
+- Notificaciones por email vía EmailJS
+- Mensajes de agradecimiento personalizados (SweetAlert2)
+
+### UI/UX
+- Tema dark/light con transición suave
 - Selector de idioma (ES, EN, PT)
+- Diseño responsive completo
 - Branding Worship Box integrado
-  - `logo.svg` en la cabecera del sidebar
-  - `logo-icon.svg` centrado en Home
-  - variantes `logo-dark.svg` y `logo-icon-dark.svg` para mejor contraste en dark
-- UI responsive enfocada en UX/UI
 
 ## Requisitos
 
@@ -34,7 +49,7 @@ npm run dev
 
 URL local esperada:
 
-```text
+```
 http://localhost:5173/worship-box/
 ```
 
@@ -53,51 +68,81 @@ cd app
 npm run deploy
 ```
 
-## Scripts utiles
+## Scripts útiles
 
 - `npm run dev`: servidor local con HMR
-- `npm run build`: build de produccion
+- `npm run build`: build de producción
 - `npm run preview`: prueba local del build
 - `npm run deploy`: publica en `gh-pages`
 
-## Estructura
+## Gestión de datos
 
-```text
-worship-box/
-|-- README.md
-`-- app/
-    |-- index.html
-    |-- package.json
-    |-- vite.config.js
-    `-- src/
-        |-- App.jsx
-        |-- i18n.js
-        |-- index.css
-        |-- data.json
-        |-- assets/
-        |   |-- logo.svg
-        |   |-- logo-dark.svg
-        |   |-- logo-icon.svg
-        |   `-- logo-icon-dark.svg
-        |-- components/
-        |-- hooks/
-        |-- locales/
-        |-- utils/
-        `-- workers/
+```bash
+node tools/data-manager.cjs              # Menú interactivo
+node tools/data-manager.cjs --export     # Exportar a Excel
+node tools/data-manager.cjs --import     # Importar desde Excel
 ```
 
-## Mantenimiento rapido
+## Estructura del proyecto
 
-- Datos principales: `app/src/data.json`
-- Tema: `app/src/index.css`
-- Traducciones: `app/src/locales/*/translation.json`
-- Busqueda: `app/src/utils/searchIndex.js` y `app/src/workers/searchWorker.js`
+```
+worship-box/
+├── README.md
+├── HANDOFF.md
+└── app/
+    ├── index.html
+    ├── package.json
+    ├── vite.config.js
+    ├── tools/
+    │   └── data-manager.cjs
+    └── src/
+        ├── App.jsx
+        ├── main.jsx
+        ├── i18n.js
+        ├── index.css
+        ├── data/
+        │   ├── index.js
+        │   ├── secuencias.json
+        │   └── software.json
+        ├── assets/
+        ├── components/
+        │   ├── HeaderBar.jsx
+        │   ├── Sidebar.jsx
+        │   ├── MainContent.jsx
+        │   ├── VirtualList.jsx
+        │   └── views/
+        │       ├── HomeView.jsx
+        │       ├── ArtistView.jsx
+        │       ├── SearchResultsView.jsx
+        │       ├── ResourcesView.jsx
+        │       └── ContributeFormView.jsx
+        ├── hooks/
+        ├── utils/
+        │   ├── searchIndex.js
+        │   ├── downloadUtils.js
+        │   ├── formValidation.js
+        │   └── xlsxGenerator.js
+        ├── services/
+        │   └── emailService.js
+        ├── workers/
+        └── locales/
+```
 
-## Flujo de ramas actual
+## Mantenimiento rápido
+
+- **Datos de secuencias**: `app/src/data/secuencias.json`
+- **Datos de software**: `app/src/data/software.json`
+- **Tema y estilos**: `app/src/index.css`
+- **Traducciones**: `app/src/locales/*/translation.json`
+- **Búsqueda**: `app/src/utils/searchIndex.js`
+- **Validación de URLs**: `app/src/utils/downloadUtils.js`
+- **Configuración de email**: `app/src/services/emailService.js`
+
+## Flujo de ramas
 
 - Rama principal remota: `react-migration`
 - Rama de deploy: `gh-pages`
 
 ## Handoff
 
-- Ver `HANDOFF.md` en la raiz del repo para contexto tecnico completo.
+Ver `HANDOFF.md` en la raíz del repo para contexto técnico completo.

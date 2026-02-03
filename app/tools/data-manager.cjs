@@ -38,9 +38,24 @@ const readline = require('readline');
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const CONFIG = {
-  DATA_FILE: path.join(__dirname, '..', 'src', 'data.json'),
+  // Archivos de datos (nueva estructura modular)
+  DATA_DIR: path.join(__dirname, '..', 'src', 'data'),
+  SECUENCIAS_FILE: path.join(__dirname, '..', 'src', 'data', 'secuencias.json'),
+  SOFTWARE_FILE: path.join(__dirname, '..', 'src', 'data', 'software.json'),
+  // Archivo legacy (mantener compatibilidad)
+  LEGACY_DATA_FILE: path.join(__dirname, '..', 'src', 'data.json'),
+  
+  // Archivos Excel dedicados para cada JSON
+  EXCEL_DIR: path.join(__dirname, '..', 'data'),
+  EXCEL_SECUENCIAS: path.join(__dirname, '..', 'data', 'worship-box-secuencias.xlsx'),
+  EXCEL_SOFTWARE: path.join(__dirname, '..', 'data', 'worship-box-software.xlsx'),
+  // Legacy (mantener compatibilidad)
   EXCEL_FILE: path.join(__dirname, '..', 'data', 'worship-box-data.xlsx'),
+  
   BACKUP_DIR: path.join(__dirname, '..', 'backups'),
+  
+  // Límite máximo de backups a mantener
+  MAX_BACKUPS: 3,
   
   // Campos nuevos para canciones (con valores por defecto)
   NEW_SONG_FIELDS: {
@@ -131,35 +146,90 @@ function normalizeText(text) {
 }
 
 /**
- * Lee el archivo data.json
+ * Obtiene la ruta del archivo de datos según el tipo
+ * @param {string} type - 'secuencias', 'software' o 'legacy'
  */
-function readDataJson() {
-  const content = fs.readFileSync(CONFIG.DATA_FILE, 'utf-8');
+function getDataFilePath(type = 'secuencias') {
+  switch (type) {
+    case 'software':
+      return CONFIG.SOFTWARE_FILE;
+    case 'legacy':
+      return CONFIG.LEGACY_DATA_FILE;
+    case 'secuencias':
+    default:
+      // Si existe secuencias.json, usarlo; si no, usar legacy
+      if (fs.existsSync(CONFIG.SECUENCIAS_FILE)) {
+        return CONFIG.SECUENCIAS_FILE;
+      }
+      return CONFIG.LEGACY_DATA_FILE;
+  }
+}
+
+/**
+ * Lee el archivo data.json (secuencias por defecto)
+ */
+function readDataJson(type = 'secuencias') {
+  const filePath = getDataFilePath(type);
+  const content = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(content);
 }
 
 /**
  * Guarda el archivo data.json
  */
-function saveDataJson(data) {
-  fs.writeFileSync(CONFIG.DATA_FILE, JSON.stringify(data, null, 2));
+function saveDataJson(data, type = 'secuencias') {
+  const filePath = getDataFilePath(type);
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 }
 
 /**
- * Crea un backup del data.json
+ * Crea un backup del data.json y limpia backups antiguos
  */
-function createBackup() {
+function createBackup(type = 'secuencias') {
   if (!fs.existsSync(CONFIG.BACKUP_DIR)) {
     fs.mkdirSync(CONFIG.BACKUP_DIR, { recursive: true });
   }
   
+  const filePath = getDataFilePath(type);
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const backupFile = path.join(CONFIG.BACKUP_DIR, `data-backup-${timestamp}.json`);
+  const fileName = type === 'software' ? 'software' : 'data';
+  const backupFile = path.join(CONFIG.BACKUP_DIR, `${fileName}-backup-${timestamp}.json`);
   
-  fs.copyFileSync(CONFIG.DATA_FILE, backupFile);
+  fs.copyFileSync(filePath, backupFile);
   console.log(`${c.green}✓ Backup creado: ${backupFile}${c.reset}`);
   
+  // Limpiar backups antiguos
+  cleanupOldBackups(fileName);
+  
   return backupFile;
+}
+
+/**
+ * Elimina backups antiguos manteniendo solo los más recientes
+ * @param {string} prefix - Prefijo del archivo (ej: 'data' o 'software')
+ */
+function cleanupOldBackups(prefix = 'data') {
+  try {
+    const files = fs.readdirSync(CONFIG.BACKUP_DIR)
+      .filter(file => file.startsWith(`${prefix}-backup-`) && file.endsWith('.json'))
+      .map(file => ({
+        name: file,
+        path: path.join(CONFIG.BACKUP_DIR, file),
+        time: fs.statSync(path.join(CONFIG.BACKUP_DIR, file)).mtime.getTime()
+      }))
+      .sort((a, b) => b.time - a.time); // Más reciente primero
+
+    // Eliminar backups que excedan el límite
+    if (files.length > CONFIG.MAX_BACKUPS) {
+      const toDelete = files.slice(CONFIG.MAX_BACKUPS);
+      toDelete.forEach(file => {
+        fs.unlinkSync(file.path);
+        console.log(`${c.yellow}🗑️ Backup antiguo eliminado: ${file.name}${c.reset}`);
+      });
+    }
+  } catch (error) {
+    console.error(`${c.red}Error limpiando backups: ${error.message}${c.reset}`);
+  }
 }
 
 /**
@@ -813,13 +883,13 @@ function exportToExcel() {
   XLSX.utils.book_append_sheet(workbook, instructionsSheet, 'Instrucciones');
   
   // Crear directorio si no existe
-  const excelDir = path.dirname(CONFIG.EXCEL_FILE);
+  const excelDir = path.dirname(CONFIG.EXCEL_SECUENCIAS);
   if (!fs.existsSync(excelDir)) {
     fs.mkdirSync(excelDir, { recursive: true });
   }
   
-  // Guardar
-  XLSX.writeFile(workbook, CONFIG.EXCEL_FILE);
+  // Guardar archivo de secuencias
+  XLSX.writeFile(workbook, CONFIG.EXCEL_SECUENCIAS);
   
   // Estadísticas
   const songsWithChartsCount = songsData.filter(r => r[1] === '✓').length;
@@ -827,8 +897,8 @@ function exportToExcel() {
   const linkedCharts = chartsData.filter(r => r[1] === '✓').length;
   const unlinkedCharts = chartsData.length - linkedCharts;
   
-  console.log(`${c.green}✓ Excel exportado exitosamente!${c.reset}`);
-  console.log(`  • Archivo: ${CONFIG.EXCEL_FILE}`);
+  console.log(`${c.green}✓ Excel de secuencias exportado exitosamente!${c.reset}`);
+  console.log(`  • Archivo: ${CONFIG.EXCEL_SECUENCIAS}`);
   console.log(`\n  📀 ${c.bold}SECUENCIAS:${c.reset} ${songsData.length} total`);
   console.log(`    └─ ${c.green}Con chart: ${songsWithChartsCount}${c.reset}`);
   console.log(`    └─ ${c.red}Sin chart: ${songsWithoutCharts}${c.reset}`);
@@ -841,7 +911,168 @@ function exportToExcel() {
     console.log(`  ${c.cyan}✓ Dropdown en columna Acción${c.reset}`);
     console.log(`  ${c.cyan}✓ Filtros habilitados en headers${c.reset}`);
   }
-  console.log(`\n${c.yellow}📝 Abre el archivo en Excel para editarlo${c.reset}\n`);
+  
+  // ─────────────────────────────────────────────────────────────────────────────
+  // EXPORTAR SOFTWARE.JSON A SU PROPIO ARCHIVO XLSX
+  // ─────────────────────────────────────────────────────────────────────────────
+  exportSoftwareToExcel(XLSX, hasStyleSupport, styles);
+  
+  console.log(`\n${c.yellow}📝 Abre los archivos en Excel para editarlos${c.reset}\n`);
+}
+
+/**
+ * Exporta software.json a su propio archivo Excel
+ */
+function exportSoftwareToExcel(XLSX, hasStyleSupport, styles) {
+  console.log(`\n${c.cyan}📤 Exportando software.json a Excel...${c.reset}`);
+  
+  let softwareData;
+  try {
+    softwareData = readDataJson('software');
+  } catch (e) {
+    console.log(`${c.yellow}⚠ No se encontró software.json, creando estructura vacía${c.reset}`);
+    softwareData = {
+      lastUpdated: new Date().toISOString(),
+      stats: { totalCategories: 3, totalItems: 0 },
+      categories: [
+        { id: 'daws', name: 'DAWs', description: 'Digital Audio Workstations', icon: 'Music2', items: [] },
+        { id: 'plugins', name: 'Plugins', description: 'VSTs y efectos', icon: 'Sliders', items: [] },
+        { id: 'utilidades', name: 'Utilidades', description: 'Herramientas auxiliares', icon: 'Wrench', items: [] }
+      ]
+    };
+    saveDataJson(softwareData, 'software');
+  }
+  
+  // Headers para software
+  const softwareHeaders = [
+    'Accion',       // Agregar, Eliminar
+    'Categoria',    // daws, plugins, utilidades
+    'Nombre',       // Nombre del software
+    'Descripcion',  // Descripción
+    'Tipo',         // Tipo específico (ej: "DAW", "Reverb", "Compresor")
+    'URL',          // URL de descarga
+    'Version',      // Versión del software
+    'Plataforma',   // Windows, Mac, Linux, All
+    'Comentarios'   // Notas adicionales
+  ];
+  
+  // Datos del software
+  const softwareRows = [];
+  if (softwareData.categories) {
+    softwareData.categories.forEach(category => {
+      if (category.items && category.items.length > 0) {
+        category.items.forEach(item => {
+          softwareRows.push([
+            '',                             // Accion
+            category.id,                    // Categoria
+            item.name || '',                // Nombre
+            item.description || '',         // Descripcion
+            item.type || '',                // Tipo
+            item.url || '',                 // URL
+            item.version || '',             // Version
+            item.platform || '',            // Plataforma
+            item.comments || ''             // Comentarios
+          ]);
+        });
+      }
+    });
+  }
+  
+  // Si no hay datos, agregar filas de ejemplo
+  if (softwareRows.length === 0) {
+    softwareRows.push(
+      ['', 'daws', 'Ejemplo DAW', 'Descripción del DAW', 'DAW', 'https://ejemplo.com', '1.0', 'Windows', ''],
+      ['', 'plugins', 'Ejemplo Plugin', 'Descripción del plugin', 'Reverb', 'https://ejemplo.com', '2.0', 'All', ''],
+      ['', 'utilidades', 'Ejemplo Utilidad', 'Descripción de la utilidad', 'Audio Tool', 'https://ejemplo.com', '1.5', 'All', '']
+    );
+  }
+  
+  // Instrucciones para software
+  const softwareInstructions = [
+    ['🛠️ WORSHIP BOX - GESTOR DE SOFTWARE'],
+    [''],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    ['📋 COLUMNA "ACCIÓN":'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    [''],
+    ['   (vacío)     →  No hacer cambios'],
+    ['   Agregar     →  Agregar nuevo software'],
+    ['   Eliminar    →  Eliminar este software'],
+    [''],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    ['📂 CATEGORÍAS DISPONIBLES:'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    [''],
+    ['   daws        →  Digital Audio Workstations (Ableton, FL Studio, etc.)'],
+    ['   plugins     →  VSTs, efectos, instrumentos virtuales'],
+    ['   utilidades  →  Herramientas auxiliares de audio'],
+    [''],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    ['📝 CAMPOS:'],
+    ['═══════════════════════════════════════════════════════════════════════════'],
+    [''],
+    ['   Nombre      →  Nombre del software (OBLIGATORIO)'],
+    ['   Descripcion →  Descripción breve del software'],
+    ['   Tipo        →  Tipo específico (DAW, Reverb, Compresor, etc.)'],
+    ['   URL         →  Enlace de descarga (Google Drive, MEGA, TeraBox, etc.)'],
+    ['   Version     →  Versión del software'],
+    ['   Plataforma  →  Windows, Mac, Linux, All'],
+    ['   Comentarios →  Notas adicionales'],
+  ];
+  
+  // Crear hojas
+  const softwareSheet = XLSX.utils.aoa_to_sheet([softwareHeaders, ...softwareRows]);
+  const instructionsSheet = XLSX.utils.aoa_to_sheet(softwareInstructions);
+  
+  // Aplicar estilos si están disponibles
+  if (hasStyleSupport) {
+    // Headers
+    for (let col = 0; col < softwareHeaders.length; col++) {
+      const cellRef = getCellRef(col, 0);
+      if (softwareSheet[cellRef]) {
+        softwareSheet[cellRef].s = col === 0 ? styles.actionHeader : styles.headerMain;
+      }
+    }
+    
+    // Filas de datos
+    for (let row = 0; row < softwareRows.length; row++) {
+      const excelRow = row + 1;
+      for (let col = 0; col < softwareHeaders.length; col++) {
+        const cellRef = getCellRef(col, excelRow);
+        if (!softwareSheet[cellRef]) {
+          softwareSheet[cellRef] = { v: '', t: 's' };
+        }
+        softwareSheet[cellRef].s = col === 0 ? styles.actionCell : (row % 2 === 0 ? styles.rowEven : styles.rowOdd);
+      }
+    }
+  }
+  
+  // Configurar anchos
+  softwareSheet['!cols'] = [
+    { wch: 12 },  // Accion
+    { wch: 15 },  // Categoria
+    { wch: 30 },  // Nombre
+    { wch: 50 },  // Descripcion
+    { wch: 15 },  // Tipo
+    { wch: 50 },  // URL
+    { wch: 12 },  // Version
+    { wch: 15 },  // Plataforma
+    { wch: 30 }   // Comentarios
+  ];
+  
+  instructionsSheet['!cols'] = [{ wch: 65 }];
+  
+  // Crear libro
+  const softwareWorkbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(softwareWorkbook, softwareSheet, 'Software');
+  XLSX.utils.book_append_sheet(softwareWorkbook, instructionsSheet, 'Instrucciones');
+  
+  // Guardar
+  XLSX.writeFile(softwareWorkbook, CONFIG.EXCEL_SOFTWARE);
+  
+  console.log(`${c.green}✓ Excel de software exportado!${c.reset}`);
+  console.log(`  • Archivo: ${CONFIG.EXCEL_SOFTWARE}`);
+  console.log(`  • Items: ${softwareRows.length}`);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -858,9 +1089,14 @@ function importFromExcel() {
     return;
   }
   
-  if (!fs.existsSync(CONFIG.EXCEL_FILE)) {
-    console.log(`\n${c.red}❌ Error: No se encontró el archivo Excel.${c.reset}`);
-    console.log(`${c.yellow}   Primero ejecuta --export para generar el archivo.${c.reset}\n`);
+  // Verificar que existe al menos uno de los archivos Excel
+  const hasSecuencias = fs.existsSync(CONFIG.EXCEL_SECUENCIAS);
+  const hasSoftware = fs.existsSync(CONFIG.EXCEL_SOFTWARE);
+  const hasLegacy = fs.existsSync(CONFIG.EXCEL_FILE);
+  
+  if (!hasSecuencias && !hasSoftware && !hasLegacy) {
+    console.log(`\n${c.red}❌ Error: No se encontraron archivos Excel.${c.reset}`);
+    console.log(`${c.yellow}   Primero ejecuta --export para generar los archivos.${c.reset}\n`);
     return;
   }
   
@@ -871,7 +1107,25 @@ function importFromExcel() {
   // Crear backup antes de modificar
   createBackup();
   
-  const workbook = XLSX.readFile(CONFIG.EXCEL_FILE);
+  // Importar secuencias (usar nuevo archivo o legacy)
+  const secuenciasFile = hasSecuencias ? CONFIG.EXCEL_SECUENCIAS : (hasLegacy ? CONFIG.EXCEL_FILE : null);
+  if (secuenciasFile) {
+    console.log(`${c.dim}  Procesando: ${path.basename(secuenciasFile)}${c.reset}`);
+    importSecuenciasFromExcel(XLSX, secuenciasFile);
+  }
+  
+  // Importar software
+  if (hasSoftware) {
+    console.log(`${c.dim}  Procesando: ${path.basename(CONFIG.EXCEL_SOFTWARE)}${c.reset}`);
+    importSoftwareFromExcel(XLSX, CONFIG.EXCEL_SOFTWARE);
+  }
+}
+
+/**
+ * Importa secuencias desde Excel
+ */
+function importSecuenciasFromExcel(XLSX, filePath) {
+  const workbook = XLSX.readFile(filePath);
   const data = readDataJson();
   
   // Contadores para el reporte
@@ -953,7 +1207,110 @@ function importFromExcel() {
   saveDataJson(data);
   
   // Mostrar reporte
-  showImportReport(report);
+  showImportReport(report, 'Secuencias');
+}
+
+/**
+ * Importa software desde Excel
+ */
+function importSoftwareFromExcel(XLSX, filePath) {
+  const workbook = XLSX.readFile(filePath);
+  let data;
+  
+  try {
+    data = readDataJson('software');
+  } catch (e) {
+    data = {
+      lastUpdated: new Date().toISOString(),
+      stats: { totalCategories: 3, totalItems: 0 },
+      categories: [
+        { id: 'daws', name: 'DAWs', description: 'Digital Audio Workstations', icon: 'Music2', items: [] },
+        { id: 'plugins', name: 'Plugins', description: 'VSTs y efectos', icon: 'Sliders', items: [] },
+        { id: 'utilidades', name: 'Utilidades', description: 'Herramientas auxiliares', icon: 'Wrench', items: [] }
+      ]
+    };
+  }
+  
+  const report = {
+    added: [],
+    deleted: [],
+    errors: [],
+    ignored: 0
+  };
+  
+  if (workbook.SheetNames.includes('Software')) {
+    const softwareSheet = workbook.Sheets['Software'];
+    const softwareRows = XLSX.utils.sheet_to_json(softwareSheet);
+    
+    softwareRows.forEach((row, index) => {
+      const action = (row['Accion'] || '').toString().toLowerCase().trim();
+      
+      if (!action) {
+        report.ignored++;
+        return;
+      }
+      
+      try {
+        const categoryId = (row['Categoria'] || '').toString().toLowerCase().trim();
+        const name = (row['Nombre'] || '').trim();
+        
+        if (!categoryId || !name) {
+          throw new Error('Faltan campos obligatorios (Categoria, Nombre)');
+        }
+        
+        // Buscar categoría
+        let category = data.categories.find(c => c.id === categoryId);
+        if (!category) {
+          throw new Error(`Categoría "${categoryId}" no válida. Usa: daws, plugins, utilidades`);
+        }
+        
+        if (action === 'agregar') {
+          // Verificar si ya existe
+          const exists = category.items.find(i => normalizeText(i.name) === normalizeText(name));
+          if (exists) {
+            throw new Error(`El software "${name}" ya existe en ${categoryId}`);
+          }
+          
+          const newItem = {
+            id: generateId(),
+            name: name,
+            description: row['Descripcion'] || '',
+            type: row['Tipo'] || '',
+            url: row['URL'] || '',
+            version: row['Version'] || '',
+            platform: row['Plataforma'] || 'All',
+            comments: row['Comentarios'] || ''
+          };
+          
+          category.items.push(newItem);
+          report.added.push(`${categoryId}: ${name}`);
+          
+        } else if (action === 'eliminar') {
+          const itemIndex = category.items.findIndex(i => normalizeText(i.name) === normalizeText(name));
+          if (itemIndex === -1) {
+            throw new Error(`Software "${name}" no encontrado en ${categoryId}`);
+          }
+          category.items.splice(itemIndex, 1);
+          report.deleted.push(`${categoryId}: ${name}`);
+          
+        } else {
+          report.errors.push(`Fila ${index + 2}: Acción desconocida "${action}"`);
+        }
+      } catch (error) {
+        report.errors.push(`Fila ${index + 2}: ${error.message}`);
+      }
+    });
+  }
+  
+  // Actualizar estadísticas de software
+  data.stats.totalItems = data.categories.reduce((sum, cat) => sum + cat.items.length, 0);
+  data.lastUpdated = new Date().toISOString();
+  
+  // Guardar
+  saveDataJson(data, 'software');
+  
+  // Mostrar reporte
+  showImportReport(report, 'Software');
 }
 
 /**
@@ -1250,10 +1607,12 @@ function updateStats(data) {
 
 /**
  * Muestra el reporte de importación
+ * @param {Object} report - Objeto con los contadores del reporte
+ * @param {string} type - Tipo de importación ('Secuencias' o 'Software')
  */
-function showImportReport(report) {
+function showImportReport(report, type = 'Datos') {
   console.log(`\n${c.cyan}${c.bold}═══════════════════════════════════════════════════════════════${c.reset}`);
-  console.log(`${c.cyan}${c.bold}                    📊 REPORTE DE IMPORTACIÓN                   ${c.reset}`);
+  console.log(`${c.cyan}${c.bold}              📊 REPORTE DE IMPORTACIÓN - ${type.toUpperCase()}              ${c.reset}`);
   console.log(`${c.cyan}${c.bold}═══════════════════════════════════════════════════════════════${c.reset}\n`);
   
   if (report.added.length > 0) {

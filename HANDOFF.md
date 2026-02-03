@@ -1,141 +1,232 @@
-# Worship Box - Technical Handoff
+# HANDOFF.md — Worship Box
 
-Date: 2026-02-02
+Documento de contexto técnico para retomar el desarrollo rápidamente.
 
-## 1) Project objective
-Build a fast, clean UX web app to browse a large library of music sequences.
-Charts (PDF) are now integrated directly into songs - no separate section.
-Focus on responsive UI, dark/light theme, and multilingual support.
+---
 
-## 2) Stack and tools
-- React 19 + Vite 7
-- Tailwind CSS + CSS variables for theming
-- i18next + react-i18next for translations (ES/EN/PT)
-- lucide-react for UI icons
-- Web Worker for search performance
-- GitHub Pages deploy via gh-pages
-- xlsx-js-style for Excel data management
+## Resumen del proyecto
 
-## 3) Current architecture (key folders/files)
+Worship Box es una app React 18 + Vite con:
+- Catálogo de secuencias musicales (776+ artistas, 5,900+ secuencias, 700+ charts)
+- Sección de recursos/software (DAWs, Plugins, Utilidades)
+- Formulario de aportes comunitarios
+- Tema dark/light
+- i18n (ES, EN, PT)
+- Búsqueda indexada + Web Worker
+- Deploy en GitHub Pages
+
+---
+
+## Arquitectura
 
 ```
-Root:
-├── README.md
-├── HANDOFF.md (this file)
-└── app/
-    ├── index.html (meta/OG, favicon)
-    ├── vite.config.js (base /worship-box/)
-    ├── package.json (scripts + gh-pages)
-    ├── check-links.cjs (drive link health tool)
-    ├── tools/
-    │   └── data-manager.cjs (Excel import/export, cleanup)
-    ├── src/
-    │   ├── App.jsx (global state)
-    │   ├── main.jsx (entry point)
-    │   ├── i18n.js (i18n config)
-    │   ├── index.css (theme tokens)
-    │   ├── data.json (6240 songs, 709 charts)
-    │   ├── components/
-    │   │   ├── HeaderBar.jsx (search + lang + theme)
-    │   │   ├── Sidebar.jsx (artist list)
-    │   │   ├── MainContent.jsx (view router)
-    │   │   ├── VirtualList.jsx (performance)
-    │   │   └── views/
-    │   │       ├── HomeView.jsx (stats + featured)
-    │   │       ├── ArtistView.jsx (albums + songs)
-    │   │       └── SearchResultsView.jsx
-    │   ├── hooks/
-    │   │   └── useDebouncedValue.js
-    │   ├── utils/
-    │   │   └── searchIndex.js
-    │   ├── workers/
-    │   │   └── searchWorker.js
-    │   ├── locales/ (es, en, pt)
-    │   └── assets/ (logos)
-    └── public/ (favicons)
+app/src/
+├── data/
+│   ├── index.js           # Exporta artistas, canciones, software
+│   ├── secuencias.json    # Artistas y canciones
+│   └── software.json      # DAWs, Plugins, Utilidades
+├── components/
+│   ├── views/
+│   │   ├── HomeView.jsx           # Dashboard con stats
+│   │   ├── ArtistView.jsx         # Vista de artista individual
+│   │   ├── SearchResultsView.jsx  # Resultados de búsqueda
+│   │   ├── ResourcesView.jsx      # Software y recursos
+│   │   └── ContributeFormView.jsx # Formulario de aportes
+│   ├── HeaderBar.jsx
+│   ├── Sidebar.jsx
+│   └── MainContent.jsx
+├── utils/
+│   ├── searchIndex.js      # Índice Fuse.js
+│   ├── downloadUtils.js    # Validación multi-servicio
+│   ├── formValidation.js   # Validación del formulario
+│   └── xlsxGenerator.js    # Generación de Excel
+├── services/
+│   └── emailService.js     # Integración EmailJS
+├── hooks/
+├── workers/
+└── locales/
 ```
 
-## 4) Data structure (data.json)
+---
 
+## Estructura de datos
+
+### secuencias.json
 ```json
 {
-  "artists": [{
-    "id": "driveId",
-    "name": "Artist Name",
-    "albums": [{
-      "id": "driveId",
-      "name": "Album Name",
-      "songs": [{
-        "id": "driveId",
-        "name": "Song Name",
-        "downloadUrl": "https://drive.google.com/...",
-        "chartUrl": "https://drive.google.com/..." // optional
-        "chartName": "Chart Name" // optional
-      }]
-    }]
-  }],
-  "charts": [...] // Legacy, kept for search indexing
+  "artistas": [
+    {
+      "nombre": "Hillsong Worship",
+      "canciones": [
+        {
+          "titulo": "What a Beautiful Name",
+          "secuencia": "https://drive.google.com/...",
+          "chart": "https://drive.google.com/..."
+        }
+      ]
+    }
+  ]
 }
 ```
 
-## 5) What is finished
-- Full rebrand to Worship Box
-- Dark/light theme with smooth transitions
-- Language selector (ES/EN/PT)
-- Search optimized with debounce + index + worker
-- Sidebar virtualized for large lists
-- Charts integrated into songs (chartUrl field)
-- Dual download buttons: Sequence (blue) + Chart (orange)
-- Excel-based data management (tools/data-manager.cjs)
-- Deployed to GitHub Pages
-
-## 6) Key commands
-
-```bash
-# Development
-npm run dev
-
-# Build & Deploy
-npm run build
-npm run deploy
-
-# Data management
-node tools/data-manager.cjs              # Interactive menu
-node tools/data-manager.cjs --export     # Export to Excel
-node tools/data-manager.cjs --import     # Import from Excel
-node tools/data-manager.cjs --cleanup-charts  # Simplify charts
-node tools/data-manager.cjs --link-charts     # Auto-link charts
-
-# Link health check
-node check-links.cjs
+### software.json
+```json
+{
+  "software": [
+    {
+      "id": "daw-001",
+      "nombre": "Ableton Live 12 Suite",
+      "tipo": "daw",
+      "imagen": "/images/software/ableton.webp",
+      "descripcion": "DAW profesional para producción musical",
+      "link": "https://mega.nz/..."
+    }
+  ]
+}
 ```
 
-## 7) Key technical decisions
-- Vite base set to /worship-box/ for GitHub Pages
-- Stats computed from data.json (not from data.stats)
-- Dark theme logos are separate SVGs (no CSS invert)
-- Charts simplified: 1 chart per song, linked via chartUrl
-- Charts section removed from sidebar (simplified UX)
-- Songs with charts show 2 buttons: Sequence + Chart
+---
 
-## 8) Conventions used
-- Comments explain intent and UX decisions
-- Tailwind for layout, CSS variables for theming
-- React.memo + useCallback to reduce re-renders
-- data.json is the single source of truth
+## Servicios de descarga soportados
 
-## 9) Known issues
-- Build warning about large chunk (can optimize with manualChunks)
-- Favicon caching in browsers (requires hard refresh)
+El sistema valida URLs de múltiples servicios en `downloadUtils.js`:
 
-## 10) Recommended next steps
-1. Run `npm run build && npm run deploy` to publish changes
-2. (Optional) Add manualChunks for bundle splitting
-3. (Optional) Add more favicons for max browser compatibility
+| Servicio   | Dominios                                      |
+|------------|-----------------------------------------------|
+| Google Drive | drive.google.com                            |
+| MEGA       | mega.nz, mega.co.nz                           |
+| TeraBox    | terabox.com, terabox.app, teraboxapp.com      |
+| MediaFire  | mediafire.com                                 |
+| Dropbox    | dropbox.com                                   |
+| OneDrive   | onedrive.live.com, 1drv.ms                    |
 
-## Repo and deploy
-- Repo: https://github.com/Oscarmp7/worship-box
-- Branch: react-migration
-- Deploy: gh-pages
-- Live: https://oscarmp7.github.io/worship-box/
+---
+
+## Configuración de EmailJS
+
+El servicio de email usa EmailJS para notificaciones. Configurar en `emailService.js`:
+
+```javascript
+const EMAILJS_CONFIG = {
+  SERVICE_ID: 'service_xxxxxx',        // ID del servicio de email
+  TEMPLATE_CONTRIBUTION: 'template_xxx', // Template para notificar aportes
+  TEMPLATE_THANKYOU: 'template_xxx',     // Template de agradecimiento
+  PUBLIC_KEY: 'xxxxxxxxxxxxxxx'          // Clave pública de EmailJS
+};
+```
+
+### Pasos para configurar:
+1. Crear cuenta en [EmailJS](https://www.emailjs.com/)
+2. Agregar servicio de email (Gmail, Outlook, etc.)
+3. Crear templates para:
+   - `contribution`: Notificación al admin de nuevo aporte
+   - `thankyou`: Agradecimiento al usuario (si proporciona email)
+4. Copiar IDs al archivo `emailService.js`
+
+---
+
+## Comandos de data-manager
+
+```bash
+# Menú interactivo
+node tools/data-manager.cjs
+
+# Exportar secuencias a Excel
+node tools/data-manager.cjs --export
+
+# Importar desde Excel (con backup automático)
+node tools/data-manager.cjs --import
+
+# Los archivos Excel se generan en:
+# - app/worship-box-secuencias.xlsx
+# - app/worship-box-software.xlsx
+```
+
+### Configuración
+- `MAX_BACKUPS`: 3 (archivos de respaldo máximos)
+- Backups en: `app/backups/`
+
+---
+
+## Flujo del formulario de aportes
+
+1. Usuario selecciona tipo: Secuencia | Software | Sugerencia
+2. Formulario se renderiza condicionalmente según tipo
+3. Validación en tiempo real de campos y URLs
+4. Límite de archivo: 20MB (.zip, .rar)
+5. Anti-spam: cooldown de 60 segundos entre envíos
+6. Al enviar:
+   - Se notifica al admin vía EmailJS
+   - Se muestra SweetAlert2 de agradecimiento
+   - Si usuario proporcionó email, recibe agradecimiento
+
+---
+
+## Temas y estilos
+
+CSS variables en `index.css`:
+
+```css
+:root {
+  --primary: #3b82f6;
+  --background: #ffffff;
+  --surface: #f3f4f6;
+  --text: #111827;
+}
+
+[data-theme="dark"] {
+  --primary: #60a5fa;
+  --background: #0f172a;
+  --surface: #1e293b;
+  --text: #f1f5f9;
+}
+```
+
+TailwindCSS usa estas variables automáticamente.
+
+---
+
+## Scripts npm
+
+| Comando | Descripción |
+|---------|-------------|
+| `npm run dev` | Servidor local (puerto 5173) |
+| `npm run build` | Build de producción |
+| `npm run preview` | Preview del build |
+| `npm run deploy` | Deploy a GitHub Pages |
+| `npm run lint` | ESLint check |
+
+---
+
+## Dependencias clave
+
+| Paquete | Uso |
+|---------|-----|
+| react-i18next | Internacionalización |
+| fuse.js | Búsqueda difusa |
+| xlsx | Import/export Excel |
+| sweetalert2 | Notificaciones UI |
+| @emailjs/browser | Envío de emails |
+| react-window | Virtualización de listas |
+| tailwindcss | Estilos utilitarios |
+
+---
+
+## Flujo de deploy
+
+1. `npm run build` genera `/dist`
+2. `npm run deploy` publica en rama `gh-pages`
+3. GitHub Pages sirve desde `/worship-box/`
+
+Base URL: `https://[usuario].github.io/worship-box/`
+
+---
+
+## Próximos pasos sugeridos
+
+1. **Optimización de chunks**: Configurar `manualChunks` en `vite.config.js`
+2. **Lazy loading**: Componentes de vistas con `React.lazy()`
+3. **Service Worker**: Cache offline para datos frecuentes
+4. **Tests**: Agregar testing con Vitest
+5. **Analytics**: Integrar tracking de uso
 

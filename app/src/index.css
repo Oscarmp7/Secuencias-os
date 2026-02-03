@@ -312,3 +312,175 @@ a {
   background: var(--card-hover);
   border-color: var(--accent-soft);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   📝 ESTILOS PARA FORMULARIO DE CONTRIBUCIÓN
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* Limitar líneas de texto con ellipsis */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Estilo para inputs y selects del formulario */
+input[type='text'],
+input[type='email'],
+input[type='url'],
+input[type='number'],
+select,
+textarea {
+  color: var(--text);
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+}
+
+input[type='text']::placeholder,
+input[type='email']::placeholder,
+input[type='url']::placeholder,
+input[type='number']::placeholder,
+textarea::placeholder {
+  color: var(--text-subtle);
+}
+
+input[type='text']:focus,
+input[type='email']:focus,
+input[type='url']:focus,
+input[type='number']:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--input-border-focus);
+  outline: none;
+}
+
+/* Estilo para checkboxes y radios */
+input[type='checkbox'],
+input[type='radio'] {
+  accent-color: var(--accent);
+}
+
+/* Animación de carga (spinner) */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Estilo para el área de drag & drop */
+.drop-zone {
+  border: 2px dashed var(--input-border);
+  transition: all 0.2s ease;
+}
+
+.drop-zone:hover,
+.drop-zone.drag-over {
+  border-color: var(--accent);
+  background-color: var(--accent-soft);
+}
+
+/* Estilo para mensajes de error */
+.error-message {
+  color: #ef4444;
+  font-size: 0.875rem;
+}
+
+/* Estilo para mensajes de éxito */
+.success-message {
+  color: #22c55e;
+  font-size: 0.875rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   📦 ESTILOS PARA VISTA DE RECURSOS
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* Grid responsive para tarjetas de recursos */
+.resources-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .resources-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .resources-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .resources-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Tarjeta de recurso con hover suave */
+.resource-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  transition: all 0.3s ease;
+}
+
+.resource-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow);
+  border-color: var(--accent-soft);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   🎨 ESTILOS PARA SWEETALERT2 (Pop-ups)
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* Ajustar SweetAlert2 al tema */
+.swal2-popup {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.swal2-title {
+  color: var(--text) !important;
+}
+
+.swal2-html-container {
+  color: var(--text-muted) !important;
+}
+
+.swal2-confirm {
+  background: var(--accent) !important;
+  color: white !important;
+}
+
+.swal2-confirm:hover {
+  background: var(--accent-strong) !important;
+}
+
+.swal2-cancel {
+  background: var(--surface) !important;
+  color: var(--text-muted) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.swal2-cancel:hover {
+  background: var(--hover) !important;
+}

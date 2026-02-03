@@ -1,4 +1,3 @@
-/* eslint-env worker */
 /**
  * searchWorker.js
  *

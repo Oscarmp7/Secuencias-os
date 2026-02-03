@@ -1,13 +1,21 @@
 /**
- * App.jsx - v2.1.0
+ * App.jsx - v2.2.0
  *
  * Este componente es el "cerebro" de la app.
  * Aqui coordinamos estados globales (tema, busqueda, navegacion)
  * y enviamos props a los componentes hijos.
+ * 
+ * Nuevas funcionalidades v2.2.0:
+ * - Sección de recursos (Software y Herramientas)
+ * - Formulario de contribución de recursos
+ * - Integración con nueva estructura de datos modular
  */
 
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
-import data from './data.json';
+
+// Importar datos desde la nueva estructura modular
+import { artists as dataArtists, charts as dataCharts } from './data';
+
 import Sidebar from './components/Sidebar';
 import HeaderBar from './components/HeaderBar';
 import MainContent from './components/MainContent';
@@ -15,8 +23,8 @@ import useDebouncedValue from './hooks/useDebouncedValue';
 import { buildSearchIndex, searchInIndex } from './utils/searchIndex';
 
 // Guardamos referencias a los datos para evitar re-crear arrays en cada render.
-const artists = data.artists;
-const charts = data.charts || [];
+const artists = dataArtists;
+const charts = dataCharts;
 
 // Contar charts vinculados a canciones (con chartUrl)
 const totalChartsLinked = artists.reduce(
@@ -74,7 +82,22 @@ const App = () => {
   const [expandedAlbums, setExpandedAlbums] = useState({});
   // Estado de breakpoint, basado en el ancho actual.
   const [isMobile, setIsMobile] = useState(initialIsMobile);
-  const [recentArtists, setRecentArtists] = useState([]);
+  // Inicialización perezosa para evitar setState en useEffect
+  const [recentArtists, setRecentArtists] = useState(() => {
+    try {
+      const saved = localStorage.getItem('recentArtists');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // Estados para recursos y formulario de contribución
+  // ═══════════════════════════════════════════════════════════════════════════
+  const [resourcesExpanded, setResourcesExpanded] = useState(false);
+  const [selectedResourceCategory, setSelectedResourceCategory] = useState(null);
+  const [showContributeForm, setShowContributeForm] = useState(false);
 
   // Referencias para el worker de busqueda (si el navegador lo soporta).
   const searchWorkerRef = useRef(null);
@@ -116,21 +139,6 @@ const App = () => {
   }, []);
 
   /**
-   * Cargamos el historial de artistas desde localStorage.
-   * Si falla el JSON, mostramos el error y seguimos sin romper la UI.
-   */
-  useEffect(() => {
-    const saved = localStorage.getItem('recentArtists');
-    if (saved) {
-      try {
-        setRecentArtists(JSON.parse(saved));
-      } catch (error) {
-        console.error('Error parsing recentArtists:', error);
-      }
-    }
-  }, []);
-
-  /**
    * Inicializamos un Web Worker para busqueda si el navegador lo soporta.
    * Esto evita que una busqueda grande bloquee el hilo principal (UI).
    */
@@ -167,6 +175,8 @@ const App = () => {
    * - Debounce: esperamos un poco antes de buscar.
    * - Indice precalculado: no recorremos toda la data en cada tecla.
    * - Worker: si existe, la busqueda corre fuera del hilo de la UI.
+   * 
+   * Nota: El setState aquí es intencional - reacciona a cambios de query debounced.
    */
   useEffect(() => {
     const trimmedQuery = debouncedQuery.trim();
@@ -174,6 +184,7 @@ const App = () => {
     if (trimmedQuery.length < 2) {
       // Invalida busquedas pendientes del worker.
       searchRequestId.current += 1;
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- Intencional: limpia estado cuando query es corta
       setSearchResults(null);
       setSearchResultsQuery('');
       return;
@@ -233,6 +244,7 @@ const App = () => {
       setSelectedArtist(artistId);
       setViewMode(mode);
       setExpandedAlbums({});
+      setShowContributeForm(false); // Cerrar formulario si está abierto
 
       if (mode === 'artists') {
         const artist = artistById.get(artistId);
@@ -258,10 +270,63 @@ const App = () => {
     setSelectedArtist(null);
     setViewMode('home');
     setSearchQuery('');
+    setShowContributeForm(false);
     if (isMobile) {
       setSidebarOpen(false);
     }
   }, [isMobile]);
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // Handlers para recursos y formulario de contribución
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  /**
+   * Toggle para expandir/contraer sección de recursos en sidebar.
+   */
+  const toggleResourcesExpanded = useCallback(() => {
+    setResourcesExpanded((prev) => !prev);
+  }, []);
+
+  /**
+   * Selecciona una categoría de recursos para mostrar.
+   * @param {string|null} category - ID de la categoría o null para ver todos
+   */
+  const handleSelectResources = useCallback(
+    (category) => {
+      setSelectedResourceCategory(category);
+      setViewMode('resources');
+      setSelectedArtist(null);
+      setShowContributeForm(false);
+      setSearchQuery('');
+      
+      if (isMobile) {
+        setSidebarOpen(false);
+      }
+    },
+    [isMobile]
+  );
+
+  /**
+   * Muestra el formulario de contribución de recursos.
+   */
+  const handleShowContributeForm = useCallback(() => {
+    setShowContributeForm(true);
+    setViewMode('contribute');
+    setSelectedArtist(null);
+    setSearchQuery('');
+    
+    if (isMobile) {
+      setSidebarOpen(false);
+    }
+  }, [isMobile]);
+
+  /**
+   * Cierra el formulario de contribución y vuelve al home.
+   */
+  const handleCloseContributeForm = useCallback(() => {
+    setShowContributeForm(false);
+    setViewMode('home');
+  }, []);
 
   const handleSearchChange = useCallback((event) => {
     setSearchQuery(event.target.value);
@@ -283,7 +348,7 @@ const App = () => {
   const hasRecentArtists = recentArtistObjects.length > 0;
   const homeArtists = useMemo(() => {
     return hasRecentArtists ? recentArtistObjects : topArtists;
-  }, [hasRecentArtists, recentArtistObjects, topArtists]);
+  }, [hasRecentArtists, recentArtistObjects]);
 
   return (
     <div className="flex h-screen bg-[var(--bg)] text-[var(--text)] overflow-hidden theme-smooth">
@@ -299,6 +364,12 @@ const App = () => {
         onToggleArtists={toggleArtistsExpanded}
         onSelectArtist={handleSelectArtist}
         onCloseSidebar={closeSidebar}
+        // Props para recursos y formulario de contribución
+        resourcesExpanded={resourcesExpanded}
+        onToggleResources={toggleResourcesExpanded}
+        onSelectResources={handleSelectResources}
+        onShowContributeForm={handleShowContributeForm}
+        selectedResourceCategory={selectedResourceCategory}
       />
 
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -328,6 +399,10 @@ const App = () => {
           // Home usa theme para cambiar el isotipo segun contraste.
           theme={theme}
           onSelectArtist={handleSelectArtist}
+          // Props para formulario y recursos
+          showContributeForm={showContributeForm}
+          onCloseContributeForm={handleCloseContributeForm}
+          selectedResourceCategory={selectedResourceCategory}
         />
       </div>
     </div>

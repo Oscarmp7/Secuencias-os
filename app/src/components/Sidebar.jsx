@@ -1,20 +1,42 @@
 /**
  * Sidebar.jsx
  *
- * Menu lateral con lista de artistas.
+ * Menu lateral con lista de artistas y recursos.
  * Usa React.memo para evitar renders innecesarios.
  * Incluye una lista virtualizada para mantener el scroll fluido.
+ * 
+ * Secciones:
+ * - Artistas: Lista de artistas con sus secuencias
+ * - Recursos: Software y herramientas (DAWs, Plugins, Utilidades)
+ * - Botón de Aportar: Permite a usuarios contribuir recursos
  */
 
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { X, ChevronDown, ChevronRight, Folder } from 'lucide-react';
+import {
+  X,
+  ChevronDown,
+  ChevronRight,
+  Folder,
+  Package,
+  Music2,
+  Sliders,
+  Wrench,
+  Gift,
+} from 'lucide-react';
 import brandLogo from '../assets/logo.svg';
 import brandLogoDark from '../assets/logo-dark.svg';
 import VirtualList from './VirtualList';
 
 // Altura de cada fila para la lista virtualizada (px).
 const ROW_HEIGHT = 44;
+
+// Subcategorías de recursos
+const RESOURCE_CATEGORIES = [
+  { id: 'daws', name: 'DAWs', icon: Music2 },
+  { id: 'plugins', name: 'Plugins', icon: Sliders },
+  { id: 'utilidades', name: 'Utilidades', icon: Wrench },
+];
 
 const Sidebar = memo(function Sidebar({
   // Props que llegan desde App.
@@ -28,8 +50,21 @@ const Sidebar = memo(function Sidebar({
   onToggleArtists,
   onSelectArtist,
   onCloseSidebar,
+  // Nuevas props para recursos y aportes
+  resourcesExpanded = false,
+  onToggleResources,
+  onSelectResources,
+  onShowContributeForm,
+  selectedResourceCategory = null,
 }) {
   const { t } = useTranslation();
+  
+  // Estado local para expandir recursos si no viene controlado
+  const [localResourcesExpanded, setLocalResourcesExpanded] = useState(false);
+  
+  // Usar estado controlado o local
+  const isResourcesExpanded = onToggleResources ? resourcesExpanded : localResourcesExpanded;
+  const toggleResources = onToggleResources || (() => setLocalResourcesExpanded(prev => !prev));
   // Elegimos variante de logo segun tema para mantener contraste real.
   const sidebarLogo = theme === 'dark' ? brandLogoDark : brandLogo;
 
@@ -90,7 +125,7 @@ const Sidebar = memo(function Sidebar({
             >
               {artistsExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
               <Folder size={18} />
-              <span id="artistas-heading" className="flex-1 text-left">
+              <span id="artistas-heading" className="flex-1 text-left uppercase tracking-wide">
                 {t('nav.artists')}
               </span>
               <span className="text-[var(--text-subtle)] text-xs tabular-nums">
@@ -103,7 +138,7 @@ const Sidebar = memo(function Sidebar({
                 items={artists}
                 itemHeight={ROW_HEIGHT}
                 overscan={6}
-                className="mt-1 max-h-[70vh]"
+                className="mt-1 max-h-[50vh]"
                 renderItem={(artist) => (
                   <button
                     type="button"
@@ -128,7 +163,85 @@ const Sidebar = memo(function Sidebar({
               />
             )}
           </section>
+
+          {/* Seccion RECURSOS */}
+          <section className="mb-4" aria-labelledby="recursos-heading">
+            <button
+              onClick={toggleResources}
+              className="w-full flex items-center gap-2 px-3 py-2 text-[var(--accent)] text-sm font-medium hover:bg-[var(--hover)] rounded-md transition-colors"
+            >
+              {isResourcesExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+              <Package size={18} />
+              <span id="recursos-heading" className="flex-1 text-left uppercase tracking-wide">
+                {t('nav.resources', 'Recursos')}
+              </span>
+            </button>
+
+            {isResourcesExpanded && (
+              <div className="mt-1 space-y-1">
+                {/* Ver todos los recursos */}
+                <button
+                  type="button"
+                  onClick={() => onSelectResources && onSelectResources(null)}
+                  className={`w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 active:scale-[0.98] ${
+                    viewMode === 'resources' && !selectedResourceCategory
+                      ? 'bg-[var(--accent-soft)] text-[var(--accent)]'
+                      : 'text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--hover)]'
+                  }`}
+                >
+                  <Package size={16} className={viewMode === 'resources' && !selectedResourceCategory ? 'text-[var(--accent)]' : 'text-[var(--text-subtle)]'} />
+                  <span>Ver todos</span>
+                </button>
+
+                {/* Subcategorías */}
+                {RESOURCE_CATEGORIES.map((cat) => {
+                  const IconComponent = cat.icon;
+                  const isSelected = viewMode === 'resources' && selectedResourceCategory === cat.id;
+                  
+                  return (
+                    <button
+                      key={cat.id}
+                      type="button"
+                      onClick={() => onSelectResources && onSelectResources(cat.id)}
+                      className={`w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 active:scale-[0.98] ${
+                        isSelected
+                          ? 'bg-[var(--accent-soft)] text-[var(--accent)]'
+                          : 'text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--hover)]'
+                      }`}
+                    >
+                      <IconComponent size={16} className={isSelected ? 'text-[var(--accent)]' : 'text-[var(--text-subtle)]'} />
+                      <span>{cat.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </section>
         </nav>
+
+        {/* Botón de Aportar Recursos - Fijo en la parte inferior */}
+        <div className="p-3 border-t border-[var(--border)]">
+          <button
+            onClick={() => {
+              if (onShowContributeForm) {
+                onShowContributeForm();
+              }
+              if (isMobile) {
+                onCloseSidebar();
+              }
+            }}
+            className="
+              w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg
+              bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800
+              text-white font-medium text-sm
+              transition-all duration-200 active:scale-[0.98]
+              shadow-lg shadow-blue-600/20
+            "
+          >
+            <Gift size={18} />
+            <span>Aportar Recursos</span>
+          </button>
+        </div>
       </aside>
     </>
   );
