@@ -36,6 +36,7 @@ const MainContent = memo(function MainContent({
   showContributeForm = false,
   onCloseContributeForm,
   selectedResourceCategory = null,
+  onResourceCategoryChange,
 }) {
   const { t } = useTranslation();
 
@@ -56,7 +57,10 @@ const MainContent = memo(function MainContent({
         </div>
       ) : viewMode === 'resources' ? (
         /* Prioridad 3: Vista de recursos */
-        <ResourcesView selectedCategory={selectedResourceCategory} />
+        <ResourcesView 
+          selectedCategory={selectedResourceCategory} 
+          onCategoryChange={onResourceCategoryChange}
+        />
       ) : viewMode === 'home' || !selectedArtist ? (
         /* Prioridad 4: Home */
         <HomeView

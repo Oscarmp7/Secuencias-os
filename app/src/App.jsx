@@ -404,6 +404,7 @@ const App = () => {
           showContributeForm={showContributeForm}
           onCloseContributeForm={handleCloseContributeForm}
           selectedResourceCategory={selectedResourceCategory}
+          onResourceCategoryChange={setSelectedResourceCategory}
         />
       </div>
     </div>
