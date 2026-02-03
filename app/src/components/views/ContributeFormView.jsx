@@ -320,18 +320,12 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
                 key={tipo.value}
                 type="button"
                 onClick={() => handleChange({ target: { name: 'tipoAporte', value: tipo.value } })}
-                className={`
-                  flex items-center gap-3 p-4 rounded-lg border-2 transition-all duration-200
-                  ${formData.tipoAporte === tipo.value
-                    ? 'border-[var(--accent)] bg-[var(--accent-soft)]'
-                    : 'border-[var(--border)] hover:border-[var(--accent)] hover:bg-[var(--hover)]'
-                  }
-                `}
+                className={`tipo-aporte-btn ${formData.tipoAporte === tipo.value ? 'selected' : ''}`}
               >
-                <span className={formData.tipoAporte === tipo.value ? 'text-[var(--accent)]' : 'text-[var(--text-muted)]'}>
+                <span className="icon">
                   {getTipoIcon(tipo.value)}
                 </span>
-                <span className={`text-sm font-medium ${formData.tipoAporte === tipo.value ? 'text-[var(--accent)]' : ''}`}>
+                <span className="label">
                   {tipo.label}
                 </span>
               </button>

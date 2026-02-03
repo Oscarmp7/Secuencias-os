@@ -205,13 +205,8 @@ const ResourcesView = memo(function ResourcesView({ selectedCategory = null, onC
             placeholder="Buscar software..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="
-              w-full pl-10 pr-4 py-2.5 rounded-lg
-              bg-[var(--input-bg)] border border-[var(--input-border)]
-              text-[var(--text)] placeholder-[var(--text-subtle)]
-              focus:outline-none focus:border-[var(--input-border-focus)] focus:ring-2 focus:ring-[var(--accent-soft)]
-              transition-all duration-200
-            "
+            className="search-input"
+            style={{ paddingLeft: '2.5rem' }}
           />
         </div>
 
@@ -220,13 +215,7 @@ const ResourcesView = memo(function ResourcesView({ selectedCategory = null, onC
           <Filter size={18} className="text-[var(--text-subtle)] flex-shrink-0" />
           <button
             onClick={() => handleFilterChange('all')}
-            className={`
-              px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all duration-200
-              ${activeFilter === 'all'
-                ? 'bg-[var(--accent)] text-white'
-                : 'bg-[var(--surface)] text-[var(--text-muted)] hover:bg-[var(--hover)]'
-              }
-            `}
+            className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`}
           >
             Todos
           </button>
@@ -235,13 +224,7 @@ const ResourcesView = memo(function ResourcesView({ selectedCategory = null, onC
               <button
                 key={cat.id}
                 onClick={() => handleFilterChange(cat.id)}
-                className={`
-                  flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all duration-200
-                  ${activeFilter === cat.id
-                    ? 'bg-[var(--accent)] text-white'
-                    : 'bg-[var(--surface)] text-[var(--text-muted)] hover:bg-[var(--hover)]'
-                  }
-                `}
+                className={`filter-btn ${activeFilter === cat.id ? 'active' : ''}`}
               >
                 {cat.id === 'daws' && <Music2 size={16} />}
                 {cat.id === 'plugins' && <Sliders size={16} />}
