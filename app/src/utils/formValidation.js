@@ -145,6 +145,9 @@ export function validateContributeForm(formData) {
     if (!formData.artista?.trim()) {
       errors.artista = 'El artista es obligatorio';
     }
+    if (!formData.album?.trim()) {
+      errors.album = 'El álbum es obligatorio';
+    }
     if (!formData.tonalidad) {
       errors.tonalidad = 'La tonalidad es obligatoria';
     }

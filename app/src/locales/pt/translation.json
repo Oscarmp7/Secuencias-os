@@ -2,14 +2,19 @@
   "brand": "Worship Box",
   "nav": {
     "artists": "ARTISTAS",
-    "charts": "CHARTS"
+    "charts": "CHARTS",
+    "resources": "RECURSOS",
+    "contribute": "CONTRIBUIR"
   },
   "actions": {
     "home": "Início",
     "download": "Baixar",
     "sequence": "Sequência",
     "chart": "Chart",
-    "downloadChart": "Baixar chart"
+    "downloadChart": "Baixar chart",
+    "cancel": "Cancelar",
+    "submit": "Enviar",
+    "sending": "Enviando..."
   },
   "labels": {
     "language": "Idioma",
@@ -51,5 +56,81 @@
   },
   "songInfo": {
     "key": "Tom"
+  },
+  "resources": {
+    "title": "Software e Ferramentas",
+    "subtitle": "{{count}} recursos disponíveis para produção musical",
+    "searchPlaceholder": "Buscar software...",
+    "filterAll": "Todos",
+    "filterDAWs": "DAWs",
+    "filterPlugins": "Plugins",
+    "filterUtilities": "Utilidades",
+    "resourceCount": "{{count}} recurso",
+    "resourceCountPlural": "{{count}} recursos",
+    "noResources": "Nenhum recurso disponível",
+    "noResourcesSubtitle": "Adicionaremos mais recursos em breve. Volte mais tarde!",
+    "download": "Baixar"
+  },
+  "contribute": {
+    "title": "Contribuir com Recursos",
+    "subtitle": "Compartilhe sequências, software ou sugestões com a comunidade",
+    "typeQuestion": "Que tipo de contribuição você quer fazer?",
+    "typeSequence": "Sequência / Multitrack",
+    "typeSoftware": "Software / Ferramenta",
+    "typeSuggestion": "Sugestão / Comentário",
+    "sequenceInfo": "Informação da Sequência",
+    "softwareInfo": "Informação do Software",
+    "resourceFile": "Arquivo do Recurso",
+    "resourceFileHint": "Forneça uma URL de download ou anexe um arquivo compactado",
+    "yourInfo": "Suas Informações (opcional)",
+    "comments": "Comentários Adicionais",
+    "yourSuggestion": "Sua Sugestão",
+    "songName": "Nome da música",
+    "artist": "Artista",
+    "album": "Álbum",
+    "key": "Tonalidade",
+    "tempo": "Tempo (BPM)",
+    "timeSignature": "Compasso",
+    "softwareName": "Nome do software",
+    "subcategory": "Subcategoria",
+    "description": "Descrição breve",
+    "downloadUrl": "URL de Download",
+    "attachedFile": "Arquivo compactado",
+    "dropzoneText": "Clique ou arraste um arquivo aqui",
+    "name": "Nome",
+    "email": "Endereço de email",
+    "submitButton": "Enviar Contribuição",
+    "waitMessage": "Aguarde {{time}}",
+    "required": "obrigatório",
+    "optional": "opcional",
+    "select": "Selecionar",
+    "selectCategory": "Selecionar categoria",
+    "detected": "detectado",
+    "invalidUrl": "URL inválida. Serviços suportados:",
+    "or": "ou",
+    "errors": {
+      "selectType": "Selecione o tipo de contribuição",
+      "resourceNameRequired": "Nome do recurso é obrigatório",
+      "artistRequired": "Artista é obrigatório",
+      "albumRequired": "Álbum é obrigatório",
+      "keyRequired": "Tonalidade é obrigatória",
+      "bpmRange": "BPM deve estar entre 20 e 300",
+      "timeSignatureRequired": "Compasso é obrigatório",
+      "subcategoryRequired": "Subcategoria é obrigatória",
+      "descriptionRequired": "Descrição é obrigatória",
+      "urlOrFileRequired": "Você deve fornecer uma URL de download ou anexar um arquivo",
+      "suggestionRequired": "Escreva sua sugestão ou comentário",
+      "invalidEmail": "Endereço de email inválido",
+      "fileTooLarge": "Arquivo excede o tamanho máximo de {{size}}MB",
+      "invalidFileType": "Apenas arquivos compactados permitidos ({{types}})",
+      "formIncomplete": "Formulário incompleto",
+      "completeRequired": "Por favor, preencha todos os campos obrigatórios.",
+      "waitToSubmit": "Aguarde {{time}} antes de enviar outro formulário.",
+      "submitError": "Houve um problema ao enviar sua contribuição. Por favor, tente novamente."
+    },
+    "success": {
+      "title": "Obrigado pela sua contribuição!",
+      "message": "Sua {{type}} é muito valiosa para a comunidade. Se você tem mais recursos ou sugestões, não hesite em compartilhá-los!"
+    }
   }
 }

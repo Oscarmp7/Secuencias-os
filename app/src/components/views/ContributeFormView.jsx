@@ -382,16 +382,20 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
                   )}
                 </div>
                 <div>
-                  <label htmlFor="album" className={labelClass}>Álbum (opcional)</label>
+                  <label htmlFor="album" className={labelClass}>Álbum *</label>
                   <input
                     type="text"
                     id="album"
                     name="album"
                     value={formData.album}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     placeholder="Ej: Reckless Love"
                     className={inputBaseClass}
                   />
+                  {touched.album && errors.album && (
+                    <p className={errorClass}><AlertCircle size={14} /> {errors.album}</p>
+                  )}
                 </div>
               </div>
 

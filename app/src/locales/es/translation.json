@@ -2,14 +2,19 @@
   "brand": "Worship Box",
   "nav": {
     "artists": "ARTISTAS",
-    "charts": "CHARTS"
+    "charts": "CHARTS",
+    "resources": "RECURSOS",
+    "contribute": "APORTAR"
   },
   "actions": {
     "home": "Inicio",
     "download": "Descargar",
     "sequence": "Secuencia",
     "chart": "Chart",
-    "downloadChart": "Descargar chart"
+    "downloadChart": "Descargar chart",
+    "cancel": "Cancelar",
+    "submit": "Enviar",
+    "sending": "Enviando..."
   },
   "labels": {
     "language": "Idioma",
@@ -51,5 +56,81 @@
   },
   "songInfo": {
     "key": "Tono"
+  },
+  "resources": {
+    "title": "Software y Herramientas",
+    "subtitle": "{{count}} recursos disponibles para producción musical",
+    "searchPlaceholder": "Buscar software...",
+    "filterAll": "Todos",
+    "filterDAWs": "DAWs",
+    "filterPlugins": "Plugins",
+    "filterUtilities": "Utilidades",
+    "resourceCount": "{{count}} recurso",
+    "resourceCountPlural": "{{count}} recursos",
+    "noResources": "No hay recursos disponibles",
+    "noResourcesSubtitle": "Pronto agregaremos más recursos. ¡Vuelve a visitarnos!",
+    "download": "Descargar"
+  },
+  "contribute": {
+    "title": "Aportar Recursos",
+    "subtitle": "Comparte secuencias, software o sugerencias con la comunidad",
+    "typeQuestion": "¿Qué tipo de aporte deseas hacer?",
+    "typeSequence": "Secuencia / Multitrack",
+    "typeSoftware": "Software / Herramienta",
+    "typeSuggestion": "Sugerencia / Comentario",
+    "sequenceInfo": "Información de la Secuencia",
+    "softwareInfo": "Información del Software",
+    "resourceFile": "Archivo del Recurso",
+    "resourceFileHint": "Proporciona una URL de descarga o adjunta un archivo comprimido",
+    "yourInfo": "Tu Información (opcional)",
+    "comments": "Comentarios Adicionales",
+    "yourSuggestion": "Tu Sugerencia",
+    "songName": "Nombre de la canción",
+    "artist": "Artista",
+    "album": "Álbum",
+    "key": "Tonalidad",
+    "tempo": "Tempo (BPM)",
+    "timeSignature": "Compás",
+    "softwareName": "Nombre del software",
+    "subcategory": "Subcategoría",
+    "description": "Descripción breve",
+    "downloadUrl": "URL de Descarga",
+    "attachedFile": "Archivo comprimido",
+    "dropzoneText": "Haz clic o arrastra un archivo aquí",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "submitButton": "Enviar Aporte",
+    "waitMessage": "Espera {{time}}",
+    "required": "obligatorio",
+    "optional": "opcional",
+    "select": "Seleccionar",
+    "selectCategory": "Seleccionar categoría",
+    "detected": "detectado",
+    "invalidUrl": "URL no válida. Servicios soportados:",
+    "or": "o",
+    "errors": {
+      "selectType": "Selecciona el tipo de aporte",
+      "resourceNameRequired": "El nombre del recurso es obligatorio",
+      "artistRequired": "El artista es obligatorio",
+      "albumRequired": "El álbum es obligatorio",
+      "keyRequired": "La tonalidad es obligatoria",
+      "bpmRange": "El BPM debe estar entre 20 y 300",
+      "timeSignatureRequired": "El compás es obligatorio",
+      "subcategoryRequired": "La subcategoría es obligatoria",
+      "descriptionRequired": "La descripción es obligatoria",
+      "urlOrFileRequired": "Debes proporcionar una URL de descarga o adjuntar un archivo",
+      "suggestionRequired": "Escribe tu sugerencia o comentario",
+      "invalidEmail": "El correo electrónico no es válido",
+      "fileTooLarge": "El archivo excede el tamaño máximo de {{size}}MB",
+      "invalidFileType": "Solo se permiten archivos comprimidos ({{types}})",
+      "formIncomplete": "Formulario incompleto",
+      "completeRequired": "Por favor, completa todos los campos obligatorios.",
+      "waitToSubmit": "Por favor espera {{time}} antes de enviar otro formulario.",
+      "submitError": "Hubo un problema al enviar tu aporte. Por favor, intenta de nuevo."
+    },
+    "success": {
+      "title": "¡Gracias por tu aporte!",
+      "message": "Tu {{type}} es muy valiosa para la comunidad. Si tienes más recursos o sugerencias, ¡no dudes en compartirlos!"
+    }
   }
 }

@@ -2,14 +2,19 @@
   "brand": "Worship Box",
   "nav": {
     "artists": "ARTISTS",
-    "charts": "CHARTS"
+    "charts": "CHARTS",
+    "resources": "RESOURCES",
+    "contribute": "CONTRIBUTE"
   },
   "actions": {
     "home": "Home",
     "download": "Download",
     "sequence": "Sequence",
     "chart": "Chart",
-    "downloadChart": "Download chart"
+    "downloadChart": "Download chart",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "sending": "Sending..."
   },
   "labels": {
     "language": "Language",
@@ -51,5 +56,81 @@
   },
   "songInfo": {
     "key": "Key"
+  },
+  "resources": {
+    "title": "Software & Tools",
+    "subtitle": "{{count}} resources available for music production",
+    "searchPlaceholder": "Search software...",
+    "filterAll": "All",
+    "filterDAWs": "DAWs",
+    "filterPlugins": "Plugins",
+    "filterUtilities": "Utilities",
+    "resourceCount": "{{count}} resource",
+    "resourceCountPlural": "{{count}} resources",
+    "noResources": "No resources available",
+    "noResourcesSubtitle": "We'll add more resources soon. Come back later!",
+    "download": "Download"
+  },
+  "contribute": {
+    "title": "Contribute Resources",
+    "subtitle": "Share sequences, software or suggestions with the community",
+    "typeQuestion": "What type of contribution do you want to make?",
+    "typeSequence": "Sequence / Multitrack",
+    "typeSoftware": "Software / Tool",
+    "typeSuggestion": "Suggestion / Comment",
+    "sequenceInfo": "Sequence Information",
+    "softwareInfo": "Software Information",
+    "resourceFile": "Resource File",
+    "resourceFileHint": "Provide a download URL or attach a compressed file",
+    "yourInfo": "Your Information (optional)",
+    "comments": "Additional Comments",
+    "yourSuggestion": "Your Suggestion",
+    "songName": "Song name",
+    "artist": "Artist",
+    "album": "Album",
+    "key": "Key",
+    "tempo": "Tempo (BPM)",
+    "timeSignature": "Time signature",
+    "softwareName": "Software name",
+    "subcategory": "Subcategory",
+    "description": "Brief description",
+    "downloadUrl": "Download URL",
+    "attachedFile": "Compressed file",
+    "dropzoneText": "Click or drag a file here",
+    "name": "Name",
+    "email": "Email address",
+    "submitButton": "Submit Contribution",
+    "waitMessage": "Wait {{time}}",
+    "required": "required",
+    "optional": "optional",
+    "select": "Select",
+    "selectCategory": "Select category",
+    "detected": "detected",
+    "invalidUrl": "Invalid URL. Supported services:",
+    "or": "or",
+    "errors": {
+      "selectType": "Select the type of contribution",
+      "resourceNameRequired": "Resource name is required",
+      "artistRequired": "Artist is required",
+      "albumRequired": "Album is required",
+      "keyRequired": "Key is required",
+      "bpmRange": "BPM must be between 20 and 300",
+      "timeSignatureRequired": "Time signature is required",
+      "subcategoryRequired": "Subcategory is required",
+      "descriptionRequired": "Description is required",
+      "urlOrFileRequired": "You must provide a download URL or attach a file",
+      "suggestionRequired": "Write your suggestion or comment",
+      "invalidEmail": "Invalid email address",
+      "fileTooLarge": "File exceeds maximum size of {{size}}MB",
+      "invalidFileType": "Only compressed files allowed ({{types}})",
+      "formIncomplete": "Incomplete form",
+      "completeRequired": "Please complete all required fields.",
+      "waitToSubmit": "Please wait {{time}} before submitting another form.",
+      "submitError": "There was a problem submitting your contribution. Please try again."
+    },
+    "success": {
+      "title": "Thank you for your contribution!",
+      "message": "Your {{type}} is very valuable to the community. If you have more resources or suggestions, don't hesitate to share them!"
+    }
   }
 }

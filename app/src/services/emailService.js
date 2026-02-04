@@ -19,17 +19,16 @@ import emailjs from '@emailjs/browser';
 //   ⚙️ CONFIGURACIÓN DE EMAILJS
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// IMPORTANTE: Reemplaza estos valores con tu configuración de EmailJS
-// Puedes obtenerlos en: https://dashboard.emailjs.com/
+// Configuración de EmailJS - Credenciales de producción
 const EMAILJS_CONFIG = {
-  SERVICE_ID: 'YOUR_SERVICE_ID',      // Ej: 'service_abc123'
-  TEMPLATE_FORM_ID: 'YOUR_TEMPLATE_ID', // Plantilla para recibir formularios
-  TEMPLATE_THANKS_ID: 'YOUR_THANKS_TEMPLATE_ID', // Plantilla de agradecimiento
-  PUBLIC_KEY: 'YOUR_PUBLIC_KEY',      // Clave pública
+  SERVICE_ID: 'service_whwzteo',
+  TEMPLATE_FORM_ID: 'template_et8q3ei',
+  TEMPLATE_THANKS_ID: 'template_y8pgi2k',
+  PUBLIC_KEY: 'b0HcaxplK26PFy40Q',
 };
 
 // Email de destino (donde recibirás los aportes)
-const WORSHIP_BOX_EMAIL = 'worshipbox@example.com'; // Cambiar por el email real
+const WORSHIP_BOX_EMAIL = 'worshipbox.ministry@gmail.com';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //   📧 FUNCIONES DE ENVÍO
