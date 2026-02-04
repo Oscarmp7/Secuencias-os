@@ -252,20 +252,50 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
           });
         }
 
-        // Mostrar mensaje de agradecimiento
+        // Mostrar mensaje de agradecimiento con opción de hacer otro aporte
         const thankYouMsg = generateThankYouMessage(formData.nombre, formData.tipoAporte);
         
-        await Swal.fire({
+        const result = await Swal.fire({
           icon: 'success',
           title: thankYouMsg.title,
           text: thankYouMsg.message,
+          showCancelButton: true,
           confirmButtonColor: 'var(--accent)',
-          confirmButtonText: '¡Entendido!',
+          cancelButtonColor: 'var(--accent-secondary)',
+          confirmButtonText: '✓ Aceptar',
+          cancelButtonText: '🎁 Hacer otro aporte',
+          reverseButtons: true,
         });
 
-        // Cerrar formulario
-        if (onClose) {
-          onClose();
+        // Si el usuario quiere hacer otro aporte, resetear el formulario
+        if (result.dismiss === Swal.DismissReason.cancel) {
+          // Resetear formulario pero mantener nombre y email
+          setFormData(prev => ({
+            tipoAporte: '',
+            nombreRecurso: '',
+            artista: '',
+            album: '',
+            tonalidad: '',
+            bpm: '',
+            compas: '',
+            subcategoria: '',
+            descripcion: '',
+            urlDescarga: '',
+            archivo: null,
+            nombre: prev.nombre,
+            email: prev.email,
+            sugerencias: '',
+          }));
+          setErrors({});
+          setTouched({});
+          setDownloadInfo({ isValid: false, service: null, fileId: null });
+          // Scroll al inicio del formulario
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          // Cerrar formulario
+          if (onClose) {
+            onClose();
+          }
         }
       } else {
         throw new Error(result.error || 'Error al enviar');

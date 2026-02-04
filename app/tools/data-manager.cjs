@@ -49,10 +49,13 @@ const CONFIG = {
   EXCEL_DIR: path.join(__dirname, '..', 'data'),
   EXCEL_SECUENCIAS: path.join(__dirname, '..', 'data', 'worship-box-secuencias.xlsx'),
   EXCEL_SOFTWARE: path.join(__dirname, '..', 'data', 'worship-box-software.xlsx'),
-  // Legacy (mantener compatibilidad)
-  EXCEL_FILE: path.join(__dirname, '..', 'data', 'worship-box-data.xlsx'),
   
   BACKUP_DIR: path.join(__dirname, '..', 'backups'),
+  
+  // Carpetas de aportes de la comunidad
+  APORTES_DIR: path.join(__dirname, '..', 'aportes'),
+  APORTES_SECUENCIAS_DIR: path.join(__dirname, '..', 'aportes', 'secuencias'),
+  APORTES_SOFTWARE_DIR: path.join(__dirname, '..', 'aportes', 'software'),
   
   // Límite máximo de backups a mantener
   MAX_BACKUPS: 3,
@@ -86,8 +89,32 @@ const c = {
   green: '\x1b[32m',
   yellow: '\x1b[33m',
   blue: '\x1b[34m',
+  magenta: '\x1b[35m',
   cyan: '\x1b[36m',
   white: '\x1b[37m',
+};
+
+// Iconos ASCII compatibles con Windows PowerShell
+const icons = {
+  chart: '[#]',
+  export: '[>]',
+  import: '[<]',
+  add: '[+]',
+  combine: '[=]',
+  review: '[?]',
+  approve: '[v]',
+  clean: '[x]',
+  sync: '[~]',
+  validate: '[!]',
+  search: '[*]',
+  backup: '[S]',
+  exit: '[0]',
+  check: 'v',
+  cross: 'x',
+  warn: '!',
+  info: 'i',
+  arrow: '->',
+  bullet: '*',
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -113,11 +140,11 @@ function clearScreen() {
 
 function showBanner() {
   console.log(`
-${c.cyan}${c.bold}╔═══════════════════════════════════════════════════════════════╗
-║                                                               ║
-║   ${c.white}📊 WORSHIP BOX - GESTOR DE DATOS${c.cyan}                          ║
-║                                                               ║
-╚═══════════════════════════════════════════════════════════════╝${c.reset}
+${c.cyan}${c.bold}+---------------------------------------------------------------+
+|                                                               |
+|   ${c.white}WORSHIP BOX - GESTOR DE DATOS${c.cyan}                              |
+|                                                               |
++---------------------------------------------------------------+${c.reset}
 `);
 }
 
@@ -1092,9 +1119,8 @@ function importFromExcel() {
   // Verificar que existe al menos uno de los archivos Excel
   const hasSecuencias = fs.existsSync(CONFIG.EXCEL_SECUENCIAS);
   const hasSoftware = fs.existsSync(CONFIG.EXCEL_SOFTWARE);
-  const hasLegacy = fs.existsSync(CONFIG.EXCEL_FILE);
   
-  if (!hasSecuencias && !hasSoftware && !hasLegacy) {
+  if (!hasSecuencias && !hasSoftware) {
     console.log(`\n${c.red}❌ Error: No se encontraron archivos Excel.${c.reset}`);
     console.log(`${c.yellow}   Primero ejecuta --export para generar los archivos.${c.reset}\n`);
     return;
@@ -1107,11 +1133,10 @@ function importFromExcel() {
   // Crear backup antes de modificar
   createBackup();
   
-  // Importar secuencias (usar nuevo archivo o legacy)
-  const secuenciasFile = hasSecuencias ? CONFIG.EXCEL_SECUENCIAS : (hasLegacy ? CONFIG.EXCEL_FILE : null);
-  if (secuenciasFile) {
-    console.log(`${c.dim}  Procesando: ${path.basename(secuenciasFile)}${c.reset}`);
-    importSecuenciasFromExcel(XLSX, secuenciasFile);
+  // Importar secuencias
+  if (hasSecuencias) {
+    console.log(`${c.dim}  Procesando: ${path.basename(CONFIG.EXCEL_SECUENCIAS)}${c.reset}`);
+    importSecuenciasFromExcel(XLSX, CONFIG.EXCEL_SECUENCIAS);
   }
   
   // Importar software
@@ -2694,8 +2719,1015 @@ function extractMetadata() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-//   �🎛️ MENÚ PRINCIPAL
+//   📥 GESTIÓN DE APORTES DE LA COMUNIDAD
 // ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Asegura que las carpetas de aportes existan
+ */
+function ensureAportesDirectories() {
+  if (!fs.existsSync(CONFIG.APORTES_DIR)) {
+    fs.mkdirSync(CONFIG.APORTES_DIR, { recursive: true });
+  }
+  if (!fs.existsSync(CONFIG.APORTES_SECUENCIAS_DIR)) {
+    fs.mkdirSync(CONFIG.APORTES_SECUENCIAS_DIR, { recursive: true });
+  }
+  if (!fs.existsSync(CONFIG.APORTES_SOFTWARE_DIR)) {
+    fs.mkdirSync(CONFIG.APORTES_SOFTWARE_DIR, { recursive: true });
+  }
+}
+
+/**
+ * Agrega aportes de secuencias manualmente (desde los correos)
+ */
+async function agregarAporteSecuencia(rl) {
+  ensureAportesDirectories();
+  
+  let continuar = true;
+  let aportesAgregados = 0;
+  
+  while (continuar) {
+    console.log(`\n${c.cyan}${c.bold}➕ AGREGAR APORTE DE SECUENCIA${c.reset}`);
+    console.log(`${c.dim}   Ingresa los datos del correo recibido${c.reset}\n`);
+    
+    // Solicitar datos
+    const artista = await ask(rl, `${c.yellow}Artista: ${c.reset}`);
+    if (!artista.trim()) {
+      console.log(`${c.red}❌ El artista es obligatorio${c.reset}`);
+      continue;
+    }
+    
+    const album = await ask(rl, `${c.yellow}Álbum: ${c.reset}`);
+    if (!album.trim()) {
+      console.log(`${c.red}❌ El álbum es obligatorio${c.reset}`);
+      continue;
+    }
+    
+    const cancion = await ask(rl, `${c.yellow}Nombre de la canción: ${c.reset}`);
+    if (!cancion.trim()) {
+      console.log(`${c.red}❌ El nombre es obligatorio${c.reset}`);
+      continue;
+    }
+    
+    const tonalidad = await ask(rl, `${c.yellow}Tonalidad (ej: C, Dm, F#): ${c.reset}`);
+    const bpm = await ask(rl, `${c.yellow}BPM: ${c.reset}`);
+    const compas = await ask(rl, `${c.yellow}Compás (ej: 4/4, 3/4): ${c.reset}`);
+    const urlDescarga = await ask(rl, `${c.yellow}URL de descarga: ${c.reset}`);
+    const donante = await ask(rl, `${c.yellow}Nombre del donante: ${c.reset}`);
+    const emailDonante = await ask(rl, `${c.yellow}Email del donante: ${c.reset}`);
+    
+    // Crear objeto de aporte
+    const aporte = {
+      id: `aporte_${Date.now()}`,
+      fechaAporte: new Date().toISOString(),
+      artista: artista.trim(),
+      album: album.trim(),
+      cancion: cancion.trim(),
+      tonalidad: tonalidad.trim() || null,
+      bpm: bpm.trim() ? parseInt(bpm) : null,
+      compas: compas.trim() || null,
+      urlDescarga: urlDescarga.trim() || null,
+      donante: donante.trim() || 'Anónimo',
+      emailDonante: emailDonante.trim() || null,
+      estado: 'pendiente'
+    };
+    
+    // Guardar como XLSX individual
+    try {
+      let XLSX;
+      try {
+        XLSX = require('xlsx-js-style');
+      } catch (e) {
+        XLSX = require('xlsx');
+      }
+      
+      const fileName = `aporte_${aporte.id}.xlsx`;
+      const filePath = path.join(CONFIG.APORTES_SECUENCIAS_DIR, fileName);
+      
+      // Crear hoja con los datos
+      const headers = ['ID', 'Fecha', 'Artista', 'Album', 'Cancion', 'Tonalidad', 'BPM', 'Compas', 'URL', 'Donante', 'Email', 'Estado'];
+      const row = [
+        aporte.id,
+        aporte.fechaAporte,
+        aporte.artista,
+        aporte.album,
+        aporte.cancion,
+        aporte.tonalidad || '',
+        aporte.bpm || '',
+        aporte.compas || '',
+        aporte.urlDescarga || '',
+        aporte.donante,
+        aporte.emailDonante || '',
+        aporte.estado
+      ];
+      
+      const ws = XLSX.utils.aoa_to_sheet([headers, row]);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Aporte');
+      XLSX.writeFile(wb, filePath);
+      
+      aportesAgregados++;
+      console.log(`\n${c.green}✓ Aporte guardado: ${fileName}${c.reset}`);
+      console.log(`${c.dim}  Ubicación: ${filePath}${c.reset}`);
+      
+    } catch (error) {
+      console.log(`${c.red}❌ Error guardando aporte: ${error.message}${c.reset}`);
+    }
+    
+    // Preguntar si agregar otro
+    const otro = await ask(rl, `\n${c.cyan}¿Deseas agregar otro aporte de secuencia? (s/n): ${c.reset}`);
+    continuar = otro.toLowerCase() === 's' || otro.toLowerCase() === 'si';
+  }
+  
+  console.log(`\n${c.green}✓ Total aportes agregados: ${aportesAgregados}${c.reset}`);
+  return aportesAgregados;
+}
+
+/**
+ * Agrega aportes de software manualmente (desde los correos)
+ */
+async function agregarAporteSoftware(rl) {
+  ensureAportesDirectories();
+  
+  let continuar = true;
+  let aportesAgregados = 0;
+  
+  while (continuar) {
+    console.log(`\n${c.cyan}${c.bold}➕ AGREGAR APORTE DE SOFTWARE${c.reset}`);
+    console.log(`${c.dim}   Ingresa los datos del correo recibido${c.reset}\n`);
+    
+    // Solicitar datos
+    const nombre = await ask(rl, `${c.yellow}Nombre del software: ${c.reset}`);
+    if (!nombre.trim()) {
+      console.log(`${c.red}❌ El nombre es obligatorio${c.reset}`);
+      continue;
+    }
+    
+    console.log(`${c.dim}   Subcategorías: daws, plugins, utilidades${c.reset}`);
+    const subcategoria = await ask(rl, `${c.yellow}Subcategoría: ${c.reset}`);
+    if (!subcategoria.trim()) {
+      console.log(`${c.red}❌ La subcategoría es obligatoria${c.reset}`);
+      continue;
+    }
+    
+    const descripcion = await ask(rl, `${c.yellow}Descripción: ${c.reset}`);
+    const urlDescarga = await ask(rl, `${c.yellow}URL de descarga: ${c.reset}`);
+    const donante = await ask(rl, `${c.yellow}Nombre del donante: ${c.reset}`);
+    const emailDonante = await ask(rl, `${c.yellow}Email del donante: ${c.reset}`);
+    
+    // Crear objeto de aporte
+    const aporte = {
+      id: `aporte_sw_${Date.now()}`,
+      fechaAporte: new Date().toISOString(),
+      nombre: nombre.trim(),
+      subcategoria: subcategoria.trim().toLowerCase(),
+      descripcion: descripcion.trim() || null,
+      urlDescarga: urlDescarga.trim() || null,
+      donante: donante.trim() || 'Anónimo',
+      emailDonante: emailDonante.trim() || null,
+      estado: 'pendiente'
+    };
+    
+    // Guardar como XLSX individual
+    try {
+      let XLSX;
+      try {
+        XLSX = require('xlsx-js-style');
+      } catch (e) {
+        XLSX = require('xlsx');
+      }
+      
+      const fileName = `aporte_${aporte.id}.xlsx`;
+      const filePath = path.join(CONFIG.APORTES_SOFTWARE_DIR, fileName);
+      
+      // Crear hoja con los datos
+      const headers = ['ID', 'Fecha', 'Nombre', 'Subcategoria', 'Descripcion', 'URL', 'Donante', 'Email', 'Estado'];
+      const row = [
+        aporte.id,
+        aporte.fechaAporte,
+        aporte.nombre,
+        aporte.subcategoria,
+        aporte.descripcion || '',
+        aporte.urlDescarga || '',
+        aporte.donante,
+        aporte.emailDonante || '',
+        aporte.estado
+      ];
+      
+      const ws = XLSX.utils.aoa_to_sheet([headers, row]);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Aporte');
+      XLSX.writeFile(wb, filePath);
+      
+      aportesAgregados++;
+      console.log(`\n${c.green}✓ Aporte guardado: ${fileName}${c.reset}`);
+      console.log(`${c.dim}  Ubicación: ${filePath}${c.reset}`);
+      
+    } catch (error) {
+      console.log(`${c.red}❌ Error guardando aporte: ${error.message}${c.reset}`);
+    }
+    
+    // Preguntar si agregar otro
+    const otro = await ask(rl, `\n${c.cyan}¿Deseas agregar otro aporte de software? (s/n): ${c.reset}`);
+    continuar = otro.toLowerCase() === 's' || otro.toLowerCase() === 'si';
+  }
+  
+  console.log(`\n${c.green}✓ Total aportes agregados: ${aportesAgregados}${c.reset}`);
+  return aportesAgregados;
+}
+
+/**
+ * Combina todos los XLSX de aportes en un archivo madre
+ */
+function combinarAportes(tipo = 'secuencias') {
+  ensureAportesDirectories();
+  
+  const dir = tipo === 'secuencias' ? CONFIG.APORTES_SECUENCIAS_DIR : CONFIG.APORTES_SOFTWARE_DIR;
+  const nombreMadre = tipo === 'secuencias' ? 'aportes-secuencias-madre.xlsx' : 'aportes-software-madre.xlsx';
+  const pathMadre = path.join(dir, nombreMadre);
+  
+  console.log(`\n${c.cyan}📦 Combinando aportes de ${tipo}...${c.reset}\n`);
+  
+  let XLSX;
+  try {
+    XLSX = require('xlsx-js-style');
+  } catch (e) {
+    try {
+      XLSX = require('xlsx');
+    } catch (e2) {
+      console.log(`${c.red}❌ Error: xlsx no está instalado${c.reset}`);
+      return null;
+    }
+  }
+  
+  // Listar archivos XLSX individuales (excluyendo el madre)
+  const archivos = fs.readdirSync(dir)
+    .filter(f => f.endsWith('.xlsx') && f.startsWith('aporte_') && !f.includes('madre'));
+  
+  if (archivos.length === 0) {
+    console.log(`${c.yellow}⚠ No hay aportes pendientes de ${tipo}${c.reset}`);
+    return null;
+  }
+  
+  console.log(`${c.dim}  Encontrados ${archivos.length} aportes individuales${c.reset}`);
+  
+  // Leer todos los aportes
+  const todosLosAportes = [];
+  let headers = null;
+  
+  archivos.forEach(archivo => {
+    const filePath = path.join(dir, archivo);
+    try {
+      const wb = XLSX.readFile(filePath);
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+      
+      if (data.length > 0) {
+        if (!headers) {
+          headers = data[0];
+        }
+        // Agregar filas de datos (sin headers)
+        for (let i = 1; i < data.length; i++) {
+          if (data[i] && data[i].length > 0) {
+            todosLosAportes.push(data[i]);
+          }
+        }
+      }
+    } catch (error) {
+      console.log(`${c.yellow}⚠ Error leyendo ${archivo}: ${error.message}${c.reset}`);
+    }
+  });
+  
+  if (todosLosAportes.length === 0) {
+    console.log(`${c.yellow}⚠ No se encontraron datos en los aportes${c.reset}`);
+    return null;
+  }
+  
+  // Crear archivo madre
+  const ws = XLSX.utils.aoa_to_sheet([headers, ...todosLosAportes]);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Aportes');
+  XLSX.writeFile(wb, pathMadre);
+  
+  console.log(`${c.green}✓ Archivo madre creado: ${nombreMadre}${c.reset}`);
+  console.log(`${c.dim}  Total aportes combinados: ${todosLosAportes.length}${c.reset}`);
+  console.log(`${c.dim}  Ubicación: ${pathMadre}${c.reset}`);
+  
+  return { path: pathMadre, count: todosLosAportes.length };
+}
+
+/**
+ * Revisa aportes y verifica duplicados contra el JSON
+ */
+function revisarAportes(tipo = 'secuencias') {
+  ensureAportesDirectories();
+  
+  const dir = tipo === 'secuencias' ? CONFIG.APORTES_SECUENCIAS_DIR : CONFIG.APORTES_SOFTWARE_DIR;
+  const nombreMadre = tipo === 'secuencias' ? 'aportes-secuencias-madre.xlsx' : 'aportes-software-madre.xlsx';
+  const pathMadre = path.join(dir, nombreMadre);
+  
+  console.log(`\n${c.cyan}👁️ Revisando aportes de ${tipo}...${c.reset}\n`);
+  
+  // Verificar si existe el archivo madre
+  if (!fs.existsSync(pathMadre)) {
+    console.log(`${c.yellow}⚠ No existe archivo madre. Ejecuta primero "Combinar aportes"${c.reset}`);
+    return null;
+  }
+  
+  let XLSX;
+  try {
+    XLSX = require('xlsx-js-style');
+  } catch (e) {
+    XLSX = require('xlsx');
+  }
+  
+  // Leer archivo madre
+  const wb = XLSX.readFile(pathMadre);
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  const aportes = XLSX.utils.sheet_to_json(ws);
+  
+  if (aportes.length === 0) {
+    console.log(`${c.yellow}⚠ El archivo madre está vacío${c.reset}`);
+    return null;
+  }
+  
+  // Leer JSON correspondiente
+  const jsonData = tipo === 'secuencias' ? readDataJson('secuencias') : readDataJson('software');
+  
+  // Verificar duplicados
+  const resultados = [];
+  
+  if (tipo === 'secuencias') {
+    // Crear índice de canciones existentes
+    const cancionesExistentes = new Map();
+    if (jsonData.artists) {
+      jsonData.artists.forEach(artist => {
+        if (artist.albums) {
+          artist.albums.forEach(album => {
+            if (album.songs) {
+              album.songs.forEach(song => {
+                const key = normalizeText(`${artist.name}-${album.name}-${song.name}`);
+                cancionesExistentes.set(key, { artist: artist.name, album: album.name, song: song.name });
+              });
+            }
+          });
+        }
+      });
+    }
+    
+    // Verificar cada aporte
+    aportes.forEach((aporte, idx) => {
+      const key = normalizeText(`${aporte.Artista}-${aporte.Album}-${aporte.Cancion}`);
+      const existe = cancionesExistentes.get(key);
+      
+      resultados.push({
+        index: idx + 1,
+        aporte,
+        duplicado: !!existe,
+        existente: existe
+      });
+    });
+  } else {
+    // Para software
+    const softwareExistente = new Map();
+    if (jsonData.categories) {
+      jsonData.categories.forEach(cat => {
+        if (cat.items) {
+          cat.items.forEach(item => {
+            const key = normalizeText(item.name);
+            softwareExistente.set(key, { category: cat.id, name: item.name });
+          });
+        }
+      });
+    }
+    
+    aportes.forEach((aporte, idx) => {
+      const key = normalizeText(aporte.Nombre);
+      const existe = softwareExistente.get(key);
+      
+      resultados.push({
+        index: idx + 1,
+        aporte,
+        duplicado: !!existe,
+        existente: existe
+      });
+    });
+  }
+  
+  // Mostrar resultados
+  console.log(`${c.bold}📋 RESUMEN DE APORTES:${c.reset}\n`);
+  
+  let nuevos = 0;
+  let duplicados = 0;
+  
+  resultados.forEach(r => {
+    if (r.duplicado) {
+      duplicados++;
+      console.log(`  ${c.red}✗ [${r.index}] DUPLICADO${c.reset}`);
+      if (tipo === 'secuencias') {
+        console.log(`    ${c.dim}Aporte: ${r.aporte.Artista} - ${r.aporte.Album} - ${r.aporte.Cancion}${c.reset}`);
+        console.log(`    ${c.yellow}Ya existe: ${r.existente.artist} - ${r.existente.album} - ${r.existente.song}${c.reset}`);
+      } else {
+        console.log(`    ${c.dim}Aporte: ${r.aporte.Nombre}${c.reset}`);
+        console.log(`    ${c.yellow}Ya existe: ${r.existente.name} (${r.existente.category})${c.reset}`);
+      }
+    } else {
+      nuevos++;
+      console.log(`  ${c.green}✓ [${r.index}] NUEVO${c.reset}`);
+      if (tipo === 'secuencias') {
+        console.log(`    ${c.dim}${r.aporte.Artista} - ${r.aporte.Album} - ${r.aporte.Cancion}${c.reset}`);
+      } else {
+        console.log(`    ${c.dim}${r.aporte.Nombre} (${r.aporte.Subcategoria})${c.reset}`);
+      }
+    }
+    console.log('');
+  });
+  
+  console.log(`${c.bold}TOTALES:${c.reset}`);
+  console.log(`  • Nuevos (listos para aprobar): ${c.green}${nuevos}${c.reset}`);
+  console.log(`  • Duplicados (revisar): ${c.red}${duplicados}${c.reset}`);
+  
+  return { resultados, nuevos, duplicados };
+}
+
+/**
+ * Aprueba y transfiere aportes al JSON correspondiente
+ */
+async function aprobarAportes(rl, tipo = 'secuencias') {
+  ensureAportesDirectories();
+  
+  const dir = tipo === 'secuencias' ? CONFIG.APORTES_SECUENCIAS_DIR : CONFIG.APORTES_SOFTWARE_DIR;
+  const nombreMadre = tipo === 'secuencias' ? 'aportes-secuencias-madre.xlsx' : 'aportes-software-madre.xlsx';
+  const pathMadre = path.join(dir, nombreMadre);
+  
+  console.log(`\n${c.cyan}✅ Aprobar y transferir aportes de ${tipo}...${c.reset}\n`);
+  
+  if (!fs.existsSync(pathMadre)) {
+    console.log(`${c.yellow}⚠ No existe archivo madre. Ejecuta primero "Combinar aportes"${c.reset}`);
+    return null;
+  }
+  
+  let XLSX;
+  try {
+    XLSX = require('xlsx-js-style');
+  } catch (e) {
+    XLSX = require('xlsx');
+  }
+  
+  // Leer archivo madre
+  const wb = XLSX.readFile(pathMadre);
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  const aportes = XLSX.utils.sheet_to_json(ws);
+  
+  if (aportes.length === 0) {
+    console.log(`${c.yellow}⚠ No hay aportes para aprobar${c.reset}`);
+    return null;
+  }
+  
+  // Confirmar
+  console.log(`${c.yellow}Se van a transferir ${aportes.length} aportes al ${tipo}.json${c.reset}`);
+  const confirmar = await ask(rl, `${c.cyan}¿Continuar? (s/n): ${c.reset}`);
+  
+  if (confirmar.toLowerCase() !== 's' && confirmar.toLowerCase() !== 'si') {
+    console.log(`${c.dim}Operación cancelada${c.reset}`);
+    return null;
+  }
+  
+  // Crear backup
+  createBackup(tipo);
+  
+  // Leer JSON actual
+  const jsonData = readDataJson(tipo);
+  let agregados = 0;
+  
+  if (tipo === 'secuencias') {
+    aportes.forEach(aporte => {
+      // Buscar o crear artista
+      let artist = jsonData.artists.find(a => normalizeText(a.name) === normalizeText(aporte.Artista));
+      if (!artist) {
+        artist = {
+          id: `artist_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
+          name: aporte.Artista,
+          albums: []
+        };
+        jsonData.artists.push(artist);
+      }
+      
+      // Buscar o crear álbum
+      let album = artist.albums.find(a => normalizeText(a.name) === normalizeText(aporte.Album));
+      if (!album) {
+        album = {
+          id: `album_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
+          name: aporte.Album,
+          songs: []
+        };
+        artist.albums.push(album);
+      }
+      
+      // Crear canción
+      const song = {
+        id: aporte.ID || `song_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
+        name: aporte.Cancion,
+        fullName: `${aporte.Cancion}.zip`,
+        type: 'sequence',
+        driveId: aporte.URL ? extractDriveId(aporte.URL) : null,
+        downloadUrl: aporte.URL || null,
+        tonalidad: aporte.Tonalidad || null,
+        bpm: aporte.BPM ? parseInt(aporte.BPM) : null,
+        compas: aporte.Compas || null,
+        tipoSecuencia: 'Usuario',
+        comentarios: `Aportado por ${aporte.Donante || 'Anónimo'}`
+      };
+      
+      album.songs.push(song);
+      agregados++;
+    });
+    
+    // Actualizar stats
+    jsonData.stats = {
+      totalArtists: jsonData.artists.length,
+      totalSongs: jsonData.artists.reduce((sum, a) => sum + a.albums.reduce((s, al) => s + al.songs.length, 0), 0),
+      totalCharts: jsonData.stats?.totalCharts || 0
+    };
+  } else {
+    // Para software
+    aportes.forEach(aporte => {
+      // Buscar o crear categoría
+      let category = jsonData.categories.find(c => c.id === aporte.Subcategoria);
+      if (!category) {
+        category = {
+          id: aporte.Subcategoria,
+          name: aporte.Subcategoria.charAt(0).toUpperCase() + aporte.Subcategoria.slice(1),
+          items: []
+        };
+        jsonData.categories.push(category);
+      }
+      
+      // Crear item
+      const item = {
+        id: aporte.ID || `sw_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
+        name: aporte.Nombre,
+        description: aporte.Descripcion || null,
+        url: aporte.URL || null,
+        addedBy: aporte.Donante || 'Anónimo'
+      };
+      
+      category.items.push(item);
+      agregados++;
+    });
+  }
+  
+  // Guardar
+  jsonData.lastUpdated = new Date().toISOString();
+  saveDataJson(jsonData, tipo);
+  
+  console.log(`\n${c.green}✓ ${agregados} aportes transferidos al ${tipo}.json${c.reset}`);
+  
+  return agregados;
+}
+
+/**
+ * Extrae el ID de Google Drive de una URL
+ */
+function extractDriveId(url) {
+  if (!url) return null;
+  const patterns = [
+    /\/d\/([a-zA-Z0-9_-]+)/,
+    /id=([a-zA-Z0-9_-]+)/,
+    /\/file\/d\/([a-zA-Z0-9_-]+)/
+  ];
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match) return match[1];
+  }
+  return null;
+}
+
+/**
+ * Limpia aportes procesados (elimina XLSX individuales y madre)
+ */
+function limpiarAportes(tipo = 'secuencias') {
+  ensureAportesDirectories();
+  
+  const dir = tipo === 'secuencias' ? CONFIG.APORTES_SECUENCIAS_DIR : CONFIG.APORTES_SOFTWARE_DIR;
+  
+  console.log(`\n${c.cyan}🗑️ Limpiando aportes procesados de ${tipo}...${c.reset}\n`);
+  
+  const archivos = fs.readdirSync(dir).filter(f => f.endsWith('.xlsx'));
+  
+  if (archivos.length === 0) {
+    console.log(`${c.dim}No hay archivos para limpiar${c.reset}`);
+    return 0;
+  }
+  
+  let eliminados = 0;
+  archivos.forEach(archivo => {
+    try {
+      fs.unlinkSync(path.join(dir, archivo));
+      eliminados++;
+      console.log(`${c.dim}  ✗ ${archivo}${c.reset}`);
+    } catch (error) {
+      console.log(`${c.red}  Error eliminando ${archivo}: ${error.message}${c.reset}`);
+    }
+  });
+  
+  console.log(`\n${c.green}✓ ${eliminados} archivos eliminados${c.reset}`);
+  return eliminados;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//   🧹 UTILIDADES ADICIONALES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Limpia numeración del inicio de nombres de canciones
+ */
+function limpiarNumeracionNombres() {
+  console.log(`\n${c.cyan}🧹 Limpiando numeración de nombres de archivos...${c.reset}\n`);
+  
+  const data = readDataJson('secuencias');
+  let modificados = 0;
+  const ejemplos = [];
+  
+  // Patrones de numeración a eliminar
+  const patterns = [
+    /^\d{1,2}\.\s*/,           // "01. " o "1. "
+    /^\d{1,2}\s*-\s*/,         // "01 - " o "1 - "
+    /^\d{1,2}_/,               // "01_"
+    /^\[\d{1,2}\]\s*/,         // "[01] "
+    /^\(\d{1,2}\)\s*/,         // "(01) "
+  ];
+  
+  if (data.artists) {
+    data.artists.forEach(artist => {
+      if (artist.albums) {
+        artist.albums.forEach(album => {
+          if (album.songs) {
+            album.songs.forEach(song => {
+              const originalName = song.name;
+              let newName = originalName;
+              
+              // Aplicar patrones
+              for (const pattern of patterns) {
+                if (pattern.test(newName)) {
+                  newName = newName.replace(pattern, '');
+                  break;
+                }
+              }
+              
+              // Si cambió el nombre
+              if (newName !== originalName) {
+                song.name = newName.trim();
+                modificados++;
+                if (ejemplos.length < 5) {
+                  ejemplos.push({ original: originalName, nuevo: song.name });
+                }
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+  
+  if (modificados > 0) {
+    console.log(`${c.bold}Ejemplos de cambios:${c.reset}`);
+    ejemplos.forEach(e => {
+      console.log(`  ${c.red}"${e.original}"${c.reset} → ${c.green}"${e.nuevo}"${c.reset}`);
+    });
+    
+    data.lastUpdated = new Date().toISOString();
+    createBackup('secuencias');
+    saveDataJson(data, 'secuencias');
+    console.log(`\n${c.green}✓ ${modificados} nombres limpiados${c.reset}`);
+  } else {
+    console.log(`${c.dim}No se encontraron nombres con numeración para limpiar${c.reset}`);
+  }
+  
+  return modificados;
+}
+
+/**
+ * Sincroniza las estadísticas del JSON
+ */
+function sincronizarStats() {
+  console.log(`\n${c.cyan}🔄 Sincronizando estadísticas...${c.reset}\n`);
+  
+  const data = readDataJson('secuencias');
+  
+  const totalArtists = data.artists ? data.artists.length : 0;
+  const totalSongs = data.artists ? data.artists.reduce(
+    (sum, a) => sum + (a.albums ? a.albums.reduce((s, al) => s + (al.songs ? al.songs.length : 0), 0) : 0), 0
+  ) : 0;
+  const totalCharts = data.artists ? data.artists.reduce(
+    (sum, a) => sum + (a.albums ? a.albums.reduce(
+      (s, al) => s + (al.songs ? al.songs.filter(song => song.chartUrl).length : 0), 0
+    ) : 0), 0
+  ) : 0;
+  
+  console.log(`${c.bold}Estadísticas calculadas:${c.reset}`);
+  console.log(`  • Artistas: ${totalArtists}`);
+  console.log(`  • Secuencias: ${totalSongs}`);
+  console.log(`  • Charts: ${totalCharts}`);
+  
+  const statsAnterior = data.stats || {};
+  
+  data.stats = {
+    totalArtists,
+    totalSongs,
+    totalCharts
+  };
+  
+  const cambio = statsAnterior.totalArtists !== totalArtists ||
+                 statsAnterior.totalSongs !== totalSongs ||
+                 statsAnterior.totalCharts !== totalCharts;
+  
+  if (cambio) {
+    data.lastUpdated = new Date().toISOString();
+    saveDataJson(data, 'secuencias');
+    console.log(`\n${c.green}✓ Estadísticas actualizadas${c.reset}`);
+  } else {
+    console.log(`\n${c.dim}Las estadísticas ya estaban correctas${c.reset}`);
+  }
+  
+  return data.stats;
+}
+
+/**
+ * Valida la integridad de los datos
+ */
+function validarIntegridad() {
+  console.log(`\n${c.cyan}📋 Validando integridad de datos...${c.reset}\n`);
+  
+  const data = readDataJson('secuencias');
+  const problemas = [];
+  
+  if (data.artists) {
+    data.artists.forEach((artist, aIdx) => {
+      // Artista sin nombre
+      if (!artist.name || !artist.name.trim()) {
+        problemas.push({ tipo: 'error', msg: `Artista #${aIdx + 1} sin nombre` });
+      }
+      
+      // Artista sin álbumes
+      if (!artist.albums || artist.albums.length === 0) {
+        problemas.push({ tipo: 'warn', msg: `"${artist.name}" no tiene álbumes` });
+      } else {
+        artist.albums.forEach((album, alIdx) => {
+          // Álbum sin nombre
+          if (!album.name || !album.name.trim()) {
+            problemas.push({ tipo: 'error', msg: `"${artist.name}" tiene álbum #${alIdx + 1} sin nombre` });
+          }
+          
+          // Álbum sin canciones
+          if (!album.songs || album.songs.length === 0) {
+            problemas.push({ tipo: 'warn', msg: `"${artist.name} - ${album.name}" no tiene canciones` });
+          } else {
+            album.songs.forEach((song, sIdx) => {
+              // Canción sin nombre
+              if (!song.name || !song.name.trim()) {
+                problemas.push({ tipo: 'error', msg: `"${artist.name} - ${album.name}" tiene canción #${sIdx + 1} sin nombre` });
+              }
+              
+              // Canción sin URL de descarga
+              if (!song.downloadUrl && !song.driveId) {
+                problemas.push({ tipo: 'warn', msg: `"${song.name}" sin URL de descarga` });
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+  
+  // Mostrar resultados
+  const errores = problemas.filter(p => p.tipo === 'error');
+  const advertencias = problemas.filter(p => p.tipo === 'warn');
+  
+  if (errores.length > 0) {
+    console.log(`${c.red}${c.bold}❌ ERRORES (${errores.length}):${c.reset}`);
+    errores.forEach(e => console.log(`  ${c.red}• ${e.msg}${c.reset}`));
+  }
+  
+  if (advertencias.length > 0) {
+    console.log(`\n${c.yellow}${c.bold}⚠ ADVERTENCIAS (${advertencias.length}):${c.reset}`);
+    advertencias.slice(0, 10).forEach(w => console.log(`  ${c.yellow}• ${w.msg}${c.reset}`));
+    if (advertencias.length > 10) {
+      console.log(`  ${c.dim}... y ${advertencias.length - 10} más${c.reset}`);
+    }
+  }
+  
+  if (problemas.length === 0) {
+    console.log(`${c.green}✓ No se encontraron problemas${c.reset}`);
+  }
+  
+  console.log(`\n${c.bold}Resumen:${c.reset}`);
+  console.log(`  * Errores: ${errores.length}`);
+  console.log(`  * Advertencias: ${advertencias.length}`);
+  
+  return { errores: errores.length, advertencias: advertencias.length };
+}
+
+/**
+ * Elimina albumes vacios (sin canciones)
+ */
+function eliminarAlbumesVacios() {
+  console.log(`\n${c.cyan}[X] Eliminando albumes vacios...${c.reset}\n`);
+  
+  const data = readDataJson('secuencias');
+  let albumesEliminados = 0;
+  let artistasEliminados = 0;
+  const detalles = [];
+  
+  if (data.artists) {
+    // Filtrar albumes vacios de cada artista
+    data.artists.forEach(artist => {
+      if (artist.albums) {
+        const albumesOriginales = artist.albums.length;
+        artist.albums = artist.albums.filter(album => {
+          const tieneCanciones = album.songs && album.songs.length > 0;
+          if (!tieneCanciones) {
+            detalles.push(`  ${c.dim}x ${artist.name} - ${album.name}${c.reset}`);
+          }
+          return tieneCanciones;
+        });
+        albumesEliminados += albumesOriginales - artist.albums.length;
+      }
+    });
+    
+    // Filtrar artistas sin albumes
+    const artistasOriginales = data.artists.length;
+    data.artists = data.artists.filter(artist => artist.albums && artist.albums.length > 0);
+    artistasEliminados = artistasOriginales - data.artists.length;
+  }
+  
+  if (albumesEliminados > 0 || artistasEliminados > 0) {
+    // Mostrar primeros 20 detalles
+    if (detalles.length > 0) {
+      console.log(`${c.bold}Albumes eliminados:${c.reset}`);
+      detalles.slice(0, 20).forEach(d => console.log(d));
+      if (detalles.length > 20) {
+        console.log(`  ${c.dim}... y ${detalles.length - 20} mas${c.reset}`);
+      }
+    }
+    
+    // Actualizar stats
+    data.stats = {
+      totalArtists: data.artists.length,
+      totalSongs: data.artists.reduce((sum, a) => sum + a.albums.reduce((s, al) => s + al.songs.length, 0), 0),
+      totalCharts: data.stats?.totalCharts || 0
+    };
+    
+    data.lastUpdated = new Date().toISOString();
+    createBackup('secuencias');
+    saveDataJson(data, 'secuencias');
+    
+    console.log(`\n${c.green}[v] Eliminados: ${albumesEliminados} albumes vacios, ${artistasEliminados} artistas sin albumes${c.reset}`);
+  } else {
+    console.log(`${c.dim}No se encontraron albumes vacios${c.reset}`);
+  }
+  
+  return { albumesEliminados, artistasEliminados };
+}
+
+/**
+ * Elimina duplicados de tonos (mantiene solo el tono original/primero encontrado)
+ */
+function eliminarDuplicadosTonos() {
+  console.log(`\n${c.cyan}[D] Eliminando duplicados de tonos...${c.reset}\n`);
+  
+  const data = readDataJson('secuencias');
+  let cancionesEliminadas = 0;
+  const detalles = [];
+  
+  // Patrones para extraer tonalidad del nombre
+  // Ejemplos: "-A-120bpm", "-Bb-", "(C)", "- G -", etc.
+  const tonalityPatterns = [
+    /-([A-G][b#]?)-\d+\.?\d*bpm$/i,     // -A-120bpm, -Bb-72.00bpm
+    /-([A-G][b#]?)$/i,                   // -A, -Bb
+    /\s*-\s*([A-G][b#]?)\s*-?\s*$/i,    // - A -, - Bb
+    /\(([A-G][b#]?)\)$/i,               // (C), (Dm)
+    /-([A-G][b#]?m?)-/i,                // -Cm- (con menor)
+  ];
+  
+  /**
+   * Extrae el nombre base de la cancion (sin tonalidad ni BPM)
+   */
+  function getBaseName(songName) {
+    let base = songName;
+    
+    // Remover tonalidad y BPM del final
+    base = base.replace(/-[A-G][b#]?m?-?\d*\.?\d*bpm$/i, '');
+    base = base.replace(/-[A-G][b#]?m?$/i, '');
+    base = base.replace(/\s*-\s*[A-G][b#]?m?\s*-?\s*$/i, '');
+    base = base.replace(/\([A-G][b#]?m?\)$/i, '');
+    base = base.replace(/-[A-G][b#]?m?-/gi, '-');
+    
+    // Limpiar guiones y espacios extra
+    base = base.replace(/[-_]+$/, '').trim();
+    
+    return normalizeText(base);
+  }
+  
+  /**
+   * Extrae la tonalidad de un nombre de cancion
+   */
+  function getTonality(songName) {
+    for (const pattern of tonalityPatterns) {
+      const match = songName.match(pattern);
+      if (match) {
+        return match[1].toUpperCase();
+      }
+    }
+    return null;
+  }
+  
+  if (data.artists) {
+    data.artists.forEach(artist => {
+      if (artist.albums) {
+        artist.albums.forEach(album => {
+          if (album.songs && album.songs.length > 1) {
+            // Agrupar canciones por nombre base
+            const songsByBase = new Map();
+            
+            album.songs.forEach(song => {
+              const baseName = getBaseName(song.name);
+              const tonality = getTonality(song.name);
+              
+              if (!songsByBase.has(baseName)) {
+                songsByBase.set(baseName, []);
+              }
+              songsByBase.get(baseName).push({ song, tonality });
+            });
+            
+            // Filtrar: mantener solo la primera version de cada cancion
+            const cancionesAMantener = [];
+            const cancionesEliminadasDelAlbum = [];
+            
+            songsByBase.forEach((versions, baseName) => {
+              if (versions.length > 1) {
+                // Hay duplicados - mantener la primera
+                const [primera, ...duplicadas] = versions;
+                cancionesAMantener.push(primera.song);
+                
+                duplicadas.forEach(dup => {
+                  cancionesEliminadasDelAlbum.push(dup.song.name);
+                  cancionesEliminadas++;
+                });
+                
+                if (duplicadas.length > 0) {
+                  detalles.push(`  ${c.green}[v] ${artist.name} - ${album.name}${c.reset}`);
+                  detalles.push(`      ${c.dim}Mantiene: ${primera.song.name}${c.reset}`);
+                  duplicadas.forEach(dup => {
+                    detalles.push(`      ${c.red}x Elimina: ${dup.song.name}${c.reset}`);
+                  });
+                }
+              } else {
+                // Solo una version - mantener
+                cancionesAMantener.push(versions[0].song);
+              }
+            });
+            
+            // Actualizar el album con las canciones filtradas
+            album.songs = cancionesAMantener;
+          }
+        });
+      }
+    });
+  }
+  
+  if (cancionesEliminadas > 0) {
+    // Mostrar primeros 30 detalles
+    if (detalles.length > 0) {
+      console.log(`${c.bold}Duplicados eliminados:${c.reset}`);
+      detalles.slice(0, 30).forEach(d => console.log(d));
+      if (detalles.length > 30) {
+        console.log(`  ${c.dim}... y mas${c.reset}`);
+      }
+    }
+    
+    // Actualizar stats
+    data.stats = {
+      totalArtists: data.artists.length,
+      totalSongs: data.artists.reduce((sum, a) => sum + a.albums.reduce((s, al) => s + al.songs.length, 0), 0),
+      totalCharts: data.stats?.totalCharts || 0
+    };
+    
+    data.lastUpdated = new Date().toISOString();
+    createBackup('secuencias');
+    saveDataJson(data, 'secuencias');
+    
+    console.log(`\n${c.green}[v] ${cancionesEliminadas} canciones duplicadas eliminadas${c.reset}`);
+  } else {
+    console.log(`${c.dim}No se encontraron duplicados de tonos${c.reset}`);
+  }
+  
+  return cancionesEliminadas;
+}
+
+// ===============================================================================
+//   MENU PRINCIPAL
+// ===============================================================================
 
 async function showMainMenu() {
   const rl = createReadline();
@@ -2704,28 +3736,58 @@ async function showMainMenu() {
     clearScreen();
     showBanner();
     
-    const data = readDataJson();
-    console.log(`${c.dim}  Biblioteca: ${data.stats.totalArtists} artistas | ${data.stats.totalSongs} secuencias | ${data.stats.totalCharts} charts${c.reset}`);
-    console.log(`${c.dim}  Última actualización: ${formatDate(data.lastUpdated)}${c.reset}\n`);
+    const secuenciasData = readDataJson('secuencias');
+    const softwareData = readDataJson('software');
     
-    console.log(`${c.bold}  ¿Qué deseas hacer?${c.reset}
+    console.log(`${c.dim}  Secuencias: ${secuenciasData.stats?.totalArtists || 0} artistas | ${secuenciasData.stats?.totalSongs || 0} secuencias | ${secuenciasData.stats?.totalCharts || 0} charts${c.reset}`);
+    console.log(`${c.dim}  Software: ${softwareData.categories?.length || 0} categorias | ${softwareData.categories?.reduce((s, c) => s + (c.items?.length || 0), 0) || 0} items${c.reset}`);
+    console.log(`${c.dim}  Ultima actualizacion: ${formatDate(secuenciasData.lastUpdated)}${c.reset}\n`);
     
-  ${c.cyan}1.${c.reset} 📤 Exportar data.json a Excel
-  ${c.cyan}2.${c.reset} 📥 Importar cambios desde Excel
-  ${c.cyan}3.${c.reset} 📝 Agregar campos nuevos al data.json
-  ${c.cyan}4.${c.reset} 🔗 Enlazar charts con canciones
-  ${c.cyan}5.${c.reset} 🗜️  Simplificar charts (1 por secuencia)
-  ${c.cyan}6.${c.reset} 🧹 Limpiar duplicados y covers
-  ${c.cyan}7.${c.reset} 🎵 Extraer metadatos (BPM, tonalidad)
-  ${c.cyan}8.${c.reset} 🔍 Buscar duplicados (solo ver)
-  ${c.cyan}9.${c.reset} 💾 Crear backup manual
-  
-  ${c.cyan}0.${c.reset} 🚪 Salir
+    // Contar aportes pendientes
+    ensureAportesDirectories();
+    const aportesSeq = fs.readdirSync(CONFIG.APORTES_SECUENCIAS_DIR).filter(f => f.startsWith('aporte_') && f.endsWith('.xlsx')).length;
+    const aportesSw = fs.readdirSync(CONFIG.APORTES_SOFTWARE_DIR).filter(f => f.startsWith('aporte_') && f.endsWith('.xlsx')).length;
+    
+    if (aportesSeq > 0 || aportesSw > 0) {
+      console.log(`${c.yellow}  [!] Aportes pendientes: ${aportesSeq} secuencias | ${aportesSw} software${c.reset}\n`);
+    }
+    
+    console.log(`${c.bold}  Que deseas hacer?${c.reset}
+
+  ${c.magenta}--- DATOS (JSON <-> XLSX) ---${c.reset}
+  ${c.cyan} 1.${c.reset} [>] Exportar JSONs a Excel (secuencias + software)
+  ${c.cyan} 2.${c.reset} [<] Importar cambios desde Excel
+
+  ${c.magenta}--- APORTES DE SECUENCIAS ---${c.reset}
+  ${c.cyan} 3.${c.reset} [+] Agregar aporte(s) de secuencia
+  ${c.cyan} 4.${c.reset} [=] Combinar aportes (crear archivo madre)
+  ${c.cyan} 5.${c.reset} [?] Revisar aportes (ver duplicados)
+  ${c.cyan} 6.${c.reset} [v] Aprobar y transferir al JSON
+  ${c.cyan} 7.${c.reset} [x] Limpiar aportes procesados
+
+  ${c.magenta}--- APORTES DE SOFTWARE ---${c.reset}
+  ${c.cyan} 8.${c.reset} [+] Agregar aporte(s) de software
+  ${c.cyan} 9.${c.reset} [=] Combinar aportes (crear archivo madre)
+  ${c.cyan}10.${c.reset} [?] Revisar aportes (ver duplicados)
+  ${c.cyan}11.${c.reset} [v] Aprobar y transferir al JSON
+  ${c.cyan}12.${c.reset} [x] Limpiar aportes procesados
+
+  ${c.magenta}--- UTILIDADES ---${c.reset}
+  ${c.cyan}13.${c.reset} [#] Limpiar numeracion de nombres
+  ${c.cyan}14.${c.reset} [~] Sincronizar estadisticas
+  ${c.cyan}15.${c.reset} [!] Validar integridad de datos
+  ${c.cyan}16.${c.reset} [*] Buscar duplicados (solo ver)
+  ${c.cyan}17.${c.reset} [S] Crear backup manual
+  ${c.cyan}18.${c.reset} [X] Eliminar albumes vacios
+  ${c.cyan}19.${c.reset} [D] Eliminar duplicados de tonos
+
+  ${c.cyan} 0.${c.reset} [0] Salir
 `);
     
     const answer = await ask(rl, `${c.cyan}Selecciona una opción: ${c.reset}`);
     
     switch (answer) {
+      // === DATOS (JSON ↔ XLSX) ===
       case '1':
         exportToExcel();
         await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
@@ -2735,57 +3797,111 @@ async function showMainMenu() {
         importFromExcel();
         await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
         break;
-        
+      
+      // === APORTES SECUENCIAS ===
       case '3':
-        addNewFieldsToData();
+        await agregarAporteSecuencia(rl);
         await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
         break;
         
       case '4':
-        linkChartsToSongs();
+        combinarAportes('secuencias');
         await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
         break;
         
       case '5':
-        cleanupCharts();
+        revisarAportes('secuencias');
         await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
         break;
         
       case '6':
-        cleanupDuplicates();
+        await aprobarAportes(rl, 'secuencias');
         await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
         break;
         
       case '7':
-        extractMetadata();
+        limpiarAportes('secuencias');
         await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
         break;
-        
+      
+      // === APORTES SOFTWARE ===
       case '8':
-        findDuplicates();
+        await agregarAporteSoftware(rl);
         await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
         break;
         
       case '9':
-        createBackup();
+        combinarAportes('software');
+        await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
+        break;
+        
+      case '10':
+        revisarAportes('software');
+        await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
+        break;
+        
+      case '11':
+        await aprobarAportes(rl, 'software');
+        await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
+        break;
+        
+      case '12':
+        limpiarAportes('software');
+        await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
+        break;
+      
+      // === UTILIDADES ===
+      case '13':
+        limpiarNumeracionNombres();
+        await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
+        break;
+        
+      case '14':
+        sincronizarStats();
+        await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
+        break;
+        
+      case '15':
+        validarIntegridad();
+        await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
+        break;
+        
+      case '16':
+        findDuplicates();
+        await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
+        break;
+        
+      case '17':
+        createBackup('secuencias');
+        createBackup('software');
+        await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
+        break;
+        
+      case '18':
+        eliminarAlbumesVacios();
+        await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
+        break;
+        
+      case '19':
+        eliminarDuplicadosTonos();
         await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
         break;
         
       case '0':
-        console.log(`\n${c.cyan}👋 ¡Hasta luego!${c.reset}\n`);
+        console.log(`\n${c.cyan}Hasta luego!${c.reset}\n`);
         rl.close();
         process.exit(0);
         
       default:
-        console.log(`\n${c.red}Opción no válida${c.reset}`);
+        console.log(`\n${c.red}Opcion no valida${c.reset}`);
         await ask(rl, `${c.dim}Presiona Enter para continuar...${c.reset}`);
     }
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-//   🚀 PUNTO DE ENTRADA
-// ═══════════════════════════════════════════════════════════════════════════════
+// ===============================================================================
+//   PUNTO DE ENTRADA
+// ===============================================================================
 
 async function main() {
   const args = process.argv.slice(2);
@@ -2814,20 +3930,66 @@ async function main() {
   } else if (args.includes('--find-duplicates')) {
     showBanner();
     findDuplicates();
+  // === FUNCIONES DE APORTES ===
+  } else if (args.includes('--combinar-aportes-seq')) {
+    showBanner();
+    combinarAportes('secuencias');
+  } else if (args.includes('--combinar-aportes-sw')) {
+    showBanner();
+    combinarAportes('software');
+  } else if (args.includes('--revisar-aportes-seq')) {
+    showBanner();
+    revisarAportes('secuencias');
+  } else if (args.includes('--revisar-aportes-sw')) {
+    showBanner();
+    revisarAportes('software');
+  } else if (args.includes('--limpiar-aportes-seq')) {
+    showBanner();
+    limpiarAportes('secuencias');
+  } else if (args.includes('--limpiar-aportes-sw')) {
+    showBanner();
+    limpiarAportes('software');
+  // === UTILIDADES ===
+  } else if (args.includes('--limpiar-numeracion')) {
+    showBanner();
+    limpiarNumeracionNombres();
+  } else if (args.includes('--sync-stats')) {
+    showBanner();
+    sincronizarStats();
+  } else if (args.includes('--validar')) {
+    showBanner();
+    validarIntegridad();
+  } else if (args.includes('--eliminar-vacios')) {
+    showBanner();
+    eliminarAlbumesVacios();
+  } else if (args.includes('--eliminar-duplicados-tonos')) {
+    showBanner();
+    eliminarDuplicadosTonos();
   } else if (args.includes('--help')) {
     showBanner();
     console.log(`
 ${c.bold}USO:${c.reset}
-  node tools/data-manager.cjs                       Menú interactivo
+  node tools/data-manager.cjs                       Menu interactivo
+  
+${c.bold}DATOS (JSON <-> XLSX):${c.reset}
   node tools/data-manager.cjs --export              Exportar a Excel
   node tools/data-manager.cjs --import              Importar desde Excel
-  node tools/data-manager.cjs --add-fields          Agregar campos nuevos al JSON
-  node tools/data-manager.cjs --link-charts         Enlazar charts con canciones
-  node tools/data-manager.cjs --cleanup-charts      Simplificar charts (1 por secuencia)
-  node tools/data-manager.cjs --cleanup-duplicates  Limpiar duplicados y covers
-  node tools/data-manager.cjs --extract-metadata    Extraer BPM/tonalidad de nombres
-  node tools/data-manager.cjs --find-duplicates     Buscar duplicados (solo ver)
-  node tools/data-manager.cjs --help                Mostrar esta ayuda
+  
+${c.bold}APORTES:${c.reset}
+  node tools/data-manager.cjs --combinar-aportes-seq   Combinar aportes de secuencias
+  node tools/data-manager.cjs --combinar-aportes-sw    Combinar aportes de software
+  node tools/data-manager.cjs --revisar-aportes-seq    Revisar aportes de secuencias
+  node tools/data-manager.cjs --revisar-aportes-sw     Revisar aportes de software
+  node tools/data-manager.cjs --limpiar-aportes-seq    Limpiar aportes de secuencias
+  node tools/data-manager.cjs --limpiar-aportes-sw     Limpiar aportes de software
+  
+${c.bold}UTILIDADES:${c.reset}
+  node tools/data-manager.cjs --limpiar-numeracion     Limpiar numeracion de nombres
+  node tools/data-manager.cjs --sync-stats             Sincronizar estadisticas
+  node tools/data-manager.cjs --validar                Validar integridad de datos
+  node tools/data-manager.cjs --find-duplicates        Buscar duplicados (solo ver)
+  node tools/data-manager.cjs --eliminar-vacios        Eliminar albumes vacios
+  node tools/data-manager.cjs --eliminar-duplicados-tonos  Eliminar duplicados de tonos
 `);
   } else {
     await showMainMenu();
