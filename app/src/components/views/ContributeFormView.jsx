@@ -202,8 +202,13 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
         userAgent: navigator?.userAgent || '',
       };
 
-      // Generar XLSX
-      const xlsxBase64 = await generateXlsxBase64(dataToSend);
+      // Generar XLSX (no bloquear envío si falla)
+      let xlsxBase64 = null;
+      try {
+        xlsxBase64 = await generateXlsxBase64(dataToSend);
+      } catch (xlsxError) {
+        console.warn('⚠️ No se pudo generar XLSX adjunto:', xlsxError);
+      }
 
       // Enviar formulario
       const result = await sendContributionForm(dataToSend, xlsxBase64);
@@ -282,8 +287,9 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
       console.error('Error al enviar formulario:', error);
       Swal.fire({
         icon: 'error',
-        title: t('contribute.errors.formIncomplete'),
+        title: t('contribute.errors.sendError', 'Error de envío'),
         text: t('contribute.errors.submitError'),
+        footer: `<small style="color:var(--text-subtle)">Detalle: ${error?.message || 'Error desconocido'}</small>`,
         confirmButtonColor: 'var(--accent)',
       });
     } finally {

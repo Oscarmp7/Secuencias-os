@@ -124,6 +124,7 @@
       "formIncomplete": "Incomplete form",
       "completeRequired": "Please complete all required fields.",
       "waitToSubmit": "Please wait {{time}} before submitting another form.",
+      "sendError": "Submission error",
       "submitError": "There was a problem submitting your contribution. Please try again."
     },
     "success": {

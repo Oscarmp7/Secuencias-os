@@ -94,11 +94,21 @@ async function sendContributionToEndpoint(payload) {
  * @returns {Promise<{ success: boolean, error?: string }>}
  */
 export async function sendContributionForm(formData, xlsxBase64 = null) {
-  // Si EmailJS no está configurado, simular envío exitoso (para desarrollo)
+  // Si EmailJS no está configurado y no hay endpoint, simular envío exitoso (para desarrollo)
   if (!isEmailJSConfigured() && !CONTRIBUTE_ENDPOINT) {
     console.log('📧 Simulando envío de formulario (EmailJS no configurado):', formData);
+    console.info(
+      '💡 Para habilitar el envío real, configura las variables de entorno VITE_EMAILJS_* en tu proveedor de hosting (Vercel, etc.)'
+    );
     return { success: true, simulated: true };
   }
+
+  // Log de diagnóstico en consola
+  console.log('📧 Enviando formulario...', {
+    emailjsConfigured: isEmailJSConfigured(),
+    hasEndpoint: !!CONTRIBUTE_ENDPOINT,
+    hasXlsx: !!xlsxBase64,
+  });
 
   try {
     // Si existe endpoint seguro, usarlo primero

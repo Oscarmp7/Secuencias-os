@@ -124,6 +124,7 @@
       "formIncomplete": "Formulario incompleto",
       "completeRequired": "Por favor, completa todos los campos obligatorios.",
       "waitToSubmit": "Por favor espera {{time}} antes de enviar otro formulario.",
+      "sendError": "Error de envío",
       "submitError": "Hubo un problema al enviar tu aporte. Por favor, intenta de nuevo."
     },
     "success": {
