@@ -3741,6 +3741,280 @@ function eliminarDuplicadosTonos() {
   return cancionesEliminadas;
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+//   🔀 FUSIONAR ARTISTAS DUPLICADOS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Calcula similitud entre dos strings (algoritmo Levenshtein simplificado)
+ */
+function calcularSimilitud(str1, str2) {
+  const s1 = normalizeText(str1);
+  const s2 = normalizeText(str2);
+  
+  if (s1 === s2) return 1;
+  if (s1.length === 0 || s2.length === 0) return 0;
+  
+  // Similitud basada en palabras comunes
+  const words1 = s1.split(/\s+/);
+  const words2 = s2.split(/\s+/);
+  
+  let matches = 0;
+  words1.forEach(w1 => {
+    if (words2.some(w2 => w1 === w2 || (w1.length > 3 && w2.length > 3 && (w1.includes(w2) || w2.includes(w1))))) {
+      matches++;
+    }
+  });
+  
+  return matches / Math.max(words1.length, words2.length);
+}
+
+/**
+ * Busca artistas duplicados con nombres similares
+ */
+function buscarArtistasDuplicados(umbralSimilitud = 0.7) {
+  console.log(`\n${c.cyan}🔍 Buscando artistas con nombres similares...${c.reset}\n`);
+  
+  const data = readDataJson('secuencias');
+  const duplicados = [];
+  
+  if (!data.artists || data.artists.length === 0) {
+    console.log(`${c.dim}No hay artistas para analizar${c.reset}`);
+    return [];
+  }
+  
+  // Comparar cada par de artistas
+  for (let i = 0; i < data.artists.length; i++) {
+    for (let j = i + 1; j < data.artists.length; j++) {
+      const artista1 = data.artists[i];
+      const artista2 = data.artists[j];
+      
+      const similitud = calcularSimilitud(artista1.name, artista2.name);
+      
+      if (similitud >= umbralSimilitud) {
+        // Contar canciones de cada uno
+        const canciones1 = artista1.albums?.reduce((sum, a) => sum + (a.songs?.length || 0), 0) || 0;
+        const canciones2 = artista2.albums?.reduce((sum, a) => sum + (a.songs?.length || 0), 0) || 0;
+        
+        duplicados.push({
+          artista1: { index: i, ...artista1, totalCanciones: canciones1 },
+          artista2: { index: j, ...artista2, totalCanciones: canciones2 },
+          similitud: Math.round(similitud * 100)
+        });
+      }
+    }
+  }
+  
+  return duplicados;
+}
+
+/**
+ * Fusiona artistas duplicados interactivamente
+ */
+async function fusionarArtistasDuplicados(rl) {
+  console.log(`\n${c.cyan}🔀 Fusionar artistas duplicados${c.reset}\n`);
+  
+  const duplicados = buscarArtistasDuplicados(0.6);
+  
+  if (duplicados.length === 0) {
+    console.log(`${c.green}✓ No se encontraron artistas duplicados!${c.reset}`);
+    return 0;
+  }
+  
+  console.log(`${c.yellow}⚠ Se encontraron ${duplicados.length} posibles duplicados:${c.reset}\n`);
+  
+  // Mostrar lista
+  duplicados.forEach((dup, idx) => {
+    console.log(`  ${c.bold}[${idx + 1}]${c.reset} ${c.cyan}${dup.artista1.name}${c.reset} (${dup.artista1.totalCanciones} canciones)`);
+    console.log(`      ↔ ${c.yellow}${dup.artista2.name}${c.reset} (${dup.artista2.totalCanciones} canciones)`);
+    console.log(`      ${c.dim}Similitud: ${dup.similitud}%${c.reset}\n`);
+  });
+  
+  const respuesta = await ask(rl, `${c.cyan}¿Fusionar todos automáticamente? (s/n/numero para fusionar uno): ${c.reset}`);
+  
+  if (respuesta.toLowerCase() === 'n') {
+    console.log(`${c.dim}Operación cancelada${c.reset}`);
+    return 0;
+  }
+  
+  createBackup('secuencias');
+  const data = readDataJson('secuencias');
+  let fusionados = 0;
+  
+  // Determinar qué duplicados fusionar
+  let duplicadosAFusionar = [];
+  if (respuesta.toLowerCase() === 's' || respuesta.toLowerCase() === 'si') {
+    duplicadosAFusionar = duplicados;
+  } else {
+    const num = parseInt(respuesta);
+    if (num > 0 && num <= duplicados.length) {
+      duplicadosAFusionar = [duplicados[num - 1]];
+    }
+  }
+  
+  // Procesar fusiones (de mayor a menor índice para no afectar índices)
+  const indicesAEliminar = new Set();
+  
+  duplicadosAFusionar.forEach(dup => {
+    // El principal es el que tiene más canciones
+    const [principal, secundario] = dup.artista1.totalCanciones >= dup.artista2.totalCanciones
+      ? [dup.artista1, dup.artista2]
+      : [dup.artista2, dup.artista1];
+    
+    console.log(`\n  ${c.green}→ Fusionando "${secundario.name}" en "${principal.name}"${c.reset}`);
+    
+    const artistaPrincipal = data.artists.find(a => a.id === principal.id);
+    const artistaSecundario = data.artists.find(a => a.id === secundario.id);
+    
+    if (artistaPrincipal && artistaSecundario) {
+      // Transferir álbumes
+      artistaSecundario.albums?.forEach(albumSecundario => {
+        // Buscar si el álbum ya existe en el principal
+        let albumPrincipal = artistaPrincipal.albums.find(
+          a => normalizeText(a.name) === normalizeText(albumSecundario.name)
+        );
+        
+        if (albumPrincipal) {
+          // Agregar canciones al álbum existente
+          albumSecundario.songs?.forEach(song => {
+            albumPrincipal.songs.push(song);
+          });
+          console.log(`    ${c.dim}+ ${albumSecundario.songs?.length || 0} canciones a "${albumPrincipal.name}"${c.reset}`);
+        } else {
+          // Agregar álbum completo
+          artistaPrincipal.albums.push(albumSecundario);
+          console.log(`    ${c.dim}+ Álbum "${albumSecundario.name}" (${albumSecundario.songs?.length || 0} canciones)${c.reset}`);
+        }
+      });
+      
+      // Marcar para eliminar
+      indicesAEliminar.add(data.artists.indexOf(artistaSecundario));
+      fusionados++;
+    }
+  });
+  
+  // Eliminar artistas fusionados (de mayor a menor)
+  const indicesOrdenados = Array.from(indicesAEliminar).sort((a, b) => b - a);
+  indicesOrdenados.forEach(idx => {
+    if (idx >= 0) data.artists.splice(idx, 1);
+  });
+  
+  // Actualizar stats
+  data.stats = {
+    totalArtists: data.artists.length,
+    totalSongs: data.artists.reduce((sum, a) => sum + a.albums.reduce((s, al) => s + al.songs.length, 0), 0),
+    totalCharts: data.stats?.totalCharts || 0
+  };
+  data.lastUpdated = new Date().toISOString();
+  
+  saveDataJson(data, 'secuencias');
+  
+  console.log(`\n${c.green}✓ ${fusionados} artistas fusionados exitosamente${c.reset}`);
+  return fusionados;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//   🚀 COMMIT Y DEPLOY
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const { execSync } = require('child_process');
+
+/**
+ * Ejecuta comando y muestra salida
+ */
+function ejecutarComando(comando, opciones = {}) {
+  console.log(`${c.dim}  $ ${comando}${c.reset}`);
+  try {
+    const resultado = execSync(comando, {
+      encoding: 'utf-8',
+      cwd: path.join(__dirname, '..'),
+      stdio: opciones.silencioso ? 'pipe' : 'inherit',
+      ...opciones
+    });
+    return { exito: true, salida: resultado };
+  } catch (error) {
+    return { exito: false, error: error.message };
+  }
+}
+
+/**
+ * Hace commit de los cambios y deploy a GitHub Pages
+ */
+async function commitYDeploy(rl) {
+  console.log(`\n${c.cyan}🚀 Commit y Deploy a GitHub Pages${c.reset}\n`);
+  
+  // Verificar cambios pendientes
+  console.log(`${c.dim}Verificando cambios...${c.reset}`);
+  const { salida: status } = ejecutarComando('git status --porcelain', { silencioso: true });
+  
+  if (!status || status.trim() === '') {
+    console.log(`${c.yellow}⚠ No hay cambios pendientes para commit${c.reset}`);
+    const soloDeplorar = await ask(rl, `${c.cyan}¿Deseas solo hacer deploy sin commit? (s/n): ${c.reset}`);
+    if (soloDeplorar.toLowerCase() !== 's') {
+      return false;
+    }
+  } else {
+    // Mostrar archivos modificados
+    console.log(`\n${c.bold}Archivos modificados:${c.reset}`);
+    const lineas = status.trim().split('\n');
+    lineas.forEach(linea => {
+      const [estado, archivo] = [linea.substring(0, 2), linea.substring(3)];
+      if (archivo.includes('secuencias.json') || archivo.includes('software.json')) {
+        console.log(`  ${c.green}${estado}${c.reset} ${archivo}`);
+      } else {
+        console.log(`  ${c.dim}${estado} ${archivo}${c.reset}`);
+      }
+    });
+    
+    // Pedir mensaje de commit
+    const mensajeDefault = `Actualizar datos: ${new Date().toLocaleDateString('es-ES')}`;
+    console.log(`\n${c.dim}Mensaje por defecto: "${mensajeDefault}"${c.reset}`);
+    const mensaje = await ask(rl, `${c.cyan}Mensaje del commit (Enter para usar default): ${c.reset}`);
+    const mensajeFinal = mensaje.trim() || mensajeDefault;
+    
+    // Hacer commit
+    console.log(`\n${c.bold}Haciendo commit...${c.reset}`);
+    ejecutarComando('git add .');
+    const commitResult = ejecutarComando(`git commit -m "${mensajeFinal}"`);
+    
+    if (!commitResult.exito) {
+      console.log(`${c.red}❌ Error en commit${c.reset}`);
+      return false;
+    }
+    console.log(`${c.green}✓ Commit realizado${c.reset}`);
+    
+    // Push
+    console.log(`\n${c.bold}Subiendo a GitHub...${c.reset}`);
+    const pushResult = ejecutarComando('git push');
+    
+    if (!pushResult.exito) {
+      console.log(`${c.red}❌ Error en push${c.reset}`);
+      return false;
+    }
+    console.log(`${c.green}✓ Push realizado${c.reset}`);
+  }
+  
+  // Preguntar si hacer deploy
+  const hacerDeploy = await ask(rl, `\n${c.cyan}¿Hacer deploy a GitHub Pages? (s/n): ${c.reset}`);
+  
+  if (hacerDeploy.toLowerCase() === 's' || hacerDeploy.toLowerCase() === 'si') {
+    console.log(`\n${c.bold}Construyendo y desplegando...${c.reset}`);
+    console.log(`${c.dim}Esto puede tardar unos segundos...${c.reset}\n`);
+    
+    const deployResult = ejecutarComando('npm run deploy');
+    
+    if (deployResult.exito) {
+      console.log(`\n${c.green}✓ Deploy completado exitosamente!${c.reset}`);
+      console.log(`${c.dim}  Los cambios estarán visibles en unos minutos en GitHub Pages${c.reset}`);
+    } else {
+      console.log(`${c.red}❌ Error en deploy${c.reset}`);
+      return false;
+    }
+  }
+  
+  return true;
+}
+
 // ===============================================================================
 //   MENU PRINCIPAL
 // ===============================================================================
@@ -3796,6 +4070,10 @@ async function showMainMenu() {
   ${c.cyan}17.${c.reset} [S] Crear backup manual
   ${c.cyan}18.${c.reset} [X] Eliminar albumes vacios
   ${c.cyan}19.${c.reset} [D] Eliminar duplicados de tonos
+  ${c.cyan}20.${c.reset} [M] Fusionar artistas duplicados
+
+  ${c.magenta}--- PUBLICAR ---${c.reset}
+  ${c.cyan}21.${c.reset} [G] Commit y Deploy a GitHub Pages
 
   ${c.cyan} 0.${c.reset} [0] Salir
 `);
@@ -3903,6 +4181,16 @@ async function showMainMenu() {
         await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
         break;
         
+      case '20':
+        await fusionarArtistasDuplicados(rl);
+        await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
+        break;
+        
+      case '21':
+        await commitYDeploy(rl);
+        await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
+        break;
+        
       case '0':
         console.log(`\n${c.cyan}Hasta luego!${c.reset}\n`);
         rl.close();
@@ -3981,6 +4269,16 @@ async function main() {
   } else if (args.includes('--eliminar-duplicados-tonos')) {
     showBanner();
     eliminarDuplicadosTonos();
+  } else if (args.includes('--fusionar-artistas')) {
+    showBanner();
+    const rl = createReadline();
+    await fusionarArtistasDuplicados(rl);
+    rl.close();
+  } else if (args.includes('--deploy')) {
+    showBanner();
+    const rl = createReadline();
+    await commitYDeploy(rl);
+    rl.close();
   } else if (args.includes('--help')) {
     showBanner();
     console.log(`
@@ -4006,6 +4304,8 @@ ${c.bold}UTILIDADES:${c.reset}
   node tools/data-manager.cjs --find-duplicates        Buscar duplicados (solo ver)
   node tools/data-manager.cjs --eliminar-vacios        Eliminar albumes vacios
   node tools/data-manager.cjs --eliminar-duplicados-tonos  Eliminar duplicados de tonos
+  node tools/data-manager.cjs --fusionar-artistas       Fusionar artistas duplicados
+  node tools/data-manager.cjs --deploy                  Commit y deploy a GitHub Pages
 `);
   } else {
     await showMainMenu();
