@@ -31,3 +31,4 @@ dist-ssr
 dead-links.json
 check-history.json
 duplicates.json
+.vercel

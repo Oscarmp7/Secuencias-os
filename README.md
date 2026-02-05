@@ -9,7 +9,7 @@
 [![TailwindCSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-[Demo en Vivo](https://oscarmp7.github.io/worship-box/) · [Reportar Bug](https://github.com/oscarmp7/worship-box/issues) · [Solicitar Feature](https://github.com/oscarmp7/worship-box/issues)
+[Demo en Vivo](https://worshipbox.vercel.app) · [Reportar Bug](https://github.com/oscarmp7/worship-box/issues) · [Solicitar Feature](https://github.com/oscarmp7/worship-box/issues)
 
 </div>
 
@@ -114,7 +114,7 @@ npm install
 npm run dev
 ```
 
-La aplicación estará disponible en: `http://localhost:5173/worship-box/`
+La aplicación estará disponible en: `http://localhost:5173/`
 
 ### Scripts Disponibles
 
@@ -123,7 +123,7 @@ La aplicación estará disponible en: `http://localhost:5173/worship-box/`
 | `npm run dev` | Servidor de desarrollo con HMR |
 | `npm run build` | Build de producción |
 | `npm run preview` | Vista previa del build |
-| `npm run deploy` | Deploy a GitHub Pages |
+| `npm run deploy` | Deploy a Vercel |
 | `npm run lint` | Verificar código con ESLint |
 
 ---
@@ -155,7 +155,7 @@ worship-box/
 │   │   └── data-manager.cjs     # CLI de gestión
 │   ├── aportes/                 # Aportes pendientes
 │   └── backups/                 # Backups automáticos
-└── gh-pages-deploy/             # Build de producción
+
 ```
 
 ---
@@ -218,16 +218,16 @@ VITE_EMAILJS_ATTACH_XLSX=false
 
 ## 🌐 Deploy
 
-### GitHub Pages
+### Vercel (Recomendado)
 
 ```bash
 cd app
 npm run deploy
 ```
 
-URL: `https://oscarmp7.github.io/worship-box/`
+URL: `https://worshipbox.vercel.app`
 
-### Vercel
+### Configuración Manual en Vercel
 
 1. Importar repositorio en [Vercel](https://vercel.com)
 2. Configurar:
@@ -263,7 +263,7 @@ Distribuido bajo la Licencia MIT. Ver `LICENSE` para más información.
 **Worship Box Ministry**
 
 - Email: worshipbox.ministry@gmail.com
-- Web: [worship-box](https://oscarmp7.github.io/worship-box/)
+- Web: [worship-box](https://worshipbox.vercel.app)
 
 ---
 
