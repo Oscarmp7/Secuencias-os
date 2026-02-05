@@ -4093,10 +4093,10 @@ function ejecutarComando(comando, opciones = {}) {
 }
 
 /**
- * Hace commit de los cambios y deploy a GitHub Pages
+ * Hace commit de los cambios y deploy a Vercel
  */
 async function commitYDeploy(rl) {
-  console.log(`\n${c.cyan}🚀 Commit y Deploy a GitHub Pages${c.reset}\n`);
+  console.log(`\n${c.cyan}🚀 Commit y Deploy a Vercel${c.reset}\n`);
   
   // Verificar cambios pendientes
   console.log(`${c.dim}Verificando cambios...${c.reset}`);
@@ -4150,17 +4150,17 @@ async function commitYDeploy(rl) {
   }
   
   // Preguntar si hacer deploy
-  const hacerDeploy = await ask(rl, `\n${c.cyan}¿Hacer deploy a GitHub Pages? (s/n): ${c.reset}`);
+  const hacerDeploy = await ask(rl, `\n${c.cyan}¿Hacer deploy a Vercel? (s/n): ${c.reset}`);
   
   if (hacerDeploy.toLowerCase() === 's' || hacerDeploy.toLowerCase() === 'si') {
-    console.log(`\n${c.bold}Construyendo y desplegando...${c.reset}`);
+    console.log(`\n${c.bold}Construyendo y desplegando a Vercel...${c.reset}`);
     console.log(`${c.dim}Esto puede tardar unos segundos...${c.reset}\n`);
     
     const deployResult = ejecutarComando('npm run deploy');
     
     if (deployResult.exito) {
       console.log(`\n${c.green}✓ Deploy completado exitosamente!${c.reset}`);
-      console.log(`${c.dim}  Los cambios estarán visibles en unos minutos en GitHub Pages${c.reset}`);
+      console.log(`${c.dim}  Sitio: https://worshipbox.vercel.app${c.reset}`);
     } else {
       console.log(`${c.red}❌ Error en deploy${c.reset}`);
       return false;
@@ -4228,7 +4228,7 @@ async function showMainMenu() {
   ${c.cyan}20.${c.reset} [M] Fusionar artistas duplicados
 
   ${c.magenta}--- PUBLICAR ---${c.reset}
-  ${c.cyan}21.${c.reset} [G] Commit y Deploy a GitHub Pages
+  ${c.cyan}21.${c.reset} [G] Commit y Deploy a Vercel
 
   ${c.cyan} 0.${c.reset} [0] Salir
 `);
@@ -4460,7 +4460,7 @@ ${c.bold}UTILIDADES:${c.reset}
   node tools/data-manager.cjs --eliminar-vacios        Eliminar albumes vacios
   node tools/data-manager.cjs --eliminar-duplicados-tonos  Eliminar duplicados de tonos
   node tools/data-manager.cjs --fusionar-artistas       Fusionar artistas duplicados
-  node tools/data-manager.cjs --deploy                  Commit y deploy a GitHub Pages
+  node tools/data-manager.cjs --deploy                  Commit y deploy a Vercel
 `);
   } else {
     await showMainMenu();
