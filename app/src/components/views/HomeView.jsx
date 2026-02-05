@@ -7,12 +7,13 @@
 
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Music } from 'lucide-react';
+import { Music, Music2, Sliders, Wrench, Package } from 'lucide-react';
 import brandIcon from '../../assets/logo-icon.svg';
 import brandIconDark from '../../assets/logo-icon-dark.svg';
 
 const HomeView = memo(function HomeView({
   stats,
+  resourceStats,
   homeArtists,
   hasRecentArtists,
   theme,
@@ -39,7 +40,8 @@ const HomeView = memo(function HomeView({
         {t('home.welcomeSubtitle')}
       </p>
 
-      <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-6 sm:mb-8 w-full max-w-2xl">
+      {/* Estadísticas de Secuencias */}
+      <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-4 sm:mb-6 w-full max-w-2xl">
         <div className="glass-card rounded-xl p-3 sm:p-4 transition-all duration-200">
           <div className="text-xl sm:text-2xl md:text-3xl font-bold text-[var(--accent)]">
             {stats.totalArtists}
@@ -59,6 +61,39 @@ const HomeView = memo(function HomeView({
           <div className="text-xs sm:text-sm text-[var(--text-muted)]">{t('home.statsCharts')}</div>
         </div>
       </div>
+
+      {/* Estadísticas de Recursos */}
+      {resourceStats && resourceStats.totalItems > 0 && (
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-6 sm:mb-8 w-full max-w-2xl">
+          <div className="glass-card rounded-xl p-3 sm:p-4 transition-all duration-200">
+            <div className="flex items-center justify-center gap-1.5 mb-1">
+              <Music2 size={16} className="text-[var(--accent)]" />
+              <span className="text-lg sm:text-xl md:text-2xl font-bold text-[var(--accent)]">
+                {resourceStats.daws || 0}
+              </span>
+            </div>
+            <div className="text-xs sm:text-sm text-[var(--text-muted)]">{t('resources.filterDAWs')}</div>
+          </div>
+          <div className="glass-card rounded-xl p-3 sm:p-4 transition-all duration-200">
+            <div className="flex items-center justify-center gap-1.5 mb-1">
+              <Sliders size={16} className="text-[var(--accent)]" />
+              <span className="text-lg sm:text-xl md:text-2xl font-bold text-[var(--accent)]">
+                {resourceStats.plugins || 0}
+              </span>
+            </div>
+            <div className="text-xs sm:text-sm text-[var(--text-muted)]">{t('resources.filterPlugins')}</div>
+          </div>
+          <div className="glass-card rounded-xl p-3 sm:p-4 transition-all duration-200">
+            <div className="flex items-center justify-center gap-1.5 mb-1">
+              <Wrench size={16} className="text-[var(--accent)]" />
+              <span className="text-lg sm:text-xl md:text-2xl font-bold text-[var(--accent)]">
+                {resourceStats.utilidades || 0}
+              </span>
+            </div>
+            <div className="text-xs sm:text-sm text-[var(--text-muted)]">{t('resources.filterUtilities')}</div>
+          </div>
+        </div>
+      )}
 
       <div className="w-full max-w-lg pb-4">
         <h3 className="text-xs sm:text-sm font-medium text-[var(--text-subtle)] mb-3 text-center">

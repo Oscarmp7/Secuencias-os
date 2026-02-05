@@ -177,7 +177,9 @@ const ResourcesView = memo(function ResourcesView({ selectedCategory = null, onC
   const isEmpty = filteredData.length === 0 || filteredData.every(cat => cat.items.length === 0);
 
   return (
-    <div className="min-h-full pb-8">
+    <div className="min-h-full pb-8 px-4 sm:px-6 lg:px-8">
+      {/* Contenedor con max-width para pantallas ultrawide */}
+      <div className="max-w-7xl mx-auto">
       {/* Header - Centralizado */}
       <div className="mb-8 text-center">
         <div className="flex flex-col items-center gap-3 mb-2">
@@ -264,6 +266,7 @@ const ResourcesView = memo(function ResourcesView({ selectedCategory = null, onC
           ))}
         </div>
       )}
+      </div>{/* Cierre max-w-7xl */}
     </div>
   );
 });

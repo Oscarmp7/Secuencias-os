@@ -3475,39 +3475,45 @@ function sincronizarStats() {
 function validarIntegridad() {
   console.log(`\n${c.cyan}📋 Validando integridad de datos...${c.reset}\n`);
   
-  const data = readDataJson('secuencias');
   const problemas = [];
   
-  if (data.artists) {
-    data.artists.forEach((artist, aIdx) => {
+  // ═══════════════════════════════════════════════════════════════════════════
+  // VALIDAR SECUENCIAS.JSON
+  // ═══════════════════════════════════════════════════════════════════════════
+  console.log(`${c.bold}Validando secuencias.json...${c.reset}`);
+  
+  const secuenciasData = readDataJson('secuencias');
+  
+  if (secuenciasData.artists) {
+    secuenciasData.artists.forEach((artist, aIdx) => {
       // Artista sin nombre
       if (!artist.name || !artist.name.trim()) {
-        problemas.push({ tipo: 'error', msg: `Artista #${aIdx + 1} sin nombre` });
+        problemas.push({ tipo: 'error', origen: 'secuencias', msg: `Artista #${aIdx + 1} sin nombre` });
       }
       
       // Artista sin álbumes
       if (!artist.albums || artist.albums.length === 0) {
-        problemas.push({ tipo: 'warn', msg: `"${artist.name}" no tiene álbumes` });
+        problemas.push({ tipo: 'warn', origen: 'secuencias', msg: `"${artist.name}" no tiene álbumes` });
       } else {
         artist.albums.forEach((album, alIdx) => {
           // Álbum sin nombre
           if (!album.name || !album.name.trim()) {
-            problemas.push({ tipo: 'error', msg: `"${artist.name}" tiene álbum #${alIdx + 1} sin nombre` });
+            problemas.push({ tipo: 'error', origen: 'secuencias', msg: `"${artist.name}" tiene álbum #${alIdx + 1} sin nombre` });
           }
           
           // Álbum sin canciones
           if (!album.songs || album.songs.length === 0) {
-            problemas.push({ tipo: 'warn', msg: `"${artist.name} - ${album.name}" no tiene canciones` });
+            problemas.push({ tipo: 'warn', origen: 'secuencias', msg: `"${artist.name} - ${album.name}" no tiene canciones` });
           } else {
             album.songs.forEach((song, sIdx) => {
               // Canción sin nombre
               if (!song.name || !song.name.trim()) {
-                problemas.push({ tipo: 'error', msg: `"${artist.name} - ${album.name}" tiene canción #${sIdx + 1} sin nombre` });
+                problemas.push({ tipo: 'error', origen: 'secuencias', msg: `"${artist.name} - ${album.name}" tiene canción #${sIdx + 1} sin nombre` });
               }
               
               // Canción sin URL de descarga
               if (!song.downloadUrl && !song.driveId) {
-                problemas.push({ tipo: 'warn', msg: `"${song.name}" sin URL de descarga` });
+                problemas.push({ tipo: 'warn', origen: 'secuencias', msg: `"${song.name}" sin URL de descarga` });
               }
             });
           }
@@ -3516,32 +3522,111 @@ function validarIntegridad() {
     });
   }
   
-  // Mostrar resultados
-  const errores = problemas.filter(p => p.tipo === 'error');
-  const advertencias = problemas.filter(p => p.tipo === 'warn');
+  // ═══════════════════════════════════════════════════════════════════════════
+  // VALIDAR SOFTWARE.JSON
+  // ═══════════════════════════════════════════════════════════════════════════
+  console.log(`${c.bold}Validando software.json...${c.reset}`);
   
-  if (errores.length > 0) {
-    console.log(`${c.red}${c.bold}❌ ERRORES (${errores.length}):${c.reset}`);
-    errores.forEach(e => console.log(`  ${c.red}• ${e.msg}${c.reset}`));
+  const softwareData = readDataJson('software');
+  
+  if (softwareData.categories) {
+    softwareData.categories.forEach((category, cIdx) => {
+      // Categoría sin nombre
+      if (!category.name || !category.name.trim()) {
+        problemas.push({ tipo: 'error', origen: 'software', msg: `Categoría #${cIdx + 1} sin nombre` });
+      }
+      
+      // Categoría sin ID
+      if (!category.id) {
+        problemas.push({ tipo: 'error', origen: 'software', msg: `Categoría "${category.name || cIdx + 1}" sin ID` });
+      }
+      
+      // Validar items de la categoría
+      if (category.items && category.items.length > 0) {
+        category.items.forEach((item, iIdx) => {
+          // Item sin nombre
+          if (!item.name || !item.name.trim()) {
+            problemas.push({ tipo: 'error', origen: 'software', msg: `"${category.name}" tiene item #${iIdx + 1} sin nombre` });
+          }
+          
+          // Item sin URL
+          if (!item.url) {
+            problemas.push({ tipo: 'warn', origen: 'software', msg: `"${item.name || 'Item ' + (iIdx + 1)}" en "${category.name}" sin URL` });
+          }
+          
+          // Item sin descripción
+          if (!item.description || !item.description.trim()) {
+            problemas.push({ tipo: 'warn', origen: 'software', msg: `"${item.name}" en "${category.name}" sin descripción` });
+          }
+          
+          // Item sin ID
+          if (!item.id) {
+            problemas.push({ tipo: 'warn', origen: 'software', msg: `"${item.name}" en "${category.name}" sin ID único` });
+          }
+        });
+      }
+    });
+  } else {
+    problemas.push({ tipo: 'warn', origen: 'software', msg: 'software.json no tiene categorías definidas' });
   }
   
-  if (advertencias.length > 0) {
-    console.log(`\n${c.yellow}${c.bold}⚠ ADVERTENCIAS (${advertencias.length}):${c.reset}`);
-    advertencias.slice(0, 10).forEach(w => console.log(`  ${c.yellow}• ${w.msg}${c.reset}`));
-    if (advertencias.length > 10) {
-      console.log(`  ${c.dim}... y ${advertencias.length - 10} más${c.reset}`);
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MOSTRAR RESULTADOS
+  // ═══════════════════════════════════════════════════════════════════════════
+  const erroresSecuencias = problemas.filter(p => p.tipo === 'error' && p.origen === 'secuencias');
+  const erroresSoftware = problemas.filter(p => p.tipo === 'error' && p.origen === 'software');
+  const advertenciasSecuencias = problemas.filter(p => p.tipo === 'warn' && p.origen === 'secuencias');
+  const advertenciasSoftware = problemas.filter(p => p.tipo === 'warn' && p.origen === 'software');
+  
+  console.log(`\n${c.cyan}═══ SECUENCIAS.JSON ═══${c.reset}`);
+  if (erroresSecuencias.length > 0) {
+    console.log(`${c.red}${c.bold}❌ ERRORES (${erroresSecuencias.length}):${c.reset}`);
+    erroresSecuencias.forEach(e => console.log(`  ${c.red}• ${e.msg}${c.reset}`));
+  }
+  if (advertenciasSecuencias.length > 0) {
+    console.log(`${c.yellow}${c.bold}⚠ ADVERTENCIAS (${advertenciasSecuencias.length}):${c.reset}`);
+    advertenciasSecuencias.slice(0, 10).forEach(w => console.log(`  ${c.yellow}• ${w.msg}${c.reset}`));
+    if (advertenciasSecuencias.length > 10) {
+      console.log(`  ${c.dim}... y ${advertenciasSecuencias.length - 10} más${c.reset}`);
     }
   }
-  
-  if (problemas.length === 0) {
-    console.log(`${c.green}✓ No se encontraron problemas${c.reset}`);
+  if (erroresSecuencias.length === 0 && advertenciasSecuencias.length === 0) {
+    console.log(`${c.green}✓ Sin problemas${c.reset}`);
   }
   
-  console.log(`\n${c.bold}Resumen:${c.reset}`);
-  console.log(`  * Errores: ${errores.length}`);
-  console.log(`  * Advertencias: ${advertencias.length}`);
+  console.log(`\n${c.cyan}═══ SOFTWARE.JSON ═══${c.reset}`);
+  if (erroresSoftware.length > 0) {
+    console.log(`${c.red}${c.bold}❌ ERRORES (${erroresSoftware.length}):${c.reset}`);
+    erroresSoftware.forEach(e => console.log(`  ${c.red}• ${e.msg}${c.reset}`));
+  }
+  if (advertenciasSoftware.length > 0) {
+    console.log(`${c.yellow}${c.bold}⚠ ADVERTENCIAS (${advertenciasSoftware.length}):${c.reset}`);
+    advertenciasSoftware.slice(0, 10).forEach(w => console.log(`  ${c.yellow}• ${w.msg}${c.reset}`));
+    if (advertenciasSoftware.length > 10) {
+      console.log(`  ${c.dim}... y ${advertenciasSoftware.length - 10} más${c.reset}`);
+    }
+  }
+  if (erroresSoftware.length === 0 && advertenciasSoftware.length === 0) {
+    console.log(`${c.green}✓ Sin problemas${c.reset}`);
+  }
   
-  return { errores: errores.length, advertencias: advertencias.length };
+  // Resumen final
+  const totalErrores = erroresSecuencias.length + erroresSoftware.length;
+  const totalAdvertencias = advertenciasSecuencias.length + advertenciasSoftware.length;
+  
+  console.log(`\n${c.bold}═══ RESUMEN TOTAL ═══${c.reset}`);
+  console.log(`  * Errores secuencias: ${erroresSecuencias.length}`);
+  console.log(`  * Errores software: ${erroresSoftware.length}`);
+  console.log(`  * Advertencias secuencias: ${advertenciasSecuencias.length}`);
+  console.log(`  * Advertencias software: ${advertenciasSoftware.length}`);
+  console.log(`  ${c.bold}Total: ${totalErrores} errores, ${totalAdvertencias} advertencias${c.reset}`);
+  
+  return { 
+    errores: totalErrores, 
+    advertencias: totalAdvertencias,
+    secuencias: { errores: erroresSecuencias.length, advertencias: advertenciasSecuencias.length },
+    software: { errores: erroresSoftware.length, advertencias: advertenciasSoftware.length }
+  };
 }
 
 /**

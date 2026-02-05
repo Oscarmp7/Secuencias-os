@@ -15,6 +15,7 @@
  */
 
 import { memo, useState, useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Gift,
   Upload,
@@ -74,6 +75,8 @@ const cardClass = 'glass-card rounded-xl p-6 transition-all duration-200';
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ContributeFormView = memo(function ContributeFormView({ onClose }) {
+  const { t } = useTranslation();
+  
   // Estado del formulario
   const [formData, setFormData] = useState({
     tipoAporte: '',
@@ -156,8 +159,8 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
     if (!canSubmit) {
       Swal.fire({
         icon: 'warning',
-        title: 'Espera un momento',
-        text: `Por favor espera ${formatRemainingTime(remainingTime)} antes de enviar otro formulario.`,
+        title: t('contribute.errors.formIncomplete'),
+        text: t('contribute.errors.waitToSubmit', { time: formatRemainingTime(remainingTime) }),
         confirmButtonColor: 'var(--accent)',
       });
       return;
@@ -177,8 +180,8 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
       // Mostrar mensaje de error
       Swal.fire({
         icon: 'error',
-        title: 'Formulario incompleto',
-        text: 'Por favor, completa todos los campos obligatorios.',
+        title: t('contribute.errors.formIncomplete'),
+        text: t('contribute.errors.completeRequired'),
         confirmButtonColor: 'var(--accent)',
       });
       return;
@@ -218,18 +221,27 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
           });
         }
 
+        // Mapear tipo de aporte a clave de traducción
+        const tipoKey = {
+          secuencia: 'sequence',
+          software: 'software',
+          sugerencia: 'suggestion',
+        }[formData.tipoAporte] || 'contribution';
+
         // Mostrar mensaje de agradecimiento con opción de hacer otro aporte
-        const thankYouMsg = generateThankYouMessage(formData.nombre, formData.tipoAporte);
+        const successTitle = formData.nombre 
+          ? `${t('contribute.success.title').replace('!', '')}, ${formData.nombre}!`
+          : t('contribute.success.title');
         
         const result = await Swal.fire({
           icon: 'success',
-          title: thankYouMsg.title,
-          text: thankYouMsg.message,
+          title: successTitle,
+          text: t('contribute.success.message', { type: t(`contribute.type${tipoKey.charAt(0).toUpperCase() + tipoKey.slice(1)}`) }),
           showCancelButton: true,
           confirmButtonColor: 'var(--accent)',
           cancelButtonColor: 'var(--accent-secondary)',
-          confirmButtonText: '✓ Aceptar',
-          cancelButtonText: '🎁 Hacer otro aporte',
+          confirmButtonText: `✓ ${t('actions.submit')}`,
+          cancelButtonText: `🎁 ${t('contribute.title')}`,
           reverseButtons: true,
         });
 
@@ -270,14 +282,14 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
       console.error('Error al enviar formulario:', error);
       Swal.fire({
         icon: 'error',
-        title: 'Error al enviar',
-        text: 'Hubo un problema al enviar tu aporte. Por favor, intenta de nuevo.',
+        title: t('contribute.errors.formIncomplete'),
+        text: t('contribute.errors.submitError'),
         confirmButtonColor: 'var(--accent)',
       });
     } finally {
       setIsSubmitting(false);
     }
-  }, [formData, downloadInfo, onClose]);
+  }, [formData, downloadInfo, onClose, t]);
 
   // Obtener icono según tipo de aporte
   const getTipoIcon = (tipo) => {
@@ -296,9 +308,9 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--accent-soft)] mb-4">
           <Gift size={32} className="text-[var(--accent)]" />
         </div>
-        <h1 className="text-2xl md:text-3xl font-bold mb-2">Aportar Recursos</h1>
+        <h1 className="text-2xl md:text-3xl font-bold mb-2">{t('contribute.title')}</h1>
         <p className="text-[var(--text-muted)]">
-          Comparte secuencias, software o sugerencias con la comunidad
+          {t('contribute.subtitle')}
         </p>
       </div>
 
@@ -319,7 +331,7 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
         {/* Tipo de Aporte */}
         <div className={cardClass}>
           <label className={labelClass}>
-            ¿Qué tipo de aporte deseas hacer? *
+            {t('contribute.typeQuestion')} *
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {APORTE_TYPES.map((tipo) => (
@@ -333,13 +345,15 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
                   {getTipoIcon(tipo.value)}
                 </span>
                 <span className="label">
-                  {tipo.label}
+                  {tipo.value === 'secuencia' ? t('contribute.typeSequence') :
+                   tipo.value === 'software' ? t('contribute.typeSoftware') :
+                   t('contribute.typeSuggestion')}
                 </span>
               </button>
             ))}
           </div>
           {touched.tipoAporte && errors.tipoAporte && (
-            <p className={errorClass}><AlertCircle size={14} /> {errors.tipoAporte}</p>
+            <p className={errorClass}><AlertCircle size={14} /> {t('contribute.errors.selectType')}</p>
           )}
         </div>
 
@@ -348,13 +362,13 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
           <div className={cardClass}>
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <Music size={20} className="text-[var(--accent)]" />
-              Información de la Secuencia
+              {t('contribute.sequenceInfo')}
             </h3>
             
             <div className="space-y-4">
               {/* Nombre del recurso */}
               <div>
-                <label htmlFor="nombreRecurso" className={labelClass}>Nombre de la canción *</label>
+                <label htmlFor="nombreRecurso" className={labelClass}>{t('contribute.songName')} *</label>
                 <input
                   type="text"
                   id="nombreRecurso"
@@ -366,14 +380,14 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
                   className={inputBaseClass}
                 />
                 {touched.nombreRecurso && errors.nombreRecurso && (
-                  <p className={errorClass}><AlertCircle size={14} /> {errors.nombreRecurso}</p>
+                  <p className={errorClass}><AlertCircle size={14} /> {t('contribute.errors.resourceNameRequired')}</p>
                 )}
               </div>
 
               {/* Artista y Álbum */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="artista" className={labelClass}>Artista *</label>
+                  <label htmlFor="artista" className={labelClass}>{t('contribute.artist')} *</label>
                   <input
                     type="text"
                     id="artista"
@@ -385,11 +399,11 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
                     className={inputBaseClass}
                   />
                   {touched.artista && errors.artista && (
-                    <p className={errorClass}><AlertCircle size={14} /> {errors.artista}</p>
+                    <p className={errorClass}><AlertCircle size={14} /> {t('contribute.errors.artistRequired')}</p>
                   )}
                 </div>
                 <div>
-                  <label htmlFor="album" className={labelClass}>Álbum *</label>
+                  <label htmlFor="album" className={labelClass}>{t('contribute.album')} *</label>
                   <input
                     type="text"
                     id="album"
@@ -401,7 +415,7 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
                     className={inputBaseClass}
                   />
                   {touched.album && errors.album && (
-                    <p className={errorClass}><AlertCircle size={14} /> {errors.album}</p>
+                    <p className={errorClass}><AlertCircle size={14} /> {t('contribute.errors.albumRequired')}</p>
                   )}
                 </div>
               </div>
@@ -409,7 +423,7 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
               {/* Tonalidad, BPM, Compás */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label htmlFor="tonalidad" className={labelClass}>Tonalidad *</label>
+                  <label htmlFor="tonalidad" className={labelClass}>{t('contribute.key')} *</label>
                   <select
                     id="tonalidad"
                     name="tonalidad"
@@ -418,17 +432,17 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
                     onBlur={handleBlur}
                     className={inputBaseClass}
                   >
-                    <option value="">Seleccionar</option>
+                    <option value="">{t('contribute.select')}</option>
                     {TONALIDAD_OPTIONS.map((opt) => (
                       <option key={opt.value} value={opt.value}>{opt.label}</option>
                     ))}
                   </select>
                   {touched.tonalidad && errors.tonalidad && (
-                    <p className={errorClass}><AlertCircle size={14} /> {errors.tonalidad}</p>
+                    <p className={errorClass}><AlertCircle size={14} /> {t('contribute.errors.keyRequired')}</p>
                   )}
                 </div>
                 <div>
-                  <label htmlFor="bpm" className={labelClass}>Tempo (BPM) *</label>
+                  <label htmlFor="bpm" className={labelClass}>{t('contribute.tempo')} *</label>
                   <input
                     type="number"
                     id="bpm"
@@ -442,11 +456,11 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
                     className={inputBaseClass}
                   />
                   {touched.bpm && errors.bpm && (
-                    <p className={errorClass}><AlertCircle size={14} /> {errors.bpm}</p>
+                    <p className={errorClass}><AlertCircle size={14} /> {t('contribute.errors.bpmRange')}</p>
                   )}
                 </div>
                 <div>
-                  <label htmlFor="compas" className={labelClass}>Compás *</label>
+                  <label htmlFor="compas" className={labelClass}>{t('contribute.timeSignature')} *</label>
                   <select
                     id="compas"
                     name="compas"
@@ -455,13 +469,13 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
                     onBlur={handleBlur}
                     className={inputBaseClass}
                   >
-                    <option value="">Seleccionar</option>
+                    <option value="">{t('contribute.select')}</option>
                     {COMPAS_OPTIONS.map((opt) => (
                       <option key={opt.value} value={opt.value}>{opt.label}</option>
                     ))}
                   </select>
                   {touched.compas && errors.compas && (
-                    <p className={errorClass}><AlertCircle size={14} /> {errors.compas}</p>
+                    <p className={errorClass}><AlertCircle size={14} /> {t('contribute.errors.timeSignatureRequired')}</p>
                   )}
                 </div>
               </div>
@@ -474,12 +488,12 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
           <div className={cardClass}>
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <Package size={20} className="text-[var(--accent)]" />
-              Información del Software
+              {t('contribute.softwareInfo')}
             </h3>
             
             <div className="space-y-4">
               <div>
-                <label htmlFor="nombreRecurso" className={labelClass}>Nombre del software *</label>
+                <label htmlFor="nombreRecurso" className={labelClass}>{t('contribute.softwareName')} *</label>
                 <input
                   type="text"
                   id="nombreRecurso"
@@ -491,12 +505,12 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
                   className={inputBaseClass}
                 />
                 {touched.nombreRecurso && errors.nombreRecurso && (
-                  <p className={errorClass}><AlertCircle size={14} /> {errors.nombreRecurso}</p>
+                  <p className={errorClass}><AlertCircle size={14} /> {t('contribute.errors.resourceNameRequired')}</p>
                 )}
               </div>
 
               <div>
-                <label htmlFor="subcategoria" className={labelClass}>Subcategoría *</label>
+                <label htmlFor="subcategoria" className={labelClass}>{t('contribute.subcategory')} *</label>
                 <select
                   id="subcategoria"
                   name="subcategoria"
@@ -505,18 +519,18 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
                   onBlur={handleBlur}
                   className={inputBaseClass}
                 >
-                  <option value="">Seleccionar categoría</option>
+                  <option value="">{t('contribute.selectCategory')}</option>
                   {SOFTWARE_CATEGORIES.map((cat) => (
                     <option key={cat.value} value={cat.value}>{cat.label}</option>
                   ))}
                 </select>
                 {touched.subcategoria && errors.subcategoria && (
-                  <p className={errorClass}><AlertCircle size={14} /> {errors.subcategoria}</p>
+                  <p className={errorClass}><AlertCircle size={14} /> {t('contribute.errors.subcategoryRequired')}</p>
                 )}
               </div>
 
               <div>
-                <label htmlFor="descripcion" className={labelClass}>Descripción breve *</label>
+                <label htmlFor="descripcion" className={labelClass}>{t('contribute.description')} *</label>
                 <textarea
                   id="descripcion"
                   name="descripcion"
@@ -528,7 +542,7 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
                   className={inputBaseClass}
                 />
                 {touched.descripcion && errors.descripcion && (
-                  <p className={errorClass}><AlertCircle size={14} /> {errors.descripcion}</p>
+                  <p className={errorClass}><AlertCircle size={14} /> {t('contribute.errors.descriptionRequired')}</p>
                 )}
               </div>
             </div>
@@ -540,11 +554,11 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
           <div className={cardClass}>
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <Upload size={20} className="text-[var(--accent)]" />
-              URL del Recurso
+              {t('contribute.resourceFile')}
             </h3>
             
             <p className="text-sm text-[var(--text-muted)] mb-4">
-              Proporciona una URL de descarga ({getSupportedServicesText()})
+              {t('contribute.resourceFileHint')} ({getSupportedServicesText()})
             </p>
 
             <div className="space-y-4">
@@ -552,7 +566,7 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
               <div>
                 <label htmlFor="urlDescarga" className={labelClass}>
                   <Link size={16} className="inline mr-2" />
-                  URL de Descarga
+                  {t('contribute.downloadUrl')}
                 </label>
                 <input
                   type="url"
@@ -566,17 +580,17 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
                 />
                 {downloadInfo.isValid && downloadInfo.service && (
                   <p className="text-green-500 text-sm mt-1 flex items-center gap-1">
-                    <CheckCircle size={14} /> {downloadInfo.service.name} detectado
+                    <CheckCircle size={14} /> {downloadInfo.service.name} {t('contribute.detected')}
                     {downloadInfo.fileId && <span className="text-[var(--text-subtle)]"> (ID: {downloadInfo.fileId.substring(0, 12)}...)</span>}
                   </p>
                 )}
                 {formData.urlDescarga && !downloadInfo.isValid && (
                   <p className={errorClass}>
-                    <AlertCircle size={14} /> URL no válida. Servicios soportados: {getSupportedServicesText()}
+                    <AlertCircle size={14} /> {t('contribute.invalidUrl')} {getSupportedServicesText()}
                   </p>
                 )}
                 {touched.urlDescarga && errors.urlDescarga && !formData.urlDescarga && (
-                  <p className={errorClass}><AlertCircle size={14} /> {errors.urlDescarga}</p>
+                  <p className={errorClass}><AlertCircle size={14} /> {t('contribute.errors.urlRequired')}</p>
                 )}
               </div>
             </div>
@@ -588,14 +602,14 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
           <div className={cardClass}>
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <User size={20} className="text-[var(--accent)]" />
-              Tu Información (opcional)
+              {t('contribute.yourInfo')}
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label htmlFor="nombre" className={labelClass}>
                 <User size={16} className="inline mr-2" />
-                Nombre
+                {t('contribute.name')}
               </label>
               <input
                 type="text"
@@ -610,7 +624,7 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
             <div>
               <label htmlFor="email" className={labelClass}>
                 <Mail size={16} className="inline mr-2" />
-                Correo electrónico
+                {t('contribute.email')}
               </label>
               <input
                 type="email"
@@ -623,7 +637,7 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
                 className={inputBaseClass}
               />
               {touched.email && errors.email && (
-                <p className={errorClass}><AlertCircle size={14} /> {errors.email}</p>
+                <p className={errorClass}><AlertCircle size={14} /> {t('contribute.errors.invalidEmail')}</p>
               )}
             </div>
           </div>
@@ -635,7 +649,7 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
           <div className={cardClass}>
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <MessageSquare size={20} className="text-[var(--accent)]" />
-              {formData.tipoAporte === 'sugerencia' ? 'Tu Sugerencia' : 'Comentarios Adicionales'}
+              {formData.tipoAporte === 'sugerencia' ? t('contribute.yourSuggestion') : t('contribute.comments')}
               {formData.tipoAporte === 'sugerencia' && ' *'}
             </h3>
           
@@ -656,7 +670,7 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
           />
           <div className="flex justify-between mt-1">
             {touched.sugerencias && errors.sugerencias && (
-              <p className={errorClass}><AlertCircle size={14} /> {errors.sugerencias}</p>
+              <p className={errorClass}><AlertCircle size={14} /> {t('contribute.errors.suggestionRequired')}</p>
             )}
             <span className="text-sm text-[var(--text-subtle)] ml-auto">
               {formData.sugerencias.length}/1000
@@ -674,7 +688,7 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
               onClick={onClose}
               className="px-6 py-3 rounded-lg border border-[var(--border)] text-[var(--text-muted)] hover:bg-[var(--hover)] transition-all duration-200"
             >
-              Cancelar
+              {t('actions.cancel')}
             </button>
           )}
           
@@ -693,17 +707,17 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
             {isSubmitting ? (
               <>
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                Enviando...
+                {t('actions.sending')}
               </>
             ) : submitCooldown ? (
               <>
                 <Clock size={20} />
-                Espera {formatRemainingTime(submitCooldown)}
+                {t('contribute.waitMessage', { time: formatRemainingTime(submitCooldown) })}
               </>
             ) : (
               <>
                 <Send size={20} />
-                Enviar Aporte
+                {t('contribute.submitButton')}
               </>
             )}
           </button>

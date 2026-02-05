@@ -2,7 +2,7 @@
  * downloadUtils.js
  * 
  * Utilidades para trabajar con URLs de descarga de múltiples servicios.
- * Soporta: Google Drive, Mega, TeraBox, MediaFire, Dropbox, OneDrive.
+ * Soporta: Google Drive, Mega, TeraBox, MediaFire, Dropbox, OneDrive, Ufile, Magnet, y otros.
  * 
  * Utilidades centralizadas para detectar servicios y generar URLs de descarga
  */
@@ -24,6 +24,7 @@ export const SUPPORTED_SERVICES = {
       /drive\.google\.com\/.*[?&]id=([a-zA-Z0-9_-]+)/,
       /drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/,
       /drive\.google\.com\/uc\?.*id=([a-zA-Z0-9_-]+)/,
+      /drive\.google\.com\/drive\/folders\/([a-zA-Z0-9_-]+)/,
     ],
     extractId: true,
     generateDownload: (id) => `https://drive.google.com/uc?export=download&id=${id}`,
@@ -88,10 +89,53 @@ export const SUPPORTED_SERVICES = {
     extractId: false,
     generateDownload: null,
   },
+  ufile: {
+    name: 'Ufile.io',
+    icon: 'ufile',
+    domains: ['ufile.io'],
+    patterns: [
+      /ufile\.io\/([a-zA-Z0-9]+)/,
+    ],
+    extractId: true,
+    generateDownload: null,
+  },
+  magnet: {
+    name: 'Magnet Link',
+    icon: 'magnet',
+    domains: [], // Magnet links don't have a domain
+    patterns: [
+      /^magnet:\?xt=urn:btih:([a-zA-Z0-9]+)/i,
+    ],
+    extractId: true,
+    generateDownload: null,
+    isMagnet: true, // Flag especial para magnet links
+  },
+  blogspot: {
+    name: 'Blogspot',
+    icon: 'blog',
+    domains: ['blogspot.com', 'blogger.com'],
+    patterns: [
+      /blogspot\.com\/.+/,
+      /blogger\.com\/.+/,
+    ],
+    extractId: false,
+    generateDownload: null,
+  },
+  // Servicio genérico para otras URLs válidas
+  other: {
+    name: 'Enlace Directo',
+    icon: 'link',
+    domains: [], // Se usará como fallback
+    patterns: [],
+    extractId: false,
+    generateDownload: null,
+    isGeneric: true, // Flag para indicar que es genérico
+  },
 };
 
 // Lista de dominios soportados (para validación rápida)
 export const SUPPORTED_DOMAINS = Object.values(SUPPORTED_SERVICES)
+  .filter(s => !s.isGeneric && !s.isMagnet)
   .flatMap(service => service.domains);
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -113,16 +157,40 @@ export function detectService(url) {
     return null;
   }
 
-  const cleanUrl = url.trim().toLowerCase();
+  const cleanUrl = url.trim();
+  const lowerUrl = cleanUrl.toLowerCase();
 
+  // Primero verificar si es un magnet link
+  if (lowerUrl.startsWith('magnet:')) {
+    const magnetService = SUPPORTED_SERVICES.magnet;
+    if (magnetService.patterns.some(pattern => pattern.test(cleanUrl))) {
+      return {
+        id: 'magnet',
+        ...magnetService,
+      };
+    }
+  }
+
+  // Verificar servicios conocidos por dominio
   for (const [serviceId, service] of Object.entries(SUPPORTED_SERVICES)) {
-    const matchesDomain = service.domains.some(domain => cleanUrl.includes(domain));
+    if (service.isGeneric || service.isMagnet) continue;
+    
+    const matchesDomain = service.domains.some(domain => lowerUrl.includes(domain));
     if (matchesDomain) {
       return {
         id: serviceId,
         ...service,
       };
     }
+  }
+
+  // Si no coincide con ningún servicio conocido, usar servicio genérico
+  // Solo si es una URL válida con http/https
+  if (lowerUrl.startsWith('http://') || lowerUrl.startsWith('https://')) {
+    return {
+      id: 'other',
+      ...SUPPORTED_SERVICES.other,
+    };
   }
 
   return null;
@@ -141,6 +209,11 @@ export function isValidDownloadUrl(url) {
 
   const cleanUrl = url.trim();
   
+  // Verificar magnet links primero (no usan URL estándar)
+  if (cleanUrl.toLowerCase().startsWith('magnet:')) {
+    return SUPPORTED_SERVICES.magnet.patterns.some(pattern => pattern.test(cleanUrl));
+  }
+  
   // Verificar que sea una URL válida
   try {
     new URL(cleanUrl);
@@ -148,10 +221,15 @@ export function isValidDownloadUrl(url) {
     return false;
   }
 
-  // Verificar que sea de un servicio soportado
+  // Detectar el servicio
   const service = detectService(cleanUrl);
   if (!service) {
     return false;
+  }
+
+  // Para el servicio genérico, cualquier URL http/https válida es aceptada
+  if (service.isGeneric) {
+    return true;
   }
 
   // Verificar que coincida con algún patrón del servicio

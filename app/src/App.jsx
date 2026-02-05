@@ -14,7 +14,7 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 
 // Importar datos desde la nueva estructura modular
-import { artists as dataArtists, charts as dataCharts } from './data';
+import { artists as dataArtists, charts as dataCharts, softwareCategories } from './data';
 
 import Sidebar from './components/Sidebar';
 import HeaderBar from './components/HeaderBar';
@@ -45,6 +45,14 @@ const stats = {
     0
   ),
   totalCharts: totalChartsLinked,
+};
+
+// Estadísticas de recursos (software)
+const resourceStats = {
+  totalItems: softwareCategories.reduce((sum, cat) => sum + (cat.items?.length || 0), 0),
+  daws: softwareCategories.find(c => c.id === 'daws')?.items?.length || 0,
+  plugins: softwareCategories.find(c => c.id === 'plugins')?.items?.length || 0,
+  utilidades: softwareCategories.find(c => c.id === 'utilidades')?.items?.length || 0,
 };
 
 // Mapas por ID = busquedas O(1) (mas rapido que .find).
@@ -372,6 +380,7 @@ const App = () => {
         onSelectResources={handleSelectResources}
         onShowContributeForm={handleShowContributeForm}
         selectedResourceCategory={selectedResourceCategory}
+        resourceStats={resourceStats}
       />
 
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -396,6 +405,7 @@ const App = () => {
           expandedAlbums={expandedAlbums}
           onToggleAlbum={toggleAlbum}
           stats={stats}
+          resourceStats={resourceStats}
           homeArtists={homeArtists}
           hasRecentArtists={hasRecentArtists}
           // Home usa theme para cambiar el isotipo segun contraste.

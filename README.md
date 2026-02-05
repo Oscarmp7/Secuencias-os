@@ -1,214 +1,274 @@
-# Worship Box
+<div align="center">
 
-Biblioteca web de secuencias, charts musicales y recursos para produccion musical cristiana.
+# 🎵 Worship Box
 
-## Descripcion
+**Biblioteca de secuencias, charts y recursos para producción musical cristiana**
 
-Worship Box es una aplicacion React + Vite para explorar artistas, buscar canciones, descargar secuencias/charts y acceder a recursos de software para produccion musical.
+[![React](https://img.shields.io/badge/React-18.3-61dafb?logo=react&logoColor=white)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-6.0-646cff?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-El proyecto esta optimizado para desktop y mobile, con tema dark/light e internacionalizacion completa (ES, EN, PT).
+[Demo en Vivo](https://oscarmp7.github.io/worship-box/) · [Reportar Bug](https://github.com/oscarmp7/worship-box/issues) · [Solicitar Feature](https://github.com/oscarmp7/worship-box/issues)
 
-## Caracteristicas principales
+</div>
 
-### Biblioteca Musical
-- Catalogo extenso: **767 artistas**, **5,796 secuencias** y **703 charts**
-- Busqueda optimizada con debounce + indice Fuse.js + Web Worker
-- Sidebar virtualizado para listas extensas (react-window)
-- Charts integrados directamente en canciones
+---
 
-### Recursos y Software
-- Seccion de recursos: DAWs, Plugins y Utilidades
-- Sistema de categorias con filtros
-- Soporte para multiples servicios de descarga:
-  - Google Drive, MEGA, TeraBox, MediaFire, Dropbox, OneDrive
+## 📋 Tabla de Contenidos
 
-### Formulario de Aportes
-- Contribucion de secuencias, software y sugerencias
-- Validacion de URLs de multiples servicios
-- URL de descarga obligatoria para aportes (Google Drive, MEGA, TeraBox, etc.)
-- Sistema anti-spam (cooldown de 1 minuto)
-- Notificaciones por email via **EmailJS**
-- Mensajes de agradecimiento personalizados (SweetAlert2)
-- **Boton "Hacer otro aporte"** para flujo continuo de contribuciones
+- [Acerca del Proyecto](#-acerca-del-proyecto)
+- [Características](#-características)
+- [Stack Tecnológico](#-stack-tecnológico)
+- [Inicio Rápido](#-inicio-rápido)
+- [Estructura del Proyecto](#-estructura-del-proyecto)
+- [Data Manager CLI](#-data-manager-cli)
+- [Configuración](#-configuración)
+- [Deploy](#-deploy)
+- [Contribuir](#-contribuir)
+- [Licencia](#-licencia)
+- [Contacto](#-contacto)
 
-### Sistema de Gestion de Datos (data-manager)
-- Exportacion/importacion JSON <-> Excel
-- Gestion de aportes de la comunidad
-- Validacion de integridad de datos
-- Limpieza de duplicados y albumes vacios
-- Backup automatico con rotacion
+---
 
-### UI/UX
-- Tema dark/light con transicion suave
-- Selector de idioma (Espanol, English, Portugues)
-- Diseno responsive completo (optimizado para moviles 360px+)
-- Branding Worship Box integrado
+## 🎯 Acerca del Proyecto
 
-## Requisitos
+Worship Box es una aplicación web moderna para explorar y descargar secuencias musicales, charts y recursos de software para producción musical cristiana. Diseñada con un enfoque en la experiencia de usuario, rendimiento y accesibilidad.
+
+### 📊 Estadísticas Actuales
+
+| Contenido | Cantidad |
+|-----------|----------|
+| 🎤 Artistas | **767** |
+| 🎼 Secuencias | **5,796** |
+| 📄 Charts | **703** |
+| 💿 DAWs | **5** |
+| 🎛️ Plugins | **35** |
+| 🔧 Utilidades | **5** |
+
+---
+
+## ✨ Características
+
+### 🎵 Biblioteca Musical
+- **Búsqueda inteligente** con índice Fuse.js + Web Worker para rendimiento óptimo
+- **Sidebar virtualizado** con react-window para listas extensas
+- **Charts integrados** directamente en cada canción
+- **Filtrado por artista, álbum y canción**
+
+### 💾 Recursos y Software
+- Catálogo organizado: **DAWs**, **Plugins** y **Utilidades**
+- Soporte multi-servicio de descarga:
+  - Google Drive, MEGA, TeraBox, MediaFire
+  - Dropbox, OneDrive, ufile.io
+  - Enlaces magnet, Blogspot, y más
+
+### 📝 Sistema de Aportes
+- Formulario de contribución para secuencias, software y sugerencias
+- Validación de URLs en tiempo real
+- Sistema anti-spam con cooldown
+- Notificaciones automáticas vía **EmailJS**
+- Mensajes de agradecimiento personalizados
+
+### 🎨 UI/UX
+- **Tema dark/light** con transición suave
+- **Multilenguaje**: Español, English, Português
+- **Diseño responsive** optimizado para móviles (360px+)
+- Branding consistente con favicons adaptativos
+
+---
+
+## 🛠️ Stack Tecnológico
+
+| Categoría | Tecnologías |
+|-----------|-------------|
+| **Frontend** | React 18, Vite 6, TailwindCSS 3 |
+| **Búsqueda** | Fuse.js, Web Workers |
+| **UI** | Lucide React, SweetAlert2 |
+| **i18n** | react-i18next |
+| **Email** | EmailJS |
+| **Datos** | xlsx-js-style |
+| **Performance** | react-window (virtualización) |
+
+---
+
+## 🚀 Inicio Rápido
+
+### Prerrequisitos
 
 - Node.js 18+
+- npm o yarn
 
-## Desarrollo local
+### Instalación
 
 ```bash
+# Clonar el repositorio
+git clone https://github.com/oscarmp7/worship-box.git
+cd worship-box
+
+# Instalar dependencias
 cd app
 npm install
+
+# Iniciar servidor de desarrollo
 npm run dev
 ```
 
-URL local esperada:
-```
-http://localhost:5173/worship-box/
-```
+La aplicación estará disponible en: `http://localhost:5173/worship-box/`
 
-## Build y preview
+### Scripts Disponibles
 
-```bash
-cd app
-npm run build
-npm run preview
-```
-
-## Deploy
-
-### GitHub Pages
-```bash
-cd app
-npm run deploy
-```
-
-### Vercel
-El proyecto esta listo para deploy en Vercel:
-1. Importar repositorio en Vercel
-2. Configurar:
-   - **Framework Preset**: Vite
-   - **Root Directory**: `app`
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `dist`
-
-## Scripts utiles
-
-| Comando | Descripcion |
+| Comando | Descripción |
 |---------|-------------|
-| `npm run dev` | Servidor local con HMR |
-| `npm run build` | Build de produccion |
-| `npm run preview` | Prueba local del build |
-| `npm run deploy` | Publica en gh-pages |
-| `npm run lint` | ESLint check |
+| `npm run dev` | Servidor de desarrollo con HMR |
+| `npm run build` | Build de producción |
+| `npm run preview` | Vista previa del build |
+| `npm run deploy` | Deploy a GitHub Pages |
+| `npm run lint` | Verificar código con ESLint |
 
-## Gestion de datos (data-manager)
+---
+
+## 📁 Estructura del Proyecto
+
+```
+worship-box/
+├── app/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── views/           # Vistas principales
+│   │   │   │   ├── HomeView.jsx
+│   │   │   │   ├── ArtistView.jsx
+│   │   │   │   ├── SearchResultsView.jsx
+│   │   │   │   ├── ResourcesView.jsx
+│   │   │   │   └── ContributeFormView.jsx
+│   │   │   ├── HeaderBar.jsx
+│   │   │   ├── Sidebar.jsx
+│   │   │   └── MainContent.jsx
+│   │   ├── data/
+│   │   │   ├── secuencias.json  # Artistas y canciones
+│   │   │   └── software.json    # DAWs, Plugins, Utilidades
+│   │   ├── utils/               # Utilidades
+│   │   ├── services/            # Servicios (EmailJS)
+│   │   ├── locales/             # Traducciones (es, en, pt)
+│   │   └── workers/             # Web Workers
+│   ├── tools/
+│   │   └── data-manager.cjs     # CLI de gestión
+│   ├── aportes/                 # Aportes pendientes
+│   └── backups/                 # Backups automáticos
+└── gh-pages-deploy/             # Build de producción
+```
+
+---
+
+## 🔧 Data Manager CLI
+
+Herramienta CLI completa para gestión de datos con menú interactivo de 19 opciones.
 
 ```bash
-# Menu interactivo
+# Menú interactivo
 node tools/data-manager.cjs
 
 # Comandos directos
 node tools/data-manager.cjs --export              # Exportar a Excel
 node tools/data-manager.cjs --import              # Importar desde Excel
-node tools/data-manager.cjs --eliminar-vacios     # Eliminar albumes vacios
-node tools/data-manager.cjs --eliminar-duplicados-tonos  # Eliminar duplicados de tonos
-node tools/data-manager.cjs --sync-stats          # Sincronizar estadisticas
 node tools/data-manager.cjs --validar             # Validar integridad
+node tools/data-manager.cjs --sync-stats          # Sincronizar estadísticas
+node tools/data-manager.cjs --eliminar-vacios     # Eliminar álbumes vacíos
 node tools/data-manager.cjs --help                # Ver todas las opciones
 ```
 
-## Estructura del proyecto
+### Funcionalidades Principales
 
-```
-worship-box/
-├── README.md
-├── HANDOFF.md
-└── app/
-    ├── index.html
-    ├── package.json
-    ├── vite.config.js
-    ├── tools/
-    │   └── data-manager.cjs      # CLI de gestion de datos
-    ├── aportes/                  # Aportes de la comunidad
-    │   ├── secuencias/
-    │   └── software/
-    ├── data/                     # Excel generados
-    ├── backups/                  # Backups automaticos
-    └── src/
-        ├── App.jsx
-        ├── main.jsx
-        ├── i18n.js
-        ├── index.css
-        ├── data/
-        │   ├── index.js
-        │   ├── secuencias.json
-        │   └── software.json
-        ├── components/
-        │   ├── views/
-        │   │   ├── HomeView.jsx
-        │   │   ├── ArtistView.jsx
-        │   │   ├── SearchResultsView.jsx
-        │   │   ├── ResourcesView.jsx
-        │   │   └── ContributeFormView.jsx
-        │   ├── HeaderBar.jsx
-        │   ├── Sidebar.jsx
-        │   └── MainContent.jsx
-        ├── utils/
-        │   ├── searchIndex.js
-        │   ├── downloadUtils.js
-        │   ├── formValidation.js
-        │   └── xlsxGenerator.js
-        ├── services/
-        │   └── emailService.js
-        ├── workers/
-        └── locales/
-            ├── es/translation.json
-            ├── en/translation.json
-            └── pt/translation.json
-```
-
-## Mantenimiento rapido
-
-| Archivo | Proposito |
-|---------|-----------|
-| `app/src/data/secuencias.json` | Datos de artistas y canciones |
-| `app/src/data/software.json` | Datos de software/recursos |
-| `app/src/index.css` | Tema y estilos CSS |
-| `app/src/locales/*/translation.json` | Traducciones i18n |
-| `app/src/services/emailService.js` | Configuracion EmailJS |
-| `app/tools/data-manager.cjs` | CLI de gestion |
-
-## Configuracion de EmailJS
-
-El sistema de aportes usa EmailJS para notificaciones:
-
-1. Crear cuenta en [EmailJS](https://www.emailjs.com/)
-2. Agregar servicio de email (Gmail recomendado)
-3. Crear dos templates:
-   - `template_contribution`: Notificacion de nuevo aporte
-   - `template_thankyou`: Agradecimiento al usuario
-4. Configurar variables de entorno en `app/.env`:
-
-```
-VITE_EMAILJS_SERVICE_ID=service_whwzteo
-VITE_EMAILJS_TEMPLATE_FORM_ID=template_et8q3ei
-VITE_EMAILJS_TEMPLATE_THANKS_ID=template_y8pgi2k
-VITE_EMAILJS_PUBLIC_KEY=b0HcaxplK26PFy40Q
-VITE_EMAILJS_TO_EMAIL=worshipbox.ministry@gmail.com
-
-# Opcional: endpoint seguro (serverless/backend)
-VITE_CONTRIBUTE_ENDPOINT=https://tu-endpoint/submit
-
-# Opcional: desactivar adjunto XLSX en EmailJS
-VITE_EMAILJS_ATTACH_XLSX=false
-```
-
-## Flujo de ramas
-
-- Rama principal: `react-migration`
-- Rama de deploy: `gh-pages`
-
-## Licencia
-
-MIT
+| Categoría | Funciones |
+|-----------|-----------|
+| **Datos** | Export/Import JSON ↔ Excel |
+| **Aportes** | Agregar, combinar, revisar, aprobar |
+| **Utilidades** | Validar, limpiar duplicados, backups |
 
 ---
 
-**Worship Box** - Recursos para la adoracion
+## ⚙️ Configuración
 
-Ver `HANDOFF.md` para contexto tecnico completo.
+### Variables de Entorno
+
+Crear archivo `app/.env`:
+
+```env
+# EmailJS (requerido para formulario de aportes)
+VITE_EMAILJS_SERVICE_ID=tu_service_id
+VITE_EMAILJS_TEMPLATE_FORM_ID=tu_template_form
+VITE_EMAILJS_TEMPLATE_THANKS_ID=tu_template_thanks
+VITE_EMAILJS_PUBLIC_KEY=tu_public_key
+VITE_EMAILJS_TO_EMAIL=tu@email.com
+
+# Opcionales
+VITE_CONTRIBUTE_ENDPOINT=https://tu-endpoint/submit
+VITE_EMAILJS_ATTACH_XLSX=false
+```
+
+### Configuración de EmailJS
+
+1. Crear cuenta en [EmailJS](https://www.emailjs.com/)
+2. Agregar servicio de email (Gmail recomendado)
+3. Crear templates:
+   - **Contribution**: Notifica al admin de nuevos aportes
+   - **Thank You**: Agradecimiento automático al usuario
+
+---
+
+## 🌐 Deploy
+
+### GitHub Pages
+
+```bash
+cd app
+npm run deploy
+```
+
+URL: `https://oscarmp7.github.io/worship-box/`
+
+### Vercel
+
+1. Importar repositorio en [Vercel](https://vercel.com)
+2. Configurar:
+   - **Framework**: Vite
+   - **Root Directory**: `app`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+
+---
+
+## 🤝 Contribuir
+
+Las contribuciones son bienvenidas y apreciadas.
+
+1. Fork el proyecto
+2. Crea tu rama de feature (`git checkout -b feature/NuevaCaracteristica`)
+3. Commit tus cambios (`git commit -m 'Agregar nueva característica'`)
+4. Push a la rama (`git push origin feature/NuevaCaracteristica`)
+5. Abre un Pull Request
+
+También puedes contribuir directamente desde la aplicación usando el **formulario de aportes** para agregar secuencias, software o sugerencias.
+
+---
+
+## 📄 Licencia
+
+Distribuido bajo la Licencia MIT. Ver `LICENSE` para más información.
+
+---
+
+## 📧 Contacto
+
+**Worship Box Ministry**
+
+- Email: worshipbox.ministry@gmail.com
+- Web: [worship-box](https://oscarmp7.github.io/worship-box/)
+
+---
+
+<div align="center">
+
+**Worship Box** — Recursos para la adoración 🙏
+
+</div>

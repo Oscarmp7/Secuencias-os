@@ -57,6 +57,7 @@ const Sidebar = memo(function Sidebar({
   onSelectResources,
   onShowContributeForm,
   selectedResourceCategory = null,
+  resourceStats = null,
 }) {
   const { t } = useTranslation();
   
@@ -183,6 +184,11 @@ const Sidebar = memo(function Sidebar({
               <span id="recursos-heading" className="flex-1 text-left uppercase tracking-wide">
                 {t('nav.resources', 'Recursos')}
               </span>
+              {resourceStats && resourceStats.totalItems > 0 && (
+                <span className="text-[var(--text-subtle)] text-xs tabular-nums">
+                  {resourceStats.totalItems}
+                </span>
+              )}
             </button>
 
             {isResourcesExpanded && (
@@ -198,13 +204,14 @@ const Sidebar = memo(function Sidebar({
                   }`}
                 >
                   <Package size={16} className={viewMode === 'resources' && !selectedResourceCategory ? 'text-[var(--accent)]' : 'text-[var(--text-subtle)]'} />
-                  <span>Ver todos</span>
+                  <span>{t('resources.filterAll', 'Ver todos')}</span>
                 </button>
 
                 {/* Subcategorías */}
                 {RESOURCE_CATEGORIES.map((cat) => {
                   const IconComponent = cat.icon;
                   const isSelected = viewMode === 'resources' && selectedResourceCategory === cat.id;
+                  const count = resourceStats ? resourceStats[cat.id] || 0 : 0;
                   
                   return (
                     <button
@@ -218,7 +225,12 @@ const Sidebar = memo(function Sidebar({
                       }`}
                     >
                       <IconComponent size={16} className={isSelected ? 'text-[var(--accent)]' : 'text-[var(--text-subtle)]'} />
-                      <span>{cat.name}</span>
+                      <span className="flex-1 text-left">{cat.name}</span>
+                      {count > 0 && (
+                        <span className="text-[var(--text-subtle)] text-xs tabular-nums">
+                          {count}
+                        </span>
+                      )}
                     </button>
                   );
                 })}
@@ -247,7 +259,7 @@ const Sidebar = memo(function Sidebar({
             "
           >
             <Gift size={18} />
-            <span>Aportar Recursos</span>
+            <span>{t('contribute.title')}</span>
           </button>
         </div>
       </aside>

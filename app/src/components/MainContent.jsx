@@ -28,6 +28,7 @@ const MainContent = memo(function MainContent({
   expandedAlbums,
   onToggleAlbum,
   stats,
+  resourceStats,
   homeArtists,
   hasRecentArtists,
   theme,
@@ -65,6 +66,7 @@ const MainContent = memo(function MainContent({
         /* Prioridad 4: Home */
         <HomeView
           stats={stats}
+          resourceStats={resourceStats}
           homeArtists={homeArtists}
           hasRecentArtists={hasRecentArtists}
           theme={theme}
