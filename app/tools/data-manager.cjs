@@ -3424,10 +3424,17 @@ function limpiarNumeracionNombres() {
 }
 
 /**
- * Sincroniza las estadísticas del JSON
+ * Sincroniza las estadísticas de secuencias.json y software.json
  */
 function sincronizarStats() {
   console.log(`\n${c.cyan}🔄 Sincronizando estadísticas...${c.reset}\n`);
+  
+  let hubosCambios = false;
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SECUENCIAS.JSON
+  // ═══════════════════════════════════════════════════════════════════════════
+  console.log(`${c.bold}═══ SECUENCIAS ═══${c.reset}`);
   
   const data = readDataJson('secuencias');
   
@@ -3441,7 +3448,6 @@ function sincronizarStats() {
     ) : 0), 0
   ) : 0;
   
-  console.log(`${c.bold}Estadísticas calculadas:${c.reset}`);
   console.log(`  • Artistas: ${totalArtists}`);
   console.log(`  • Secuencias: ${totalSongs}`);
   console.log(`  • Charts: ${totalCharts}`);
@@ -3454,19 +3460,83 @@ function sincronizarStats() {
     totalCharts
   };
   
-  const cambio = statsAnterior.totalArtists !== totalArtists ||
-                 statsAnterior.totalSongs !== totalSongs ||
-                 statsAnterior.totalCharts !== totalCharts;
+  const cambioSecuencias = statsAnterior.totalArtists !== totalArtists ||
+                           statsAnterior.totalSongs !== totalSongs ||
+                           statsAnterior.totalCharts !== totalCharts;
   
-  if (cambio) {
+  if (cambioSecuencias) {
     data.lastUpdated = new Date().toISOString();
     saveDataJson(data, 'secuencias');
-    console.log(`\n${c.green}✓ Estadísticas actualizadas${c.reset}`);
+    console.log(`  ${c.green}✓ Secuencias actualizadas${c.reset}`);
+    hubosCambios = true;
   } else {
-    console.log(`\n${c.dim}Las estadísticas ya estaban correctas${c.reset}`);
+    console.log(`  ${c.dim}Sin cambios${c.reset}`);
   }
   
-  return data.stats;
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SOFTWARE.JSON
+  // ═══════════════════════════════════════════════════════════════════════════
+  console.log(`\n${c.bold}═══ SOFTWARE ═══${c.reset}`);
+  
+  const softwareData = readDataJson('software');
+  
+  // Calcular stats por categoría
+  const categorias = softwareData.categories || [];
+  const totalCategorias = categorias.length;
+  const totalItems = categorias.reduce((sum, cat) => sum + (cat.items?.length || 0), 0);
+  
+  // Stats por tipo de categoría
+  const dawsCat = categorias.find(c => c.id === 'daws');
+  const pluginsCat = categorias.find(c => c.id === 'plugins');
+  const utilidadesCat = categorias.find(c => c.id === 'utilidades');
+  
+  const totalDaws = dawsCat?.items?.length || 0;
+  const totalPlugins = pluginsCat?.items?.length || 0;
+  const totalUtilidades = utilidadesCat?.items?.length || 0;
+  
+  console.log(`  • Categorías: ${totalCategorias}`);
+  console.log(`  • Total items: ${totalItems}`);
+  console.log(`    - DAWs: ${totalDaws}`);
+  console.log(`    - Plugins: ${totalPlugins}`);
+  console.log(`    - Utilidades: ${totalUtilidades}`);
+  
+  const softwareStatsAnterior = softwareData.stats || {};
+  
+  softwareData.stats = {
+    totalCategorias,
+    totalItems,
+    totalDaws,
+    totalPlugins,
+    totalUtilidades
+  };
+  
+  const cambioSoftware = softwareStatsAnterior.totalCategorias !== totalCategorias ||
+                         softwareStatsAnterior.totalItems !== totalItems ||
+                         softwareStatsAnterior.totalDaws !== totalDaws ||
+                         softwareStatsAnterior.totalPlugins !== totalPlugins ||
+                         softwareStatsAnterior.totalUtilidades !== totalUtilidades;
+  
+  if (cambioSoftware) {
+    softwareData.lastUpdated = new Date().toISOString();
+    saveDataJson(softwareData, 'software');
+    console.log(`  ${c.green}✓ Software actualizado${c.reset}`);
+    hubosCambios = true;
+  } else {
+    console.log(`  ${c.dim}Sin cambios${c.reset}`);
+  }
+  
+  // Resumen final
+  console.log(`\n${c.bold}═══ RESUMEN ═══${c.reset}`);
+  if (hubosCambios) {
+    console.log(`${c.green}✓ Estadísticas sincronizadas${c.reset}`);
+  } else {
+    console.log(`${c.dim}Todas las estadísticas ya estaban correctas${c.reset}`);
+  }
+  
+  return { 
+    secuencias: data.stats, 
+    software: softwareData.stats 
+  };
 }
 
 /**

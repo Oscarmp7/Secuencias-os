@@ -12,6 +12,7 @@
  */
 
 import { memo, useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Download,
   ExternalLink,
@@ -30,7 +31,7 @@ import { softwareCategories } from '../../data';
 //   📦 COMPONENTE DE TARJETA DE RECURSO
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const ResourceCard = memo(function ResourceCard({ resource }) {
+const ResourceCard = memo(function ResourceCard({ resource, t }) {
   return (
     <div className="glass-card rounded-xl p-5 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg group">
       {/* Icono y nombre */}
@@ -71,7 +72,7 @@ const ResourceCard = memo(function ResourceCard({ resource }) {
           "
         >
           <Download size={18} />
-          Descargar
+          {t('resources.download')}
         </a>
       )}
     </div>
@@ -93,7 +94,7 @@ const renderCategoryIcon = (categoryId) => {
   }
 };
 
-const CategorySection = memo(function CategorySection({ category }) {
+const CategorySection = memo(function CategorySection({ category, t }) {
   if (!category.items || category.items.length === 0) {
     return null;
   }
@@ -112,14 +113,16 @@ const CategorySection = memo(function CategorySection({ category }) {
           )}
         </div>
         <span className="ml-auto text-sm text-[var(--text-subtle)] tabular-nums">
-          {category.items.length} {category.items.length === 1 ? 'recurso' : 'recursos'}
+          {category.items.length === 1 
+            ? t('resources.resourceCount', { count: category.items.length })
+            : t('resources.resourceCountPlural', { count: category.items.length })}
         </span>
       </div>
 
       {/* Grid de recursos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {category.items.map((resource) => (
-          <ResourceCard key={resource.id || resource.name} resource={resource} />
+          <ResourceCard key={resource.id || resource.name} resource={resource} t={t} />
         ))}
       </div>
     </section>
@@ -131,6 +134,7 @@ const CategorySection = memo(function CategorySection({ category }) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ResourcesView = memo(function ResourcesView({ selectedCategory = null, onCategoryChange }) {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   
   // Usar selectedCategory del prop directamente para mantener sincronía con el sidebar
@@ -187,9 +191,9 @@ const ResourcesView = memo(function ResourcesView({ selectedCategory = null, onC
             <Package size={28} className="text-white" />
           </div>
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold">Software y Herramientas</h1>
+            <h1 className="text-2xl md:text-3xl font-bold">{t('resources.title')}</h1>
             <p className="text-[var(--text-muted)]">
-              {totalResources} recursos disponibles para producción musical
+              {t('resources.subtitle', { count: totalResources })}
             </p>
           </div>
         </div>
@@ -202,7 +206,7 @@ const ResourcesView = memo(function ResourcesView({ selectedCategory = null, onC
           <Search size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-subtle)]" />
           <input
             type="text"
-            placeholder="Buscar software..."
+            placeholder={t('resources.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
@@ -217,7 +221,7 @@ const ResourcesView = memo(function ResourcesView({ selectedCategory = null, onC
             onClick={() => handleFilterChange('all')}
             className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`}
           >
-            Todos
+            {t('resources.filterAll')}
           </button>
           {softwareCategories.map((cat) => {
             return (
@@ -242,12 +246,12 @@ const ResourcesView = memo(function ResourcesView({ selectedCategory = null, onC
         <div className="text-center py-16">
           <Package size={64} className="mx-auto text-[var(--text-subtle)] mb-4" />
           <h2 className="text-xl font-semibold mb-2">
-            {searchQuery ? 'No se encontraron resultados' : 'No hay recursos disponibles'}
+            {searchQuery ? t('resources.noResults') : t('resources.noResources')}
           </h2>
           <p className="text-[var(--text-muted)] max-w-md mx-auto">
             {searchQuery
-              ? `No hay recursos que coincidan con "${searchQuery}". Intenta con otra búsqueda.`
-              : 'Pronto agregaremos más recursos. ¡Vuelve a visitarnos!'
+              ? t('resources.noResultsFor', { query: searchQuery })
+              : t('resources.noResourcesSubtitle')
             }
           </p>
           {searchQuery && (
@@ -255,14 +259,14 @@ const ResourcesView = memo(function ResourcesView({ selectedCategory = null, onC
               onClick={() => setSearchQuery('')}
               className="mt-4 px-4 py-2 rounded-lg bg-[var(--accent)] text-white hover:bg-[var(--accent-strong)] transition-colors"
             >
-              Limpiar búsqueda
+              {t('resources.clearSearch')}
             </button>
           )}
         </div>
       ) : (
         <div>
           {filteredData.map((category) => (
-            <CategorySection key={category.id} category={category} />
+            <CategorySection key={category.id} category={category} t={t} />
           ))}
         </div>
       )}

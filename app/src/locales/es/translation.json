@@ -69,6 +69,9 @@
     "resourceCountPlural": "{{count}} recursos",
     "noResources": "No hay recursos disponibles",
     "noResourcesSubtitle": "Pronto agregaremos más recursos. ¡Vuelve a visitarnos!",
+    "noResults": "No se encontraron resultados",
+    "noResultsFor": "No hay recursos que coincidan con \"{{query}}\". Intenta con otra búsqueda.",
+    "clearSearch": "Limpiar búsqueda",
     "download": "Descargar"
   },
   "contribute": {
