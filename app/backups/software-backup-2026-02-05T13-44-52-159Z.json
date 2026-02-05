@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-05T13:44:52.164Z",
+  "lastUpdated": "2026-02-03T00:00:00.000Z",
   "stats": {
     "totalCategories": 3,
     "totalItems": 0
@@ -17,15 +17,7 @@
       "name": "Plugins e Instrumentos Virtuales",
       "description": "VSTs, efectos y sintetizadores virtuales",
       "icon": "Sliders",
-      "items": [
-        {
-          "id": "aporte_sw_1770298961038",
-          "name": "Grand Piano Reason",
-          "description": "Grand Piano nativo de Reason con sonido balanceado, respuesta natural y excelente dinámica.",
-          "url": "https://www.mediafire.com/file/6vunlbzdb1gcdqm/Grand_Piano_Reason_KONTAKT.rar/file",
-          "addedBy": "Luis José Paulino Hernández"
-        }
-      ]
+      "items": []
     },
     {
       "id": "utilidades",
