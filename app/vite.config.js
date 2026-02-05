@@ -1,11 +1,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 
-// Configuracion base para desplegar en GitHub Pages.
-// Si renombras el repo con otro slug, ajusta este valor.
+// Configuración para desplegar en Vercel
 export default defineConfig({
   plugins: [react()],
-  base: '/worship-box/',
+  base: '/',
   build: {
     rollupOptions: {
       output: {
