@@ -25,7 +25,7 @@ El proyecto esta optimizado para desktop y mobile, con tema dark/light e interna
 ### Formulario de Aportes
 - Contribucion de secuencias, software y sugerencias
 - Validacion de URLs de multiples servicios
-- Soporte para archivos adjuntos (.zip, .rar hasta 20MB)
+- URL de descarga obligatoria para aportes (Google Drive, MEGA, TeraBox, etc.)
 - Sistema anti-spam (cooldown de 1 minuto)
 - Notificaciones por email via **EmailJS**
 - Mensajes de agradecimiento personalizados (SweetAlert2)
@@ -182,7 +182,21 @@ El sistema de aportes usa EmailJS para notificaciones:
 3. Crear dos templates:
    - `template_contribution`: Notificacion de nuevo aporte
    - `template_thankyou`: Agradecimiento al usuario
-4. Configurar en `app/src/services/emailService.js`
+4. Configurar variables de entorno en `app/.env`:
+
+```
+VITE_EMAILJS_SERVICE_ID=service_whwzteo
+VITE_EMAILJS_TEMPLATE_FORM_ID=template_et8q3ei
+VITE_EMAILJS_TEMPLATE_THANKS_ID=template_y8pgi2k
+VITE_EMAILJS_PUBLIC_KEY=b0HcaxplK26PFy40Q
+VITE_EMAILJS_TO_EMAIL=worshipbox.ministry@gmail.com
+
+# Opcional: endpoint seguro (serverless/backend)
+VITE_CONTRIBUTE_ENDPOINT=https://tu-endpoint/submit
+
+# Opcional: desactivar adjunto XLSX en EmailJS
+VITE_EMAILJS_ATTACH_XLSX=false
+```
 
 ## Flujo de ramas
 

@@ -364,6 +364,7 @@ const App = () => {
         theme={theme}
         onToggleArtists={toggleArtistsExpanded}
         onSelectArtist={handleSelectArtist}
+        onGoHome={handleGoHome}
         onCloseSidebar={closeSidebar}
         // Props para recursos y formulario de contribución
         resourcesExpanded={resourcesExpanded}

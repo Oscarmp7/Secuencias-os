@@ -69,22 +69,39 @@ El sistema valida URLs de multiples servicios en `downloadUtils.js`:
 
 ## Configuracion de EmailJS
 
-El servicio de email esta configurado en `emailService.js`:
+El servicio de email se configura via variables de entorno en `app/.env`:
 
-```javascript
-const EMAILJS_CONFIG = {
-  SERVICE_ID: 'service_whwzteo',
-  TEMPLATE_CONTRIBUTION: 'template_et8q3ei',
-  TEMPLATE_THANKYOU: 'template_y8pgi2k',
-  PUBLIC_KEY: 'b0HcaxplK26PFy40Q'
-};
+```
+VITE_EMAILJS_SERVICE_ID=service_whwzteo
+VITE_EMAILJS_TEMPLATE_FORM_ID=template_et8q3ei
+VITE_EMAILJS_TEMPLATE_THANKS_ID=template_y8pgi2k
+VITE_EMAILJS_PUBLIC_KEY=b0HcaxplK26PFy40Q
+VITE_EMAILJS_TO_EMAIL=worshipbox.ministry@gmail.com
 
-const WORSHIP_BOX_EMAIL = 'worshipbox.ministry@gmail.com';
+# Opcional: endpoint seguro (serverless/backend)
+VITE_CONTRIBUTE_ENDPOINT=https://tu-endpoint/submit
+
+# Opcional: desactivar adjunto XLSX en EmailJS
+VITE_EMAILJS_ATTACH_XLSX=false
 ```
 
 ### Templates de EmailJS:
-1. **template_contribution**: Notifica al admin de nuevo aporte
-2. **template_thankyou**: Agradecimiento al usuario (si proporciono email)
+1. **template_et8q3ei**: Notifica al admin de nuevo aporte (contribution)
+2. **template_y8pgi2k**: Agradecimiento al usuario (thankyou)
+
+### Variables disponibles en templates:
+
+**Contribution (template_et8q3ei):**
+- `{{to_email}}`, `{{fecha_envio}}`, `{{tipo_aporte}}`
+- `{{nombre_recurso}}`, `{{artista}}`, `{{album}}`
+- `{{tonalidad}}`, `{{bpm}}`, `{{compas}}`, `{{subcategoria}}`
+- `{{descripcion}}`, `{{url_descarga}}`
+- `{{servicio_descarga}}`, `{{id_descarga}}`
+- `{{nombre_donante}}`, `{{email_donante}}`, `{{sugerencias}}`
+
+**Thank You (template_y8pgi2k):**
+- `{{to_email}}`, `{{saludo}}`, `{{nombre}}`
+- `{{tipo_aporte}}`, `{{mensaje}}`
 
 ---
 
@@ -145,7 +162,7 @@ node tools/data-manager.cjs
 1. Usuario selecciona tipo: Secuencia | Software | Sugerencia
 2. Formulario se renderiza condicionalmente segun tipo
 3. Validacion en tiempo real de campos y URLs
-4. Limite de archivo: 20MB (.zip, .rar)
+4. URL de descarga obligatoria (sin adjuntos)
 5. Anti-spam: cooldown de 60 segundos entre envios
 6. Al enviar exitosamente:
    - Se notifica al admin via EmailJS
@@ -232,13 +249,15 @@ Base URL: `https://oscarmp7.github.io/worship-box/`
 ### Completado:
 - [x] Migracion completa a React + Vite
 - [x] Sistema de busqueda optimizado
-- [x] Formulario de aportes con EmailJS
+- [x] Formulario de aportes con EmailJS (configurado y funcionando)
 - [x] i18n completo (ES, EN, PT)
 - [x] Tema dark/light
 - [x] Data Manager CLI con 19 funciones
 - [x] Limpieza de datos (albumes vacios, duplicados de tonos)
 - [x] Responsive design para moviles
 - [x] Deploy en GitHub Pages
+- [x] Branding Worship Box (logos SVG con variantes dark/light)
+- [x] Favicons adaptivos segun tema del navegador
 
 ### Estadisticas actuales:
 - 767 artistas

@@ -23,8 +23,11 @@ dist-ssr
 *.sln
 *.sw?
 
-# Email config (contiene contraseñas)
+# Email config (contiene credenciales)
 .email-config.json
+.env
+.env.local
+.env.*.local
 dead-links.json
 check-history.json
 duplicates.json

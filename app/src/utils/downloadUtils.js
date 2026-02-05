@@ -4,7 +4,7 @@
  * Utilidades para trabajar con URLs de descarga de múltiples servicios.
  * Soporta: Google Drive, Mega, TeraBox, MediaFire, Dropbox, OneDrive.
  * 
- * Reemplaza y extiende la funcionalidad de driveUtils.js
+ * Utilidades centralizadas para detectar servicios y generar URLs de descarga
  */
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -274,14 +274,6 @@ export function getSupportedServicesList() {
   }));
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-//   🔄 COMPATIBILIDAD CON driveUtils.js (funciones legacy)
-// ═══════════════════════════════════════════════════════════════════════════════
-
-// Re-exportar funciones con nombres legacy para compatibilidad
-export const extractDriveId = extractFileId;
-export const isValidDriveUrl = isValidDownloadUrl;
-
 export default {
   // Nuevas funciones
   detectService,
@@ -295,7 +287,4 @@ export default {
   // Constantes
   SUPPORTED_SERVICES,
   SUPPORTED_DOMAINS,
-  // Legacy
-  extractDriveId,
-  isValidDriveUrl,
 };

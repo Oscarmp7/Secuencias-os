@@ -6,7 +6,7 @@
  * 
  * Características:
  * - Validaciones en tiempo real
- * - Soporte para archivos adjuntos (zip, rar hasta 20MB)
+ * - URL de descarga obligatoria (Google Drive, MEGA, TeraBox, etc.)
  * - Extracción automática de DriveID desde URLs
  * - Control de frecuencia de envío (1 por minuto)
  * - Mensajes de agradecimiento personalizados
@@ -15,7 +15,6 @@
  */
 
 import { memo, useState, useCallback, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Gift,
   Upload,
@@ -23,11 +22,9 @@ import {
   Package,
   MessageSquare,
   Send,
-  X,
   AlertCircle,
   CheckCircle,
   Link,
-  FileArchive,
   User,
   Mail,
   Clock,
@@ -41,7 +38,6 @@ import {
 } from '../../utils/downloadUtils';
 import {
   validateContributeForm,
-  validateFile,
   canSubmitForm,
   recordSubmission,
   formatRemainingTime,
@@ -49,8 +45,6 @@ import {
   COMPAS_OPTIONS,
   APORTE_TYPES,
   SOFTWARE_CATEGORIES,
-  MAX_FILE_SIZE,
-  ALLOWED_FILE_TYPES,
 } from '../../utils/formValidation';
 import { generateXlsxBase64 } from '../../utils/xlsxGenerator';
 import {
@@ -80,8 +74,6 @@ const cardClass = 'glass-card rounded-xl p-6 transition-all duration-200';
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ContributeFormView = memo(function ContributeFormView({ onClose }) {
-  const { t: _t } = useTranslation();
-  
   // Estado del formulario
   const [formData, setFormData] = useState({
     tipoAporte: '',
@@ -94,10 +86,10 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
     subcategoria: '',
     descripcion: '',
     urlDescarga: '',
-    archivo: null,
     nombre: '',
     email: '',
     sugerencias: '',
+    website: '',
   });
 
   // Estado de validación y UI
@@ -142,28 +134,8 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
 
   // Handler genérico para cambios en inputs
   const handleChange = useCallback((e) => {
-    const { name, value, type, files } = e.target;
-    
-    if (type === 'file') {
-      const file = files?.[0] || null;
-      setFormData(prev => ({ ...prev, archivo: file }));
-      
-      // Validar archivo inmediatamente
-      if (file) {
-        const validation = validateFile(file);
-        if (!validation.valid) {
-          setErrors(prev => ({ ...prev, archivo: validation.error }));
-        } else {
-          setErrors(prev => {
-            const newErrors = { ...prev };
-            delete newErrors.archivo;
-            return newErrors;
-          });
-        }
-      }
-    } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
-    }
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
 
     // Marcar como tocado
     setTouched(prev => ({ ...prev, [name]: true }));
@@ -173,16 +145,6 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
   const handleBlur = useCallback((e) => {
     const { name } = e.target;
     setTouched(prev => ({ ...prev, [name]: true }));
-  }, []);
-
-  // Limpiar archivo
-  const clearFile = useCallback(() => {
-    setFormData(prev => ({ ...prev, archivo: null }));
-    setErrors(prev => {
-      const newErrors = { ...prev };
-      delete newErrors.archivo;
-      return newErrors;
-    });
   }, []);
 
   // Enviar formulario
@@ -226,11 +188,15 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
 
     try {
       // Preparar datos con información de descarga
+      const { website, ...cleanData } = formData;
       const dataToSend = {
-        ...formData,
-        downloadInfo: downloadInfo,
+        ...cleanData,
+        downloadInfo,
         // Mantener driveId por compatibilidad si es Google Drive
         driveId: downloadInfo.service?.id === 'googleDrive' ? downloadInfo.fileId : null,
+        submittedAt: new Date().toISOString(),
+        pageUrl: window.location?.href || '',
+        userAgent: navigator?.userAgent || '',
       };
 
       // Generar XLSX
@@ -281,10 +247,10 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
             subcategoria: '',
             descripcion: '',
             urlDescarga: '',
-            archivo: null,
             nombre: prev.nombre,
             email: prev.email,
             sugerencias: '',
+            website: '',
           }));
           setErrors({});
           setTouched({});
@@ -338,6 +304,17 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
 
       {/* Formulario */}
       <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
+        {/* Honeypot anti-spam (debe permanecer vacío) */}
+        <input
+          type="text"
+          name="website"
+          value={formData.website}
+          onChange={handleChange}
+          autoComplete="off"
+          tabIndex="-1"
+          aria-hidden="true"
+          className="hidden"
+        />
         
         {/* Tipo de Aporte */}
         <div className={cardClass}>
@@ -558,16 +535,16 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
           </div>
         )}
 
-        {/* URL o Archivo (para secuencia y software) */}
+        {/* URL de Descarga (para secuencia y software) */}
         {(formData.tipoAporte === 'secuencia' || formData.tipoAporte === 'software') && (
           <div className={cardClass}>
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <Upload size={20} className="text-[var(--accent)]" />
-              Archivo del Recurso
+              URL del Recurso
             </h3>
             
             <p className="text-sm text-[var(--text-muted)] mb-4">
-              Proporciona una URL de descarga ({getSupportedServicesText()}) o adjunta un archivo comprimido ({ALLOWED_FILE_TYPES.join(', ')}, máx. {MAX_FILE_SIZE / 1024 / 1024}MB)
+              Proporciona una URL de descarga ({getSupportedServicesText()})
             </p>
 
             <div className="space-y-4">
@@ -586,7 +563,6 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
                   onBlur={handleBlur}
                   placeholder="https://drive.google.com/... o https://mega.nz/..."
                   className={inputBaseClass}
-                  disabled={!!formData.archivo}
                 />
                 {downloadInfo.isValid && downloadInfo.service && (
                   <p className="text-green-500 text-sm mt-1 flex items-center gap-1">
@@ -599,75 +575,10 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
                     <AlertCircle size={14} /> URL no válida. Servicios soportados: {getSupportedServicesText()}
                   </p>
                 )}
-              </div>
-
-              <div className="flex items-center gap-4">
-                <div className="flex-1 border-t border-[var(--border)]"></div>
-                <span className="text-[var(--text-subtle)] text-sm">o</span>
-                <div className="flex-1 border-t border-[var(--border)]"></div>
-              </div>
-
-              {/* Archivo adjunto */}
-              <div>
-                <label htmlFor="archivo" className={labelClass}>
-                  <FileArchive size={16} className="inline mr-2" />
-                  Archivo comprimido
-                </label>
-                {!formData.archivo ? (
-                  <label
-                    htmlFor="archivo"
-                    className={`
-                      flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-lg cursor-pointer
-                      ${formData.urlDescarga
-                        ? 'border-[var(--border)] bg-[var(--surface)] opacity-50 cursor-not-allowed'
-                        : 'border-[var(--input-border)] hover:border-[var(--accent)] hover:bg-[var(--hover)]'
-                      }
-                      transition-all duration-200
-                    `}
-                  >
-                    <Upload size={32} className="text-[var(--text-subtle)] mb-2" />
-                    <span className="text-[var(--text-muted)]">
-                      Haz clic o arrastra un archivo aquí
-                    </span>
-                    <span className="text-[var(--text-subtle)] text-sm mt-1">
-                      {ALLOWED_FILE_TYPES.join(', ')} (máx. {MAX_FILE_SIZE / 1024 / 1024}MB)
-                    </span>
-                    <input
-                      type="file"
-                      id="archivo"
-                      name="archivo"
-                      onChange={handleChange}
-                      accept={ALLOWED_FILE_TYPES.join(',')}
-                      className="hidden"
-                      disabled={!!formData.urlDescarga}
-                    />
-                  </label>
-                ) : (
-                  <div className="flex items-center gap-3 p-4 bg-[var(--surface)] rounded-lg border border-[var(--border)]">
-                    <FileArchive size={24} className="text-[var(--accent)]" />
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium truncate">{formData.archivo.name}</p>
-                      <p className="text-sm text-[var(--text-muted)]">
-                        {(formData.archivo.size / 1024 / 1024).toFixed(2)} MB
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={clearFile}
-                      className="p-2 hover:bg-[var(--hover)] rounded-lg transition-colors"
-                    >
-                      <X size={20} className="text-[var(--text-muted)]" />
-                    </button>
-                  </div>
-                )}
-                {errors.archivo && (
-                  <p className={errorClass}><AlertCircle size={14} /> {errors.archivo}</p>
+                {touched.urlDescarga && errors.urlDescarga && !formData.urlDescarga && (
+                  <p className={errorClass}><AlertCircle size={14} /> {errors.urlDescarga}</p>
                 )}
               </div>
-
-              {errors.urlOArchivo && (
-                <p className={errorClass}><AlertCircle size={14} /> {errors.urlOArchivo}</p>
-              )}
             </div>
           </div>
         )}

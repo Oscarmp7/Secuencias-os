@@ -49,6 +49,7 @@ const Sidebar = memo(function Sidebar({
   theme,
   onToggleArtists,
   onSelectArtist,
+  onGoHome,
   onCloseSidebar,
   // Nuevas props para recursos y aportes
   resourcesExpanded = false,
@@ -102,7 +103,14 @@ const Sidebar = memo(function Sidebar({
           }`}
         >
           {/* Logo principal sin fondo para respetar el SVG transparente */}
-          <img src={sidebarLogo} alt={t('brand')} className="brand-logo-full h-9 w-auto max-w-[210px]" />
+          <button
+            type="button"
+            onClick={onGoHome}
+            className="p-1 rounded-md hover:bg-[var(--hover)] transition-colors active:scale-[0.98]"
+            aria-label={t('actions.home')}
+          >
+            <img src={sidebarLogo} alt={t('brand')} className="brand-logo-full h-9 w-auto max-w-[210px]" />
+          </button>
 
           {isMobile && (
             <button

@@ -1,26 +1,15 @@
 /**
  * formValidation.js
- * 
+ *
  * Utilidades para validar el formulario de contribución de recursos.
- * Incluye validaciones de campos, archivos y control de frecuencia de envío.
+ * Incluye validaciones de campos y control de frecuencia de envío.
  */
+
+import { isValidDownloadUrl } from './downloadUtils';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //   📋 CONSTANTES DE VALIDACIÓN
 // ═══════════════════════════════════════════════════════════════════════════════
-
-// Tamaño máximo de archivo: 20MB
-export const MAX_FILE_SIZE = 20 * 1024 * 1024;
-
-// Tipos de archivo permitidos
-export const ALLOWED_FILE_TYPES = ['.zip', '.rar'];
-export const ALLOWED_MIME_TYPES = [
-  'application/zip',
-  'application/x-zip-compressed',
-  'application/x-rar-compressed',
-  'application/vnd.rar',
-  'application/octet-stream', // Algunos navegadores usan esto para .rar
-];
 
 // Tiempo mínimo entre envíos (en milisegundos): 1 minuto
 export const MIN_SUBMISSION_INTERVAL = 60 * 1000;
@@ -88,41 +77,6 @@ export const SOFTWARE_CATEGORIES = [
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Valida un archivo adjunto.
- * 
- * @param {File} file - Archivo a validar
- * @param {number} maxSize - Tamaño máximo en bytes (default: 20MB)
- * @returns {{ valid: boolean, error?: string }}
- */
-export function validateFile(file, maxSize = MAX_FILE_SIZE) {
-  if (!file) {
-    return { valid: true }; // El archivo es opcional si hay URL
-  }
-
-  // Validar tamaño
-  if (file.size > maxSize) {
-    const maxSizeMB = Math.round(maxSize / (1024 * 1024));
-    return {
-      valid: false,
-      error: `El archivo excede el tamaño máximo de ${maxSizeMB}MB`,
-    };
-  }
-
-  // Validar tipo de archivo por extensión
-  const fileName = file.name.toLowerCase();
-  const hasValidExtension = ALLOWED_FILE_TYPES.some(ext => fileName.endsWith(ext));
-  
-  if (!hasValidExtension) {
-    return {
-      valid: false,
-      error: `Solo se permiten archivos comprimidos (${ALLOWED_FILE_TYPES.join(', ')})`,
-    };
-  }
-
-  return { valid: true };
-}
-
-/**
  * Valida el formulario completo de contribución.
  * 
  * @param {Object} formData - Datos del formulario
@@ -130,6 +84,11 @@ export function validateFile(file, maxSize = MAX_FILE_SIZE) {
  */
 export function validateContributeForm(formData) {
   const errors = {};
+
+  // Honeypot anti-spam
+  if (formData.website?.trim()) {
+    errors.website = 'Validación anti-spam';
+  }
 
   // Validar tipo de aporte (obligatorio)
   if (!formData.tipoAporte) {
@@ -158,9 +117,12 @@ export function validateContributeForm(formData) {
       errors.compas = 'El compás es obligatorio';
     }
 
-    // URL o archivo obligatorio
-    if (!formData.urlDescarga?.trim() && !formData.archivo) {
-      errors.urlOArchivo = 'Debes proporcionar una URL de descarga o adjuntar un archivo';
+    // URL de descarga obligatoria
+    const url = formData.urlDescarga?.trim() || '';
+    if (!url) {
+      errors.urlDescarga = 'Debes proporcionar una URL de descarga';
+    } else if (!isValidDownloadUrl(url)) {
+      errors.urlDescarga = 'URL no válida. Usa un servicio de descarga soportado';
     }
   } else if (formData.tipoAporte === 'software') {
     // Campos obligatorios para software
@@ -174,22 +136,17 @@ export function validateContributeForm(formData) {
       errors.descripcion = 'La descripción es obligatoria';
     }
 
-    // URL o archivo obligatorio
-    if (!formData.urlDescarga?.trim() && !formData.archivo) {
-      errors.urlOArchivo = 'Debes proporcionar una URL de descarga o adjuntar un archivo';
+    // URL de descarga obligatoria
+    const url = formData.urlDescarga?.trim() || '';
+    if (!url) {
+      errors.urlDescarga = 'Debes proporcionar una URL de descarga';
+    } else if (!isValidDownloadUrl(url)) {
+      errors.urlDescarga = 'URL no válida. Usa un servicio de descarga soportado';
     }
   } else if (formData.tipoAporte === 'sugerencia') {
     // Para sugerencias, el comentario es obligatorio
     if (!formData.sugerencias?.trim()) {
       errors.sugerencias = 'Escribe tu sugerencia o comentario';
-    }
-  }
-
-  // Validar archivo si se proporciona
-  if (formData.archivo) {
-    const fileValidation = validateFile(formData.archivo);
-    if (!fileValidation.valid) {
-      errors.archivo = fileValidation.error;
     }
   }
 
@@ -277,7 +234,6 @@ export function formatRemainingTime(seconds) {
 }
 
 export default {
-  validateFile,
   validateContributeForm,
   isValidEmail,
   canSubmitForm,
@@ -287,6 +243,4 @@ export default {
   COMPAS_OPTIONS,
   APORTE_TYPES,
   SOFTWARE_CATEGORIES,
-  MAX_FILE_SIZE,
-  ALLOWED_FILE_TYPES,
 };

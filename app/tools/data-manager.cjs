@@ -10,8 +10,8 @@
  * 
  * FUNCIONALIDADES:
  * ────────────────
- * 1. Exportar data.json a Excel (XLSX)
- * 2. Importar cambios desde Excel a data.json
+ * 1. Exportar secuencias.json y software.json a Excel (XLSX)
+ * 2. Importar cambios desde Excel a los JSONs
  * 3. Agregar nuevos campos a todas las canciones/charts
  * 4. Detectar y gestionar duplicados
  * 5. Backup automático antes de modificar
@@ -26,7 +26,7 @@
  * 
  * REQUISITOS:
  * ───────────
- * npm install xlsx (ejecutar en la carpeta app)
+ * npm install xlsx-js-style (o xlsx, ejecutar en la carpeta app)
  */
 
 const fs = require('fs');
@@ -38,12 +38,10 @@ const readline = require('readline');
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const CONFIG = {
-  // Archivos de datos (nueva estructura modular)
+  // Archivos de datos (estructura modular)
   DATA_DIR: path.join(__dirname, '..', 'src', 'data'),
   SECUENCIAS_FILE: path.join(__dirname, '..', 'src', 'data', 'secuencias.json'),
   SOFTWARE_FILE: path.join(__dirname, '..', 'src', 'data', 'software.json'),
-  // Archivo legacy (mantener compatibilidad)
-  LEGACY_DATA_FILE: path.join(__dirname, '..', 'src', 'data.json'),
   
   // Archivos Excel dedicados para cada JSON
   EXCEL_DIR: path.join(__dirname, '..', 'data'),
@@ -174,26 +172,16 @@ function normalizeText(text) {
 
 /**
  * Obtiene la ruta del archivo de datos según el tipo
- * @param {string} type - 'secuencias', 'software' o 'legacy'
+ * @param {string} type - 'secuencias' o 'software'
  */
 function getDataFilePath(type = 'secuencias') {
-  switch (type) {
-    case 'software':
-      return CONFIG.SOFTWARE_FILE;
-    case 'legacy':
-      return CONFIG.LEGACY_DATA_FILE;
-    case 'secuencias':
-    default:
-      // Si existe secuencias.json, usarlo; si no, usar legacy
-      if (fs.existsSync(CONFIG.SECUENCIAS_FILE)) {
-        return CONFIG.SECUENCIAS_FILE;
-      }
-      return CONFIG.LEGACY_DATA_FILE;
-  }
+  if (type === 'software') return CONFIG.SOFTWARE_FILE;
+  if (type === 'secuencias') return CONFIG.SECUENCIAS_FILE;
+  throw new Error(`Tipo de datos no válido: ${type}`);
 }
 
 /**
- * Lee el archivo data.json (secuencias por defecto)
+ * Lee el archivo secuencias.json (secuencias por defecto)
  */
 function readDataJson(type = 'secuencias') {
   const filePath = getDataFilePath(type);
@@ -202,7 +190,7 @@ function readDataJson(type = 'secuencias') {
 }
 
 /**
- * Guarda el archivo data.json
+ * Guarda el archivo JSON correspondiente
  */
 function saveDataJson(data, type = 'secuencias') {
   const filePath = getDataFilePath(type);
@@ -210,7 +198,7 @@ function saveDataJson(data, type = 'secuencias') {
 }
 
 /**
- * Crea un backup del data.json y limpia backups antiguos
+ * Crea un backup del JSON correspondiente y limpia backups antiguos
  */
 function createBackup(type = 'secuencias') {
   if (!fs.existsSync(CONFIG.BACKUP_DIR)) {
@@ -219,7 +207,7 @@ function createBackup(type = 'secuencias') {
   
   const filePath = getDataFilePath(type);
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const fileName = type === 'software' ? 'software' : 'data';
+  const fileName = type === 'software' ? 'software' : 'secuencias';
   const backupFile = path.join(CONFIG.BACKUP_DIR, `${fileName}-backup-${timestamp}.json`);
   
   fs.copyFileSync(filePath, backupFile);
@@ -233,7 +221,7 @@ function createBackup(type = 'secuencias') {
 
 /**
  * Elimina backups antiguos manteniendo solo los más recientes
- * @param {string} prefix - Prefijo del archivo (ej: 'data' o 'software')
+ * @param {string} prefix - Prefijo del archivo (ej: 'secuencias' o 'software')
  */
 function cleanupOldBackups(prefix = 'data') {
   try {
@@ -264,22 +252,27 @@ function cleanupOldBackups(prefix = 'data') {
  */
 function checkXlsxInstalled() {
   try {
-    require.resolve('xlsx');
+    require.resolve('xlsx-js-style');
     return true;
   } catch (e) {
-    return false;
+    try {
+      require.resolve('xlsx');
+      return true;
+    } catch {
+      return false;
+    }
   }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-//   🔧 AGREGAR CAMPOS NUEVOS AL DATA.JSON
+//   🔧 AGREGAR CAMPOS NUEVOS AL SECUENCIAS.JSON
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
  * Agrega los campos nuevos a todas las canciones y charts
  */
 function addNewFieldsToData() {
-  console.log(`\n${c.cyan}📝 Agregando campos nuevos al data.json...${c.reset}\n`);
+  console.log(`\n${c.cyan}📝 Agregando campos nuevos al secuencias.json...${c.reset}\n`);
   
   const data = readDataJson();
   let songsUpdated = 0;
@@ -450,7 +443,7 @@ function getCellRef(col, row) {
 }
 
 /**
- * Exporta el data.json a un archivo Excel con estilos
+ * Exporta los JSONs a archivos Excel con estilos
  */
 function exportToExcel() {
   let XLSX;
@@ -470,7 +463,7 @@ function exportToExcel() {
     }
   }
   
-  console.log(`\n${c.cyan}📤 Exportando data.json a Excel...${c.reset}\n`);
+  console.log(`\n${c.cyan}📤 Exportando JSONs a Excel...${c.reset}\n`);
   
   const data = readDataJson();
   const styles = createStyles();
@@ -495,7 +488,7 @@ function exportToExcel() {
   }
   
   // ─────────────────────────────────────────────────────────────────────────────
-  // HOJA 1: SECUENCIAS (canciones) - TODAS LAS COLUMNAS DE DATA.JSON
+  // HOJA 1: SECUENCIAS (canciones) - TODAS LAS COLUMNAS DE SECUENCIAS.JSON
   // ─────────────────────────────────────────────────────────────────────────────
   const songHeaders = [
     'Accion',           // Acciones: Agregar, Eliminar, Principal
@@ -617,8 +610,8 @@ function exportToExcel() {
     ['   Cancion        →  Nombre limpio de la canción (para mostrar)'],
     ['   NombreArchivo  →  Nombre completo del archivo (con extensión)'],
     ['   Tipo           →  "sequence" para secuencias, "chart" para PDFs'],
-    ['   DriveID        →  ID único del archivo en Google Drive (OBLIGATORIO)'],
-    ['   LinkDescarga   →  URL de descarga directa (se genera automático si vacío)'],
+    ['   DriveID        →  ID único del archivo en Google Drive (opcional)'],
+    ['   LinkDescarga   →  URL de descarga (obligatoria si no hay DriveID)'],
     [''],
     ['═══════════════════════════════════════════════════════════════════════════'],
     ['🎵 COLUMNAS MUSICALES - Información de la canción:'],
@@ -657,16 +650,17 @@ function exportToExcel() {
     [''],
     ['   1. Añade una nueva fila al final de la hoja "Secuencias"'],
     ['   2. Pon "Agregar" en la columna Accion'],
-    ['   3. CAMPOS OBLIGATORIOS:'],
+    ['   3. CAMPOS REQUERIDOS:'],
     ['      • Artista     - Nombre del artista (usa exacto si ya existe)'],
     ['      • Album       - Nombre del álbum (usa exacto si ya existe)'],
     ['      • Cancion     - Nombre de la canción'],
-    ['      • DriveID     - ID del archivo en Google Drive'],
+    ['      • LinkDescarga - URL de descarga (o DriveID si es Google Drive)'],
     [''],
     ['   4. CAMPOS OPCIONALES (recomendados):'],
     ['      • NombreArchivo  - Nombre completo con extensión'],
     ['      • Tipo           - "sequence" (por defecto)'],
-    ['      • LinkDescarga   - Se genera automático si lo dejas vacío'],
+    ['      • DriveID        - ID de Google Drive (opcional)'],
+    ['      • LinkDescarga   - Si usas DriveID, se puede generar automática'],
     ['      • Campos musicales: Compas, BPM, Tonalidad, Duracion'],
     ['      • TipoSecuencia  - Original, Cover, Usuario, IA'],
     ['      • ChartUrl/ChartName - Si tienes el PDF del chart'],
@@ -685,7 +679,7 @@ function exportToExcel() {
     [''],
     ['   1. Busca la canción en la hoja "Secuencias"'],
     ['   2. Modifica los campos que desees (excepto IDs)'],
-    ['   3. Pon "Agregar" en Accion (reemplazará la existente por DriveID)'],
+    ['   3. Pon "Agregar" en Accion (reemplazará la existente por ID/URL)'],
     ['   4. Guarda e importa'],
     [''],
     ['═══════════════════════════════════════════════════════════════════════════'],
@@ -704,7 +698,7 @@ function exportToExcel() {
     [''],
     ['   • Usa filtros de Excel para buscar por Artista o Album'],
     ['   • Ctrl+H para reemplazos masivos'],
-    ['   • NO modifiques CancionID ni DriveID de registros existentes'],
+    ['   • NO modifiques CancionID ni DriveID de registros existentes (si aplica)'],
     ['   • Para obtener DriveID: abre el archivo en Drive, el ID está en la URL'],
     ['   • Ejemplo URL: drive.google.com/file/d/ESTE_ES_EL_ID/view'],
     ['   • La columna TieneChart se actualiza automáticamente'],
@@ -1107,12 +1101,12 @@ function exportSoftwareToExcel(XLSX, hasStyleSupport, styles) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Importa cambios desde el Excel al data.json
+ * Importa cambios desde el Excel al JSON correspondiente
  */
 function importFromExcel() {
   if (!checkXlsxInstalled()) {
-    console.log(`\n${c.red}❌ Error: El paquete 'xlsx' no está instalado.${c.reset}`);
-    console.log(`${c.yellow}   Ejecuta: npm install xlsx${c.reset}\n`);
+    console.log(`\n${c.red}❌ Error: No hay paquete xlsx instalado.${c.reset}`);
+    console.log(`${c.yellow}   Ejecuta: npm install xlsx-js-style${c.reset}\n`);
     return;
   }
   
@@ -1126,12 +1120,22 @@ function importFromExcel() {
     return;
   }
   
-  const XLSX = require('xlsx');
+  let XLSX;
+  try {
+    XLSX = require('xlsx-js-style');
+  } catch (e) {
+    XLSX = require('xlsx');
+  }
   
   console.log(`\n${c.cyan}📥 Importando cambios desde Excel...${c.reset}\n`);
   
-  // Crear backup antes de modificar
-  createBackup();
+  // Crear backups antes de modificar
+  if (hasSecuencias) {
+    createBackup('secuencias');
+  }
+  if (hasSoftware) {
+    createBackup('software');
+  }
   
   // Importar secuencias
   if (hasSecuencias) {
@@ -1339,17 +1343,24 @@ function importSoftwareFromExcel(XLSX, filePath) {
 }
 
 /**
- * Agrega una canción al data.json
+ * Agrega una canción al secuencias.json
  */
 function addSong(data, row, report) {
   const artistName = (row['Artista'] || '').trim();
   const albumName = (row['Album'] || '').trim();
   const songName = (row['Cancion'] || '').trim();
   const driveId = (row['DriveID'] || '').trim();
+  const downloadUrl = (row['LinkDescarga'] || row['DownloadUrl'] || '').trim();
   
-  if (!artistName || !albumName || !songName || !driveId) {
-    throw new Error('Faltan campos obligatorios (Artista, Album, Cancion, DriveID)');
+  if (!artistName || !albumName || !songName) {
+    throw new Error('Faltan campos obligatorios (Artista, Album, Cancion)');
   }
+  if (!driveId && !downloadUrl) {
+    throw new Error('Falta LinkDescarga o DriveID para la canción');
+  }
+  
+  // Resolver DriveID si viene desde una URL de Google Drive
+  const resolvedDriveId = driveId || (downloadUrl ? extractDriveId(downloadUrl) : null);
   
   // Buscar o crear artista
   let artist = data.artists.find(a => normalizeText(a.name) === normalizeText(artistName));
@@ -1376,7 +1387,7 @@ function addSong(data, row, report) {
   
   // Verificar si ya existe la canción (por DriveID o por nombre similar)
   const existingSong = album.songs.find(s => 
-    s.driveId === driveId || normalizeText(s.name) === normalizeText(songName)
+    (resolvedDriveId && s.driveId === resolvedDriveId) || normalizeText(s.name) === normalizeText(songName)
   );
   
   if (existingSong) {
@@ -1384,13 +1395,18 @@ function addSong(data, row, report) {
   }
   
   // Crear la canción
+  const songId = row['CancionID'] || resolvedDriveId || generateId();
+  const finalDownloadUrl = downloadUrl || (resolvedDriveId
+    ? `https://drive.google.com/uc?export=download&id=${resolvedDriveId}`
+    : null);
+
   const newSong = {
-    id: row['CancionID'] || driveId,
+    id: songId,
     name: songName,
     fullName: row['NombreArchivo'] || `${songName}.zip`,
     type: row['Tipo'] || 'sequence',
-    driveId: driveId,
-    downloadUrl: row['LinkDescarga'] || `https://drive.google.com/uc?export=download&id=${driveId}`,
+    driveId: resolvedDriveId || null,
+    downloadUrl: finalDownloadUrl,
     compas: row['Compas'] || null,
     bpm: row['BPM'] ? parseInt(row['BPM']) : null,
     tonalidad: row['Tonalidad'] || null,
@@ -1406,7 +1422,7 @@ function addSong(data, row, report) {
 }
 
 /**
- * Elimina una canción del data.json
+ * Elimina una canción del secuencias.json
  */
 function deleteSong(data, row, report) {
   const driveId = (row['DriveID'] || '').trim();
@@ -1497,7 +1513,7 @@ function markAsPrincipal(data, row, report) {
 }
 
 /**
- * Agrega un chart al data.json
+ * Agrega un chart al secuencias.json
  */
 function addChart(data, row, report) {
   const artistName = (row['Artista'] || '').trim();
@@ -1545,7 +1561,7 @@ function addChart(data, row, report) {
 }
 
 /**
- * Elimina un chart del data.json
+ * Elimina un chart del secuencias.json
  */
 function deleteChart(data, row, report) {
   const driveId = (row['DriveID'] || '').trim();
@@ -1590,7 +1606,7 @@ function generateId() {
 }
 
 /**
- * Actualiza las estadísticas del data.json
+ * Actualiza las estadísticas del secuencias.json
  */
 function updateStats(data) {
   let totalArtists = 0;

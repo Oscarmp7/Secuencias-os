@@ -16,7 +16,7 @@
  *   -------------------
  *   1. Tener Node.js instalado (v14 o superior)
  *   2. Estar en la carpeta "app" del proyecto
- *   3. Tener el archivo src/data.json con los datos
+ *   3. Tener el archivo src/data/secuencias.json con los datos
  * 
  * 
  *   MODO INTERACTIVO (Recomendado para principiantes):
@@ -127,7 +127,7 @@ const readline = require('readline');
 
 const CONFIG = {
   // Archivos
-  DATA_FILE: path.join(__dirname, 'src', 'data.json'),
+  DATA_FILE: path.join(__dirname, 'src', 'data', 'secuencias.json'),
   DEAD_LINKS_FILE: path.join(__dirname, 'dead-links.json'),
   HISTORY_FILE: path.join(__dirname, 'check-history.json'),
   DUPLICATES_FILE: path.join(__dirname, 'duplicates.json'),
@@ -212,7 +212,7 @@ function formatDate(date) {
 }
 
 /**
- * Lee el archivo data.json y lo parsea
+ * Lee el archivo secuencias.json y lo parsea
  */
 function readDataJson() {
   const content = fs.readFileSync(CONFIG.DATA_FILE, 'utf-8');
@@ -220,7 +220,7 @@ function readDataJson() {
 }
 
 /**
- * Guarda data.json
+ * Guarda secuencias.json
  */
 function saveDataJson(data) {
   fs.writeFileSync(CONFIG.DATA_FILE, JSON.stringify(data, null, 2));
@@ -893,7 +893,7 @@ ${c.cyan}¿Qué deseas hacer?${c.reset}
         const newId = idMatch[1];
         const newFullUrl = `https://drive.google.com/uc?export=download&id=${newId}`;
         
-        // Actualizar en data.json
+        // Actualizar en secuencias.json
         const data = readDataJson();
         let updated = false;
         

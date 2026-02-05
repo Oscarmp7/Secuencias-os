@@ -7,7 +7,7 @@ import App from './App.jsx';
 import { initEmailJS } from './services/emailService';
 
 // Build version timestamp for cache busting
-console.log('Worship Box v2.1.0 - Build:', Date.now());
+console.log('Worship Box v2.2.0 - Build:', Date.now());
 
 // Inicializar EmailJS para envío de correos
 initEmailJS();

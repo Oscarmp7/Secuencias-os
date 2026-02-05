@@ -1,5 +1,5 @@
 /**
- * Script para extraer datos de index.html y generar data.json
+ * Script para extraer datos de index.html y generar secuencias.json
  */
 
 const fs = require('fs');
@@ -272,7 +272,7 @@ console.log(`Artistas con charts: ${chartsData.length}`);
 console.log(`Total de charts: ${data.stats.totalCharts}`);
 
 // Guardar el JSON
-const outputPath = path.join(__dirname, 'src', 'data.json');
+const outputPath = path.join(__dirname, 'src', 'data', 'secuencias.json');
 fs.writeFileSync(outputPath, JSON.stringify(data, null, 2), 'utf-8');
 console.log(`\n✅ Datos guardados en: ${outputPath}`);
 

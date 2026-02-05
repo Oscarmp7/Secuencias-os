@@ -12,7 +12,6 @@
  */
 
 import { memo, useState, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Download,
   ExternalLink,
@@ -132,7 +131,6 @@ const CategorySection = memo(function CategorySection({ category }) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ResourcesView = memo(function ResourcesView({ selectedCategory = null, onCategoryChange }) {
-  const { t: _t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   
   // Usar selectedCategory del prop directamente para mantener sincronía con el sidebar

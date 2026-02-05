@@ -45,8 +45,7 @@ export const buildSearchIndex = (artists) => {
     });
   });
 
-  // Charts legacy - ya no necesarios para búsqueda separada
-  // Los charts ahora están integrados en songs via chartUrl
+  // Charts integrados en songs via chartUrl
 
   return index;
 };

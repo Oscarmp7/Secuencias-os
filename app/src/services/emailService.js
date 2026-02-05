@@ -6,11 +6,14 @@
  * 
  * CONFIGURACIÓN REQUERIDA:
  * Para usar este servicio, necesitas configurar una cuenta en EmailJS (https://www.emailjs.com/)
- * y crear las siguientes variables de entorno o constantes:
- * - EMAILJS_SERVICE_ID: ID del servicio de email configurado
- * - EMAILJS_TEMPLATE_ID: ID de la plantilla para formularios
- * - EMAILJS_TEMPLATE_THANKS_ID: ID de la plantilla de agradecimiento
- * - EMAILJS_PUBLIC_KEY: Clave pública de EmailJS
+ * y definir las variables de entorno (Vite):
+ * - VITE_EMAILJS_SERVICE_ID: ID del servicio de email configurado
+ * - VITE_EMAILJS_TEMPLATE_FORM_ID: ID de la plantilla para formularios
+ * - VITE_EMAILJS_TEMPLATE_THANKS_ID: ID de la plantilla de agradecimiento
+ * - VITE_EMAILJS_PUBLIC_KEY: Clave pública de EmailJS
+ * - VITE_EMAILJS_TO_EMAIL: Email de destino (opcional)
+ * - VITE_CONTRIBUTE_ENDPOINT: Endpoint seguro (opcional)
+ * - VITE_EMAILJS_ATTACH_XLSX: "false" para desactivar adjunto XLSX
  */
 
 import emailjs from '@emailjs/browser';
@@ -19,16 +22,22 @@ import emailjs from '@emailjs/browser';
 //   ⚙️ CONFIGURACIÓN DE EMAILJS
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// Configuración de EmailJS - Credenciales de producción
+// Configuración de EmailJS (Vite env)
 const EMAILJS_CONFIG = {
-  SERVICE_ID: 'service_whwzteo',
-  TEMPLATE_FORM_ID: 'template_et8q3ei',
-  TEMPLATE_THANKS_ID: 'template_y8pgi2k',
-  PUBLIC_KEY: 'b0HcaxplK26PFy40Q',
+  SERVICE_ID: import.meta.env.VITE_EMAILJS_SERVICE_ID || '',
+  TEMPLATE_FORM_ID: import.meta.env.VITE_EMAILJS_TEMPLATE_FORM_ID || '',
+  TEMPLATE_THANKS_ID: import.meta.env.VITE_EMAILJS_TEMPLATE_THANKS_ID || '',
+  PUBLIC_KEY: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '',
 };
 
 // Email de destino (donde recibirás los aportes)
-const WORSHIP_BOX_EMAIL = 'worshipbox.ministry@gmail.com';
+const WORSHIP_BOX_EMAIL = import.meta.env.VITE_EMAILJS_TO_EMAIL || 'worshipbox.ministry@gmail.com';
+
+// Endpoint opcional para envío seguro (serverless/backend)
+const CONTRIBUTE_ENDPOINT = import.meta.env.VITE_CONTRIBUTE_ENDPOINT || '';
+
+// Adjuntar XLSX al EmailJS (puede fallar si el plan no soporta adjuntos)
+const EMAILJS_ATTACH_XLSX = import.meta.env.VITE_EMAILJS_ATTACH_XLSX !== 'false';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //   📧 FUNCIONES DE ENVÍO
@@ -39,7 +48,7 @@ const WORSHIP_BOX_EMAIL = 'worshipbox.ministry@gmail.com';
  * Debe llamarse una vez al cargar la aplicación.
  */
 export function initEmailJS() {
-  if (EMAILJS_CONFIG.PUBLIC_KEY && EMAILJS_CONFIG.PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
+  if (EMAILJS_CONFIG.PUBLIC_KEY) {
     emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
     return true;
   }
@@ -52,9 +61,29 @@ export function initEmailJS() {
  */
 export function isEmailJSConfigured() {
   return (
-    EMAILJS_CONFIG.SERVICE_ID !== 'YOUR_SERVICE_ID' &&
-    EMAILJS_CONFIG.PUBLIC_KEY !== 'YOUR_PUBLIC_KEY'
+    !!EMAILJS_CONFIG.SERVICE_ID &&
+    !!EMAILJS_CONFIG.TEMPLATE_FORM_ID &&
+    !!EMAILJS_CONFIG.PUBLIC_KEY
   );
+}
+
+function isThanksEmailConfigured() {
+  return isEmailJSConfigured() && !!EMAILJS_CONFIG.TEMPLATE_THANKS_ID;
+}
+
+async function sendContributionToEndpoint(payload) {
+  const response = await fetch(CONTRIBUTE_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const text = await response.text().catch(() => '');
+    throw new Error(`Endpoint error (${response.status}): ${text || 'Sin detalle'}`);
+  }
+
+  return { success: true };
 }
 
 /**
@@ -66,12 +95,20 @@ export function isEmailJSConfigured() {
  */
 export async function sendContributionForm(formData, xlsxBase64 = null) {
   // Si EmailJS no está configurado, simular envío exitoso (para desarrollo)
-  if (!isEmailJSConfigured()) {
+  if (!isEmailJSConfigured() && !CONTRIBUTE_ENDPOINT) {
     console.log('📧 Simulando envío de formulario (EmailJS no configurado):', formData);
     return { success: true, simulated: true };
   }
 
   try {
+    // Si existe endpoint seguro, usarlo primero
+    if (CONTRIBUTE_ENDPOINT) {
+      return await sendContributionToEndpoint({
+        ...formData,
+        xlsxBase64: xlsxBase64 || null,
+      });
+    }
+
     // Preparar parámetros para la plantilla
     const templateParams = {
       to_email: WORSHIP_BOX_EMAIL,
@@ -86,21 +123,36 @@ export async function sendContributionForm(formData, xlsxBase64 = null) {
       descripcion: formData.descripcion || '',
       url_descarga: formData.urlDescarga || '',
       drive_id: formData.driveId || '',
-      tiene_archivo: formData.archivo ? 'Sí' : 'No',
-      nombre_archivo: formData.archivo?.name || '',
+      servicio_descarga: formData.downloadInfo?.service?.name || '',
+      id_descarga: formData.downloadInfo?.fileId || '',
       nombre_donante: formData.nombre || 'Anónimo',
       email_donante: formData.email || 'No proporcionado',
       sugerencias: formData.sugerencias || '',
       fecha_envio: new Date().toLocaleString('es-ES'),
-      // Archivo XLSX adjunto (si está disponible)
-      attachment: xlsxBase64 || '',
+      // Archivo XLSX adjunto (si está disponible y permitido)
+      attachment: EMAILJS_ATTACH_XLSX ? (xlsxBase64 || '') : '',
     };
 
-    const response = await emailjs.send(
-      EMAILJS_CONFIG.SERVICE_ID,
-      EMAILJS_CONFIG.TEMPLATE_FORM_ID,
-      templateParams
-    );
+    let response;
+    try {
+      response = await emailjs.send(
+        EMAILJS_CONFIG.SERVICE_ID,
+        EMAILJS_CONFIG.TEMPLATE_FORM_ID,
+        templateParams
+      );
+    } catch (error) {
+      // Si falla por adjunto, reintentar sin attachment
+      if (xlsxBase64) {
+        const retryParams = { ...templateParams, attachment: '' };
+        response = await emailjs.send(
+          EMAILJS_CONFIG.SERVICE_ID,
+          EMAILJS_CONFIG.TEMPLATE_FORM_ID,
+          retryParams
+        );
+      } else {
+        throw error;
+      }
+    }
 
     if (response.status === 200) {
       return { success: true };
@@ -129,7 +181,7 @@ export async function sendThankYouEmail({ email, nombre, tipoAporte }) {
   }
 
   // Si EmailJS no está configurado, simular envío exitoso
-  if (!isEmailJSConfigured()) {
+  if (!isThanksEmailConfigured()) {
     console.log('📧 Simulando envío de agradecimiento a:', email);
     return { success: true, simulated: true };
   }
