@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-05T13:44:52.164Z",
+  "lastUpdated": "2026-02-05T18:34:31.544Z",
   "stats": {
     "totalCategories": 3,
     "totalItems": 0
@@ -10,7 +10,22 @@
       "name": "DAWs (Digital Audio Workstations)",
       "description": "Software de producción musical profesional",
       "icon": "Music2",
-      "items": []
+      "items": [
+        {
+          "id": "aporte_sw_1770316004820",
+          "name": "Ableton Live Suite 11 (Part1)",
+          "description": "Ableton Live 11 Suite, diseñado para crear, improvisar y tocar en vivo.",
+          "url": "https://drive.google.com/file/d/1CNLP93PlXog60wGAFbiZkKCcgeW3S9JN/view?usp=drive_link",
+          "addedBy": "Anónimo"
+        },
+        {
+          "id": "aporte_sw_1770316279988",
+          "name": "Ableton Live Suite 11 (Part 2)",
+          "description": "Ableton Live 11 Suite, diseñado para crear, improvisar y tocar en vivo.",
+          "url": "https://drive.google.com/file/d/1-Bvqnv2ZZf6wuzEUkfdJsi7FqcgLYx9X/view?usp=drive_link",
+          "addedBy": "Anónimo"
+        }
+      ]
     },
     {
       "id": "plugins",
@@ -24,6 +39,90 @@
           "description": "Grand Piano nativo de Reason con sonido balanceado, respuesta natural y excelente dinámica.",
           "url": "https://www.mediafire.com/file/6vunlbzdb1gcdqm/Grand_Piano_Reason_KONTAKT.rar/file",
           "addedBy": "Luis José Paulino Hernández"
+        },
+        {
+          "id": "aporte_sw_1770313500238",
+          "name": "Yamaha s90 Xs",
+          "description": "Piano del Yamaha S90 XS, definido y estable, ideal para adoración y bandas en vivo.",
+          "url": "https://drive.google.com/drive/folders/1Tyk1Bzf_ppcUev-h58nDRgOL6nXlgJoy",
+          "addedBy": "Anónimo"
+        },
+        {
+          "id": "aporte_sw_1770313765225",
+          "name": "C7 Cinematic Piano",
+          "description": "C7 Cinematic Piano con sonido expansivo, gran profundidad y carácter cinematográfico.",
+          "url": "https://mega.nz/file/lOQn0QhA#3i6AZJRIf1xtyd1Fr4q-t-g5dxwlY-dVdUsozLCNn10",
+          "addedBy": "Anónimo"
+        },
+        {
+          "id": "aporte_sw_1770313863062",
+          "name": "Roland XP10",
+          "description": "Sonido del Roland XP-10, sólido y versátil, ideal para pianos, pads y acompañamientos.",
+          "url": "http://www.mediafire.com/file/te03tk002eoi88t/ROLAND_XP10.rar/file",
+          "addedBy": "Anónimo"
+        },
+        {
+          "id": "aporte_sw_1770314052985",
+          "name": "Roland XP50",
+          "description": "Roland XP-50 con sonido clásico y versátil, ideal para pianos, strings y pads noventeros.",
+          "url": "https://www.mediafire.com/file/wd1o481nd2rpuxf/Korg_x50.rar/file",
+          "addedBy": "Anónimo"
+        },
+        {
+          "id": "aporte_sw_1770314112431",
+          "name": "Roland XP80",
+          "description": "Roland XP-80 con mayor profundidad sonora y carácter profesional para capas y arreglos.",
+          "url": "https://drive.google.com/file/d/1lBIgoXOSY8vvJqKF3oxwGWAiiLosrdg0/view",
+          "addedBy": "Anónimo"
+        },
+        {
+          "id": "aporte_sw_1770314256246",
+          "name": "MOTIF ES Collection",
+          "description": "Colección de sonidos del Motif ES, detallados y expresivos, listos para producción y vivo.",
+          "url": "https://mega.nz/file/Vw1DyIDY#eXYXc-wwL0mFr32qsX5aftktRFqQBoG2gffXoGfEBPw",
+          "addedBy": "Anónimo"
+        },
+        {
+          "id": "aporte_sw_1770314326693",
+          "name": "GOLD Pianos",
+          "description": "Colección de pianos premium con sonido brillante, definido y presencia profesional.",
+          "url": "https://mega.nz/file/91UGhKaL#l5doVT6vmfpQvHHRlK1e2lvU2C-EXUXGp64A8bfkZew",
+          "addedBy": "Anónimo"
+        },
+        {
+          "id": "aporte_sw_1770314422933",
+          "name": "Yamaha MOTIF XS8",
+          "description": "Pianos y sonidos del Motif XS8 con gran realismo, dinámica y cuerpo.",
+          "url": "https://www.mediafire.com/file/5crldni52xoxsfo/MOTIF_XS_EP%25C2%25B4S.zip/file",
+          "addedBy": "Anónimo"
+        },
+        {
+          "id": "aporte_sw_1770314537379",
+          "name": "Motion Pads",
+          "description": "Pads en movimiento con texturas envolventes, ideales para atmósferas y transiciones.",
+          "url": "https://www.mediafire.com/file/huova62oti1m1xh/MotionPads.rar/file",
+          "addedBy": "Anónimo"
+        },
+        {
+          "id": "aporte_sw_1770314598831",
+          "name": "Peter James Pads",
+          "description": "Pads de Peter James con texturas profundas y movimiento sutil, ideales para atmósferas worship y cinematográficas.",
+          "url": "https://drive.google.com/file/d/1_btLxwV95_O9al5ZFYaS2GCpXGfpjLIy/view?usp=drivesdk",
+          "addedBy": "Anónimo"
+        },
+        {
+          "id": "aporte_sw_1770314638687",
+          "name": "Nord Piano 3",
+          "description": "Nord Piano 3 con pianos expresivos, carácter vintage y respuesta natural al toque.",
+          "url": "https://www.mediafire.com/file/ze635ufq7vfrr21/NORD_PIANO_3.rar/file",
+          "addedBy": "Anónimo"
+        },
+        {
+          "id": "aporte_sw_1770314782551",
+          "name": "Kontakt 8.8.1",
+          "description": "Sampler profesional de Native Instruments para cargar librerías de instrumentos virtuales.",
+          "url": "https://drive.google.com/file/d/17oNLhJ8o_LrlYX9m0u7nThuJmFgRRuPK/view?usp=drivesdk",
+          "addedBy": "Anónimo"
         }
       ]
     },
