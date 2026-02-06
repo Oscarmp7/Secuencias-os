@@ -1,11 +1,11 @@
 {
-  "lastUpdated": "2026-02-05T20:06:33.488Z",
+  "lastUpdated": "2026-02-06T15:33:59.921Z",
   "stats": {
     "totalCategorias": 3,
-    "totalItems": 15,
-    "totalDaws": 2,
-    "totalPlugins": 13,
-    "totalUtilidades": 0
+    "totalItems": 27,
+    "totalDaws": 3,
+    "totalPlugins": 23,
+    "totalUtilidades": 1
   },
   "categories": [
     {
@@ -16,17 +16,24 @@
       "items": [
         {
           "id": "aporte_sw_1770316004820",
-          "name": "Ableton Live Suite 11 (Part1)",
-          "description": "Ableton Live 11 Suite, diseñado para crear, improvisar y tocar en vivo.",
-          "url": "https://drive.google.com/file/d/1CNLP93PlXog60wGAFbiZkKCcgeW3S9JN/view?usp=drive_link",
-          "addedBy": "Anónimo"
+          "name": "Ableton Live Suite 11",
+          "description": "Acceso al mensaje en Telegram donde está el recurso.",
+          "url": "https://t.me/tworshipbox/318/322",
+          "addedBy": "Worship Box"
         },
         {
-          "id": "aporte_sw_1770316279988",
-          "name": "Ableton Live Suite 11 (Part 2)",
-          "description": "Ableton Live 11 Suite, diseñado para crear, improvisar y tocar en vivo.",
-          "url": "https://drive.google.com/file/d/1-Bvqnv2ZZf6wuzEUkfdJsi7FqcgLYx9X/view?usp=drive_link",
-          "addedBy": "Anónimo"
+          "id": "aporte_sw_1770390386432",
+          "name": "CUBASE 15 PRO",
+          "description": "Acceso al mensaje en Telegram con el instalador.",
+          "url": "https://t.me/tworshipbox/272/277",
+          "addedBy": "Worship Box"
+        },
+        {
+          "id": "aporte_sw_1770390386433",
+          "name": "Varios DAWs",
+          "description": "Listado de DAWs en un solo enlace.",
+          "url": "https://www.luislarahn.org/p/programas-daw.html",
+          "addedBy": "Worship Box"
         }
       ]
     },
@@ -37,6 +44,27 @@
       "icon": "Sliders",
       "items": [
         {
+          "id": "aporte_sw_1770390386435",
+          "name": "BIG STAGE - EZDRUMMER 3",
+          "description": "Paquete de sonidos Big Stage para EZdrummer 3.",
+          "url": "https://t.me/tworshipbox/292/296?single",
+          "addedBy": "Worship Box"
+        },
+        {
+          "id": "aporte_sw_1770313765225",
+          "name": "C7 Cinematic Piano",
+          "description": "C7 Cinematic Piano con sonido expansivo, gran profundidad y carácter cinematográfico.",
+          "url": "https://mega.nz/file/lOQn0QhA#3i6AZJRIf1xtyd1Fr4q-t-g5dxwlY-dVdUsozLCNn10",
+          "addedBy": "Anónimo"
+        },
+        {
+          "id": "aporte_sw_1770314326693",
+          "name": "GOLD Pianos",
+          "description": "Colección de pianos premium con sonido brillante, definido y presencia profesional.",
+          "url": "https://mega.nz/file/91UGhKaL#l5doVT6vmfpQvHHRlK1e2lvU2C-EXUXGp64A8bfkZew",
+          "addedBy": "Anónimo"
+        },
+        {
           "id": "aporte_sw_1770298961038",
           "name": "Grand Piano Reason",
           "description": "Grand Piano nativo de Reason con sonido balanceado, respuesta natural y excelente dinámica.",
@@ -44,17 +72,87 @@
           "addedBy": "Luis José Paulino Hernández"
         },
         {
-          "id": "aporte_sw_1770313500238",
-          "name": "Yamaha s90 Xs",
-          "description": "Piano del Yamaha S90 XS, definido y estable, ideal para adoración y bandas en vivo.",
-          "url": "https://drive.google.com/drive/folders/1Tyk1Bzf_ppcUev-h58nDRgOL6nXlgJoy",
+          "id": "aporte_sw_1770390386439",
+          "name": "Keyscape para Kontakt",
+          "description": "Keyscape para Kontakt (librería de teclados).",
+          "url": "https://mega.nz/file/bJ1HxCJA#Z1NNbMiDMUU7Sg3V1oKbSU-RTzPZM6wV-wbySTqdpjM",
+          "addedBy": "Worship Box"
+        },
+        {
+          "id": "aporte_sw_1770390386440",
+          "name": "Kontakt (varias versiones)",
+          "description": "Descarga de Kontakt en varias versiones.",
+          "url": "https://www.luislarahn.org/p/descargar-kontakt-full-winmac.html",
+          "addedBy": "Worship Box"
+        },
+        {
+          "id": "aporte_sw_1770314782551",
+          "name": "Kontakt 8.8.1",
+          "description": "Sampler profesional de Native Instruments para cargar librerías de instrumentos virtuales.",
+          "url": "https://drive.google.com/file/d/17oNLhJ8o_LrlYX9m0u7nThuJmFgRRuPK/view?usp=drivesdk",
           "addedBy": "Anónimo"
         },
         {
-          "id": "aporte_sw_1770313765225",
-          "name": "C7 Cinematic Piano",
-          "description": "C7 Cinematic Piano con sonido expansivo, gran profundidad y carácter cinematográfico.",
-          "url": "https://mega.nz/file/lOQn0QhA#3i6AZJRIf1xtyd1Fr4q-t-g5dxwlY-dVdUsozLCNn10",
+          "id": "aporte_sw_1770390386437",
+          "name": "Librerías de Korg para Kontakt",
+          "description": "Librerías de Korg compatibles con Kontakt.",
+          "url": "https://www.luislarahn.org/p/librerias-de-korg-para-kontakt.html",
+          "addedBy": "Worship Box"
+        },
+        {
+          "id": "aporte_sw_1770390386442",
+          "name": "Librerías de Roland para Kontakt",
+          "description": "Librerías de Roland compatibles con Kontakt.",
+          "url": "https://www.luislarahn.org/p/librerias-de-roland-para-kontakt.html",
+          "addedBy": "Worship Box"
+        },
+        {
+          "id": "aporte_sw_1770390386438",
+          "name": "Librerías de YAMAHA para Kontakt",
+          "description": "Librerías de Yamaha compatibles con Kontakt.",
+          "url": "https://www.luislarahn.org/p/librerias-de-yamaha-para-kontakt.html",
+          "addedBy": "Worship Box"
+        },
+        {
+          "id": "aporte_sw_1770390386436",
+          "name": "Librerías Nord Stage para Kontakt",
+          "description": "Librerías Nord Stage compatibles con Kontakt.",
+          "url": "https://www.luislarahn.org/p/librerias-nord-stage-para-kontakt.html",
+          "addedBy": "Worship Box"
+        },
+        {
+          "id": "aporte_sw_1770390386441",
+          "name": "Librerías Rhodes para Kontakt",
+          "description": "Librerías Rhodes compatibles con Kontakt.",
+          "url": "https://www.luislarahn.org/p/librerias-rhodes-para-kontakt.html",
+          "addedBy": "Worship Box"
+        },
+        {
+          "id": "aporte_sw_1770314256246",
+          "name": "MOTIF ES Collection",
+          "description": "Colección de sonidos del Motif ES, detallados y expresivos, listos para producción y vivo.",
+          "url": "https://mega.nz/file/Vw1DyIDY#eXYXc-wwL0mFr32qsX5aftktRFqQBoG2gffXoGfEBPw",
+          "addedBy": "Anónimo"
+        },
+        {
+          "id": "aporte_sw_1770314537379",
+          "name": "Motion Pads",
+          "description": "Pads en movimiento con texturas envolventes, ideales para atmósferas y transiciones.",
+          "url": "https://www.mediafire.com/file/huova62oti1m1xh/MotionPads.rar/file",
+          "addedBy": "Anónimo"
+        },
+        {
+          "id": "aporte_sw_1770314638687",
+          "name": "Nord Piano 3",
+          "description": "Nord Piano 3 con pianos expresivos, carácter vintage y respuesta natural al toque.",
+          "url": "https://www.mediafire.com/file/ze635ufq7vfrr21/NORD_PIANO_3.rar/file",
+          "addedBy": "Anónimo"
+        },
+        {
+          "id": "aporte_sw_1770314598831",
+          "name": "Peter James Pads",
+          "description": "Pads de Peter James con texturas profundas y movimiento sutil, ideales para atmósferas worship y cinematográficas.",
+          "url": "https://drive.google.com/file/d/1_btLxwV95_O9al5ZFYaS2GCpXGfpjLIy/view?usp=drivesdk",
           "addedBy": "Anónimo"
         },
         {
@@ -79,18 +177,18 @@
           "addedBy": "Anónimo"
         },
         {
-          "id": "aporte_sw_1770314256246",
-          "name": "MOTIF ES Collection",
-          "description": "Colección de sonidos del Motif ES, detallados y expresivos, listos para producción y vivo.",
-          "url": "https://mega.nz/file/Vw1DyIDY#eXYXc-wwL0mFr32qsX5aftktRFqQBoG2gffXoGfEBPw",
-          "addedBy": "Anónimo"
+          "id": "aporte_sw_1770390386443",
+          "name": "The Maverick Library (Kontakt)",
+          "description": "Librería The Maverick para Kontakt.",
+          "url": "https://u.pcloud.link/publink/show?code=XZ1izc0ZR2vP8L3y19yVdcqvNBIfTXUDVRJX",
+          "addedBy": "Worship Box"
         },
         {
-          "id": "aporte_sw_1770314326693",
-          "name": "GOLD Pianos",
-          "description": "Colección de pianos premium con sonido brillante, definido y presencia profesional.",
-          "url": "https://mega.nz/file/91UGhKaL#l5doVT6vmfpQvHHRlK1e2lvU2C-EXUXGp64A8bfkZew",
-          "addedBy": "Anónimo"
+          "id": "aporte_sw_1770390386434",
+          "name": "ToonTrack - EZDRUMMER 3",
+          "description": "Plugin de baterías EZdrummer 3 de ToonTrack.",
+          "url": "https://t.me/tworshipbox/292/299?single",
+          "addedBy": "Worship Box"
         },
         {
           "id": "aporte_sw_1770314422933",
@@ -100,31 +198,10 @@
           "addedBy": "Anónimo"
         },
         {
-          "id": "aporte_sw_1770314537379",
-          "name": "Motion Pads",
-          "description": "Pads en movimiento con texturas envolventes, ideales para atmósferas y transiciones.",
-          "url": "https://www.mediafire.com/file/huova62oti1m1xh/MotionPads.rar/file",
-          "addedBy": "Anónimo"
-        },
-        {
-          "id": "aporte_sw_1770314598831",
-          "name": "Peter James Pads",
-          "description": "Pads de Peter James con texturas profundas y movimiento sutil, ideales para atmósferas worship y cinematográficas.",
-          "url": "https://drive.google.com/file/d/1_btLxwV95_O9al5ZFYaS2GCpXGfpjLIy/view?usp=drivesdk",
-          "addedBy": "Anónimo"
-        },
-        {
-          "id": "aporte_sw_1770314638687",
-          "name": "Nord Piano 3",
-          "description": "Nord Piano 3 con pianos expresivos, carácter vintage y respuesta natural al toque.",
-          "url": "https://www.mediafire.com/file/ze635ufq7vfrr21/NORD_PIANO_3.rar/file",
-          "addedBy": "Anónimo"
-        },
-        {
-          "id": "aporte_sw_1770314782551",
-          "name": "Kontakt 8.8.1",
-          "description": "Sampler profesional de Native Instruments para cargar librerías de instrumentos virtuales.",
-          "url": "https://drive.google.com/file/d/17oNLhJ8o_LrlYX9m0u7nThuJmFgRRuPK/view?usp=drivesdk",
+          "id": "aporte_sw_1770313500238",
+          "name": "Yamaha s90 Xs",
+          "description": "Piano del Yamaha S90 XS, definido y estable, ideal para adoración y bandas en vivo.",
+          "url": "https://drive.google.com/drive/folders/1Tyk1Bzf_ppcUev-h58nDRgOL6nXlgJoy",
           "addedBy": "Anónimo"
         }
       ]
@@ -134,7 +211,15 @@
       "name": "Utilidades",
       "description": "Herramientas auxiliares para producción",
       "icon": "Wrench",
-      "items": []
+      "items": [
+        {
+          "id": "aporte_sw_1770390386444",
+          "name": "Guitar Picture Chord Encyclopedia",
+          "description": "Enciclopedia visual de acordes para guitarra.",
+          "url": "https://t.me/tworshipbox/20/23",
+          "addedBy": "Worship Box"
+        }
+      ]
     }
   ]
 }
