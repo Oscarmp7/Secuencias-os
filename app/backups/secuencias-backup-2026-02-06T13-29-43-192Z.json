@@ -1,8 +1,8 @@
 {
-  "lastUpdated": "2026-02-04T16:58:16.678Z",
+  "lastUpdated": "2026-02-06T13:29:28.552Z",
   "stats": {
-    "totalArtists": 767,
-    "totalSongs": 5796,
+    "totalArtists": 764,
+    "totalSongs": 5810,
     "totalCharts": 703
   },
   "artists": [
@@ -1311,6 +1311,52 @@
               "compas": null,
               "bpm": 84,
               "tonalidad": "Gb",
+              "duracion": null,
+              "tipoSecuencia": null,
+              "comentarios": null
+            },
+            {
+              "id": "1H0oPgVDvFVg47VTJgJd_6_oOwvB8diLi",
+              "name": "Contempla a Dios-70BPM",
+              "fullName": "contempla a Dios-70BPM.zip",
+              "type": "sequence",
+              "driveId": "1H0oPgVDvFVg47VTJgJd_6_oOwvB8diLi",
+              "downloadUrl": "https://drive.google.com/uc?export=download&id=1H0oPgVDvFVg47VTJgJd_6_oOwvB8diLi",
+              "compas": null,
+              "bpm": 70,
+              "tonalidad": null,
+              "duracion": null,
+              "tipoSecuencia": null,
+              "comentarios": null,
+              "chartUrl": "https://drive.google.com/uc?export=download&id=1F7JBNFNAl9pmE0dgvtxfiTc1-gcUOj52",
+              "chartName": "Contempla a Dios-La IBI & Sovereign Grace Music-El Dios Que Adoramos.A.7"
+            },
+            {
+              "id": "1JKLsbte5_z60dAJLLaWOkyNA7I0DcdCl",
+              "name": "Un siervo para tu gloria-130BPM",
+              "fullName": "Un siervo para tu gloria-130BPM.zip",
+              "type": "sequence",
+              "driveId": "1JKLsbte5_z60dAJLLaWOkyNA7I0DcdCl",
+              "downloadUrl": "https://drive.google.com/uc?export=download&id=1JKLsbte5_z60dAJLLaWOkyNA7I0DcdCl",
+              "compas": null,
+              "bpm": 130,
+              "tonalidad": null,
+              "duracion": null,
+              "tipoSecuencia": null,
+              "comentarios": null,
+              "chartUrl": "https://drive.google.com/uc?export=download&id=18Qj6yCwHRROG4ecxddeS7BMoUsLEXH7A",
+              "chartName": "Un Siervo para Tu Gloria-La IBI & Sovereign Grace Music-El Dios Que Adoramos.B.Capo 2.7"
+            },
+            {
+              "id": "1n58MhFjimX4n3pnoGZNuecYYNprs8a3Y",
+              "name": "Venid glorificad a Dios-50BPM",
+              "fullName": "Venid glorificad a Dios-50BPM.zip",
+              "type": "sequence",
+              "driveId": "1n58MhFjimX4n3pnoGZNuecYYNprs8a3Y",
+              "downloadUrl": "https://drive.google.com/uc?export=download&id=1n58MhFjimX4n3pnoGZNuecYYNprs8a3Y",
+              "compas": null,
+              "bpm": 50,
+              "tonalidad": null,
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
@@ -26098,6 +26144,25 @@
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
+            }
+          ]
+        },
+        {
+          "id": "album_1770384376794_txqmy",
+          "name": "The Glory Of God",
+          "songs": [
+            {
+              "id": "aporte_1770384343688",
+              "name": "The Glory Of God Ft. TAYA",
+              "fullName": "The Glory Of God Ft. TAYA.zip",
+              "type": "sequence",
+              "driveId": "1q5TnfXxQJ60YXGSJ3UjAdJxRuWmGbORG",
+              "downloadUrl": "https://drive.google.com/file/d/1q5TnfXxQJ60YXGSJ3UjAdJxRuWmGbORG/view?usp=drive_link",
+              "tonalidad": "Eb",
+              "bpm": 128,
+              "compas": "4/4",
+              "tipoSecuencia": "Usuario",
+              "comentarios": "Aportado por Oscar Matos"
             }
           ]
         }
@@ -56109,47 +56174,6 @@
       ]
     },
     {
-      "id": "1pcVZWvKTFH9cV3TMBX_KNZIzln1Scmtg",
-      "name": "Jonathan & Sarah Jerez",
-      "albums": [
-        {
-          "id": "1ethJP6htJAp9lvmbA4mEgYE-L_Yii1YG",
-          "name": "Periscopio",
-          "image": null,
-          "songs": [
-            {
-              "id": "1UQUD8TtQ-sNgVHijnActwCYm0ZRkryjb",
-              "name": "Te doy gracias",
-              "fullName": "Te doy gracias.zip",
-              "type": "sequence",
-              "driveId": "1UQUD8TtQ-sNgVHijnActwCYm0ZRkryjb",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1UQUD8TtQ-sNgVHijnActwCYm0ZRkryjb",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1sG0fH5EYLqIQT7_QjU2qEv-ZqTE3Lhqc",
-              "name": "Tu gloria",
-              "fullName": "Tu gloria.zip",
-              "type": "sequence",
-              "driveId": "1sG0fH5EYLqIQT7_QjU2qEv-ZqTE3Lhqc",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1sG0fH5EYLqIQT7_QjU2qEv-ZqTE3Lhqc",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            }
-          ]
-        }
-      ]
-    },
-    {
       "id": "1HKsNnsEqtY-bnadhQs3wTfUglhQeAj3K",
       "name": "Jonathan Nelson",
       "albums": [
@@ -56472,6 +56496,41 @@
               "compas": null,
               "bpm": 74,
               "tonalidad": "F",
+              "duracion": null,
+              "tipoSecuencia": null,
+              "comentarios": null
+            }
+          ]
+        },
+        {
+          "id": "1ethJP6htJAp9lvmbA4mEgYE-L_Yii1YG",
+          "name": "Periscopio",
+          "image": null,
+          "songs": [
+            {
+              "id": "1UQUD8TtQ-sNgVHijnActwCYm0ZRkryjb",
+              "name": "Te doy gracias",
+              "fullName": "Te doy gracias.zip",
+              "type": "sequence",
+              "driveId": "1UQUD8TtQ-sNgVHijnActwCYm0ZRkryjb",
+              "downloadUrl": "https://drive.google.com/uc?export=download&id=1UQUD8TtQ-sNgVHijnActwCYm0ZRkryjb",
+              "compas": null,
+              "bpm": null,
+              "tonalidad": null,
+              "duracion": null,
+              "tipoSecuencia": null,
+              "comentarios": null
+            },
+            {
+              "id": "1sG0fH5EYLqIQT7_QjU2qEv-ZqTE3Lhqc",
+              "name": "Tu gloria",
+              "fullName": "Tu gloria.zip",
+              "type": "sequence",
+              "driveId": "1sG0fH5EYLqIQT7_QjU2qEv-ZqTE3Lhqc",
+              "downloadUrl": "https://drive.google.com/uc?export=download&id=1sG0fH5EYLqIQT7_QjU2qEv-ZqTE3Lhqc",
+              "compas": null,
+              "bpm": null,
+              "tonalidad": null,
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
@@ -57246,33 +57305,6 @@
       ]
     },
     {
-      "id": "1lQK3IrcZMp0oL05ub2s7Ouse01MlUjgu",
-      "name": "Josue Avila",
-      "albums": [
-        {
-          "id": "1Srv_sdtm8DJVavhNdtPDyIJoKKLE3vgE",
-          "name": "Venimos para adorarte",
-          "image": null,
-          "songs": [
-            {
-              "id": "1ymbAEvvNmPWhmg79NYvcwh0OtVALe-lu",
-              "name": "VENIMOS PARA ADORARTE - Josue Avila",
-              "fullName": "VENIMOS PARA ADORARTE - Josue Avila.zip",
-              "type": "sequence",
-              "driveId": "1ymbAEvvNmPWhmg79NYvcwh0OtVALe-lu",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1ymbAEvvNmPWhmg79NYvcwh0OtVALe-lu",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            }
-          ]
-        }
-      ]
-    },
-    {
       "id": "1fBA3pxD9TCS9WP0Fp5qW76MKouqRjo2M",
       "name": "Josué Ávila ",
       "albums": [
@@ -57309,6 +57341,27 @@
               "type": "sequence",
               "driveId": "1Hz7hv4dzKIj4alVS9OyRmGhJ9aj7IAHN",
               "downloadUrl": "https://drive.google.com/uc?export=download&id=1Hz7hv4dzKIj4alVS9OyRmGhJ9aj7IAHN",
+              "compas": null,
+              "bpm": null,
+              "tonalidad": null,
+              "duracion": null,
+              "tipoSecuencia": null,
+              "comentarios": null
+            }
+          ]
+        },
+        {
+          "id": "1Srv_sdtm8DJVavhNdtPDyIJoKKLE3vgE",
+          "name": "Venimos para adorarte",
+          "image": null,
+          "songs": [
+            {
+              "id": "1ymbAEvvNmPWhmg79NYvcwh0OtVALe-lu",
+              "name": "VENIMOS PARA ADORARTE - Josue Avila",
+              "fullName": "VENIMOS PARA ADORARTE - Josue Avila.zip",
+              "type": "sequence",
+              "driveId": "1ymbAEvvNmPWhmg79NYvcwh0OtVALe-lu",
+              "downloadUrl": "https://drive.google.com/uc?export=download&id=1ymbAEvvNmPWhmg79NYvcwh0OtVALe-lu",
               "compas": null,
               "bpm": null,
               "tonalidad": null,
@@ -60097,65 +60150,6 @@
               "downloadUrl": "https://drive.google.com/uc?export=download&id=1A5aU6mWjvuvl_OSFKRmeRJa2nhUNTzvF",
               "compas": null,
               "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "1PKefm-xm2IbIzWLSXAM9H0t44-6Xhn_-",
-      "name": "La Ibi",
-      "albums": [
-        {
-          "id": "1P75JN9rQOb5Cuks-iyPkQB2ouLzEp8Po",
-          "name": "El Dios que adoramos",
-          "image": null,
-          "songs": [
-            {
-              "id": "1H0oPgVDvFVg47VTJgJd_6_oOwvB8diLi",
-              "name": "Contempla a Dios-70BPM",
-              "fullName": "contempla a Dios-70BPM.zip",
-              "type": "sequence",
-              "driveId": "1H0oPgVDvFVg47VTJgJd_6_oOwvB8diLi",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1H0oPgVDvFVg47VTJgJd_6_oOwvB8diLi",
-              "compas": null,
-              "bpm": 70,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null,
-              "chartUrl": "https://drive.google.com/uc?export=download&id=1F7JBNFNAl9pmE0dgvtxfiTc1-gcUOj52",
-              "chartName": "Contempla a Dios-La IBI & Sovereign Grace Music-El Dios Que Adoramos.A.7"
-            },
-            {
-              "id": "1JKLsbte5_z60dAJLLaWOkyNA7I0DcdCl",
-              "name": "Un siervo para tu gloria-130BPM",
-              "fullName": "Un siervo para tu gloria-130BPM.zip",
-              "type": "sequence",
-              "driveId": "1JKLsbte5_z60dAJLLaWOkyNA7I0DcdCl",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1JKLsbte5_z60dAJLLaWOkyNA7I0DcdCl",
-              "compas": null,
-              "bpm": 130,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null,
-              "chartUrl": "https://drive.google.com/uc?export=download&id=18Qj6yCwHRROG4ecxddeS7BMoUsLEXH7A",
-              "chartName": "Un Siervo para Tu Gloria-La IBI & Sovereign Grace Music-El Dios Que Adoramos.B.Capo 2.7"
-            },
-            {
-              "id": "1n58MhFjimX4n3pnoGZNuecYYNprs8a3Y",
-              "name": "Venid glorificad a Dios-50BPM",
-              "fullName": "Venid glorificad a Dios-50BPM.zip",
-              "type": "sequence",
-              "driveId": "1n58MhFjimX4n3pnoGZNuecYYNprs8a3Y",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1n58MhFjimX4n3pnoGZNuecYYNprs8a3Y",
-              "compas": null,
-              "bpm": 50,
               "tonalidad": null,
               "duracion": null,
               "tipoSecuencia": null,
@@ -64874,6 +64868,181 @@
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
+            }
+          ]
+        },
+        {
+          "id": "album_1770295767394_yn9ah",
+          "name": "Aliento (2025)",
+          "songs": [
+            {
+              "id": "aporte_1770294048530",
+              "name": "Eres Rey De Los Cielos",
+              "fullName": "Eres Rey De Los Cielos.zip",
+              "type": "sequence",
+              "driveId": null,
+              "downloadUrl": "https://mega.nz/folder/LVpVmarI#TahaNMP5yquWV5_aDJdVMg/folder/KURCnR5Y",
+              "tonalidad": "A",
+              "bpm": 84,
+              "compas": "4/4",
+              "tipoSecuencia": "Usuario",
+              "comentarios": "Aportado por Anónimo"
+            },
+            {
+              "id": "aporte_1770294324193",
+              "name": "Alábale (feat. Israel Chaparro)",
+              "fullName": "Alábale (feat. Israel Chaparro).zip",
+              "type": "sequence",
+              "driveId": null,
+              "downloadUrl": "https://mega.nz/folder/LVpVmarI#TahaNMP5yquWV5_aDJdVMg/folder/mVIwBBjA",
+              "tonalidad": "G",
+              "bpm": 127,
+              "compas": "4/4",
+              "tipoSecuencia": "Usuario",
+              "comentarios": "Aportado por Anónimo"
+            },
+            {
+              "id": "aporte_1770294417954",
+              "name": "Que Ruja El Leon (feat. Enoc Parra)",
+              "fullName": "Que Ruja El Leon (feat. Enoc Parra).zip",
+              "type": "sequence",
+              "driveId": null,
+              "downloadUrl": "https://mega.nz/folder/LVpVmarI#TahaNMP5yquWV5_aDJdVMg/folder/iBQESZ6b",
+              "tonalidad": "Ebm",
+              "bpm": 69,
+              "compas": "4/4",
+              "tipoSecuencia": "Usuario",
+              "comentarios": "Aportado por Anónimo"
+            },
+            {
+              "id": "aporte_1770294516919",
+              "name": "Exaltado-Loor al Rey",
+              "fullName": "Exaltado-Loor al Rey.zip",
+              "type": "sequence",
+              "driveId": null,
+              "downloadUrl": "https://mega.nz/folder/LVpVmarI#TahaNMP5yquWV5_aDJdVMg/folder/SFYGELjQ",
+              "tonalidad": "A",
+              "bpm": 68,
+              "compas": "4/4",
+              "tipoSecuencia": "Usuario",
+              "comentarios": "Aportado por Anónimo"
+            },
+            {
+              "id": "aporte_1770294636925",
+              "name": "Te Exaltaré",
+              "fullName": "Te Exaltaré.zip",
+              "type": "sequence",
+              "driveId": null,
+              "downloadUrl": "https://mega.nz/folder/LVpVmarI#TahaNMP5yquWV5_aDJdVMg/folder/iABCwTBZ",
+              "tonalidad": "G",
+              "bpm": 66,
+              "compas": "4/4",
+              "tipoSecuencia": "Usuario",
+              "comentarios": "Aportado por Anónimo"
+            },
+            {
+              "id": "aporte_1770294946188",
+              "name": "Ven Espíritu, Ven - Medley",
+              "fullName": "Ven Espíritu, Ven - Medley.zip",
+              "type": "sequence",
+              "driveId": null,
+              "downloadUrl": "https://mega.nz/folder/LVpVmarI#TahaNMP5yquWV5_aDJdVMg/folder/qIB0ADDa",
+              "tonalidad": "G",
+              "bpm": 60,
+              "compas": "4/4",
+              "tipoSecuencia": "Usuario",
+              "comentarios": "Aportado por Anónimo"
+            },
+            {
+              "id": "aporte_1770295333531",
+              "name": "Preciosa Sangre (feat. Lowsan Melgar)",
+              "fullName": "Preciosa Sangre (feat. Lowsan Melgar).zip",
+              "type": "sequence",
+              "driveId": null,
+              "downloadUrl": "https://mega.nz/folder/LVpVmarI#TahaNMP5yquWV5_aDJdVMg/folder/6UJ2mZpA",
+              "tonalidad": "Ab",
+              "bpm": 70,
+              "compas": "4/4",
+              "tipoSecuencia": "Usuario",
+              "comentarios": "Aportado por Anónimo"
+            },
+            {
+              "id": "aporte_1770295408669",
+              "name": "Amor Inagotable (feat. Enoc Parra)",
+              "fullName": "Amor Inagotable (feat. Enoc Parra).zip",
+              "type": "sequence",
+              "driveId": null,
+              "downloadUrl": "https://mega.nz/folder/LVpVmarI#TahaNMP5yquWV5_aDJdVMg/folder/7VIUEbzI",
+              "tonalidad": "Ab",
+              "bpm": 76,
+              "compas": "4/4",
+              "tipoSecuencia": "Usuario",
+              "comentarios": "Aportado por Anónimo"
+            },
+            {
+              "id": "aporte_1770295465967",
+              "name": "Ven Y Bebe (feat. Eric Phillips)",
+              "fullName": "Ven Y Bebe (feat. Eric Phillips).zip",
+              "type": "sequence",
+              "driveId": null,
+              "downloadUrl": "https://mega.nz/folder/LVpVmarI#TahaNMP5yquWV5_aDJdVMg/folder/jVZQnJyD",
+              "tonalidad": "A",
+              "bpm": 65,
+              "compas": "4/4",
+              "tipoSecuencia": "Usuario",
+              "comentarios": "Aportado por Anónimo"
+            },
+            {
+              "id": "aporte_1770295608933",
+              "name": "El Poderoso de Israel - Medley",
+              "fullName": "El Poderoso de Israel - Medley.zip",
+              "type": "sequence",
+              "driveId": null,
+              "downloadUrl": "https://mega.nz/folder/LVpVmarI#TahaNMP5yquWV5_aDJdVMg/folder/aABETDLJ",
+              "tonalidad": "Cm",
+              "bpm": 210,
+              "compas": "12/8",
+              "tipoSecuencia": "Usuario",
+              "comentarios": "Aportado por Anónimo"
+            },
+            {
+              "id": "aporte_1770295715051",
+              "name": "De Gloria En Gloria/Danzaré",
+              "fullName": "De Gloria En Gloria/Danzaré.zip",
+              "type": "sequence",
+              "driveId": null,
+              "downloadUrl": "https://mega.nz/folder/LVpVmarI#TahaNMP5yquWV5_aDJdVMg/folder/jIRUiDzK",
+              "tonalidad": "A",
+              "bpm": 128,
+              "compas": "4/4",
+              "tipoSecuencia": "Usuario",
+              "comentarios": "Aportado por Anónimo"
+            },
+            {
+              "id": "aporte_1770295085974",
+              "name": "Tus Cuerdas De Amor (feat. Lowsan Melgar)",
+              "fullName": "Tus Cuerdas De Amor (feat. Lowsan Melgar).zip",
+              "type": "sequence",
+              "driveId": null,
+              "downloadUrl": "https://mega.nz/folder/LVpVmarI#TahaNMP5yquWV5_aDJdVMg/folder/mBYm3JBY",
+              "tonalidad": "F",
+              "bpm": 67,
+              "compas": "4/4",
+              "tipoSecuencia": "Usuario",
+              "comentarios": "Aportado por Anónimo"
+            },
+            {
+              "id": "aporte_1770295533847",
+              "name": "Es Una Fiesta",
+              "fullName": "Es Una Fiesta.zip",
+              "type": "sequence",
+              "driveId": null,
+              "downloadUrl": "https://mega.nz/folder/LVpVmarI#TahaNMP5yquWV5_aDJdVMg/folder/zcRATZgS",
+              "tonalidad": "G",
+              "bpm": 150,
+              "compas": "4/4",
+              "tipoSecuencia": "Usuario",
+              "comentarios": "Aportado por Anónimo"
             }
           ]
         }

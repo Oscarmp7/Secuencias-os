@@ -1,7 +1,7 @@
 {
-  "lastUpdated": "2026-02-06T13:29:43.245Z",
+  "lastUpdated": "2026-02-06T13:28:06.949Z",
   "stats": {
-    "totalArtists": 763,
+    "totalArtists": 766,
     "totalSongs": 5810,
     "totalCharts": 703
   },
@@ -56174,6 +56174,47 @@
       ]
     },
     {
+      "id": "1pcVZWvKTFH9cV3TMBX_KNZIzln1Scmtg",
+      "name": "Jonathan & Sarah Jerez",
+      "albums": [
+        {
+          "id": "1ethJP6htJAp9lvmbA4mEgYE-L_Yii1YG",
+          "name": "Periscopio",
+          "image": null,
+          "songs": [
+            {
+              "id": "1UQUD8TtQ-sNgVHijnActwCYm0ZRkryjb",
+              "name": "Te doy gracias",
+              "fullName": "Te doy gracias.zip",
+              "type": "sequence",
+              "driveId": "1UQUD8TtQ-sNgVHijnActwCYm0ZRkryjb",
+              "downloadUrl": "https://drive.google.com/uc?export=download&id=1UQUD8TtQ-sNgVHijnActwCYm0ZRkryjb",
+              "compas": null,
+              "bpm": null,
+              "tonalidad": null,
+              "duracion": null,
+              "tipoSecuencia": null,
+              "comentarios": null
+            },
+            {
+              "id": "1sG0fH5EYLqIQT7_QjU2qEv-ZqTE3Lhqc",
+              "name": "Tu gloria",
+              "fullName": "Tu gloria.zip",
+              "type": "sequence",
+              "driveId": "1sG0fH5EYLqIQT7_QjU2qEv-ZqTE3Lhqc",
+              "downloadUrl": "https://drive.google.com/uc?export=download&id=1sG0fH5EYLqIQT7_QjU2qEv-ZqTE3Lhqc",
+              "compas": null,
+              "bpm": null,
+              "tonalidad": null,
+              "duracion": null,
+              "tipoSecuencia": null,
+              "comentarios": null
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "1HKsNnsEqtY-bnadhQs3wTfUglhQeAj3K",
       "name": "Jonathan Nelson",
       "albums": [
@@ -56501,41 +56542,6 @@
               "comentarios": null
             }
           ]
-        },
-        {
-          "id": "1ethJP6htJAp9lvmbA4mEgYE-L_Yii1YG",
-          "name": "Periscopio",
-          "image": null,
-          "songs": [
-            {
-              "id": "1UQUD8TtQ-sNgVHijnActwCYm0ZRkryjb",
-              "name": "Te doy gracias",
-              "fullName": "Te doy gracias.zip",
-              "type": "sequence",
-              "driveId": "1UQUD8TtQ-sNgVHijnActwCYm0ZRkryjb",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1UQUD8TtQ-sNgVHijnActwCYm0ZRkryjb",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1sG0fH5EYLqIQT7_QjU2qEv-ZqTE3Lhqc",
-              "name": "Tu gloria",
-              "fullName": "Tu gloria.zip",
-              "type": "sequence",
-              "driveId": "1sG0fH5EYLqIQT7_QjU2qEv-ZqTE3Lhqc",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1sG0fH5EYLqIQT7_QjU2qEv-ZqTE3Lhqc",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            }
-          ]
         }
       ]
     },
@@ -56823,20 +56829,6 @@
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
-            },
-            {
-              "id": "1NWIhFYP5YzgkyXpC6IbukeHJ9S-e3JLb",
-              "name": "Esta cayendo-130BPM",
-              "fullName": "Esta cayendo-130BPM.zip",
-              "type": "sequence",
-              "driveId": "1NWIhFYP5YzgkyXpC6IbukeHJ9S-e3JLb",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1NWIhFYP5YzgkyXpC6IbukeHJ9S-e3JLb",
-              "compas": null,
-              "bpm": 130,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
             }
           ]
         },
@@ -56855,20 +56847,6 @@
               "compas": null,
               "bpm": 68,
               "tonalidad": "G",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1q2xiD_KA70h-IMQgbj4ZAARUiYUteWW-",
-              "name": "Esta cayendo-68BPM",
-              "fullName": "Esta cayendo-68BPM.7z",
-              "type": "sequence",
-              "driveId": "1q2xiD_KA70h-IMQgbj4ZAARUiYUteWW-",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1q2xiD_KA70h-IMQgbj4ZAARUiYUteWW-",
-              "compas": null,
-              "bpm": 68,
-              "tonalidad": null,
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
@@ -56893,7 +56871,62 @@
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
-            },
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1931ZVo51154tgoEzbicbonGPaMLwYwEf",
+      "name": "José Luis Reyes",
+      "albums": [
+        {
+          "id": "1eSy0fzggHcNG48yMJtkySqv0IJKPs7cZ",
+          "name": "El Dios de lo imposible",
+          "image": null,
+          "songs": [
+            {
+              "id": "1NWIhFYP5YzgkyXpC6IbukeHJ9S-e3JLb",
+              "name": "Esta cayendo-130BPM",
+              "fullName": "Esta cayendo-130BPM.zip",
+              "type": "sequence",
+              "driveId": "1NWIhFYP5YzgkyXpC6IbukeHJ9S-e3JLb",
+              "downloadUrl": "https://drive.google.com/uc?export=download&id=1NWIhFYP5YzgkyXpC6IbukeHJ9S-e3JLb",
+              "compas": null,
+              "bpm": 130,
+              "tonalidad": null,
+              "duracion": null,
+              "tipoSecuencia": null,
+              "comentarios": null
+            }
+          ]
+        },
+        {
+          "id": "1lPGXCQ5B7aD1XeYca4YmopzoV0zDi0de",
+          "name": "No temeré (live)",
+          "image": null,
+          "songs": [
+            {
+              "id": "1q2xiD_KA70h-IMQgbj4ZAARUiYUteWW-",
+              "name": "Esta cayendo-68BPM",
+              "fullName": "Esta cayendo-68BPM.7z",
+              "type": "sequence",
+              "driveId": "1q2xiD_KA70h-IMQgbj4ZAARUiYUteWW-",
+              "downloadUrl": "https://drive.google.com/uc?export=download&id=1q2xiD_KA70h-IMQgbj4ZAARUiYUteWW-",
+              "compas": null,
+              "bpm": 68,
+              "tonalidad": null,
+              "duracion": null,
+              "tipoSecuencia": null,
+              "comentarios": null
+            }
+          ]
+        },
+        {
+          "id": "1kRABa27cVEHAw4pp4KNKkH6VIJVfkf1O",
+          "name": "Se Abren Los Cielos",
+          "image": null,
+          "songs": [
             {
               "id": "1DO5kJA6qCWkkMLhw44yDkB8KQ0Ai6yhC",
               "name": "Está Cayendo-130BPM",
@@ -57278,6 +57311,33 @@
       ]
     },
     {
+      "id": "1lQK3IrcZMp0oL05ub2s7Ouse01MlUjgu",
+      "name": "Josue Avila",
+      "albums": [
+        {
+          "id": "1Srv_sdtm8DJVavhNdtPDyIJoKKLE3vgE",
+          "name": "Venimos para adorarte",
+          "image": null,
+          "songs": [
+            {
+              "id": "1ymbAEvvNmPWhmg79NYvcwh0OtVALe-lu",
+              "name": "VENIMOS PARA ADORARTE - Josue Avila",
+              "fullName": "VENIMOS PARA ADORARTE - Josue Avila.zip",
+              "type": "sequence",
+              "driveId": "1ymbAEvvNmPWhmg79NYvcwh0OtVALe-lu",
+              "downloadUrl": "https://drive.google.com/uc?export=download&id=1ymbAEvvNmPWhmg79NYvcwh0OtVALe-lu",
+              "compas": null,
+              "bpm": null,
+              "tonalidad": null,
+              "duracion": null,
+              "tipoSecuencia": null,
+              "comentarios": null
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "1fBA3pxD9TCS9WP0Fp5qW76MKouqRjo2M",
       "name": "Josué Ávila ",
       "albums": [
@@ -57314,27 +57374,6 @@
               "type": "sequence",
               "driveId": "1Hz7hv4dzKIj4alVS9OyRmGhJ9aj7IAHN",
               "downloadUrl": "https://drive.google.com/uc?export=download&id=1Hz7hv4dzKIj4alVS9OyRmGhJ9aj7IAHN",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            }
-          ]
-        },
-        {
-          "id": "1Srv_sdtm8DJVavhNdtPDyIJoKKLE3vgE",
-          "name": "Venimos para adorarte",
-          "image": null,
-          "songs": [
-            {
-              "id": "1ymbAEvvNmPWhmg79NYvcwh0OtVALe-lu",
-              "name": "VENIMOS PARA ADORARTE - Josue Avila",
-              "fullName": "VENIMOS PARA ADORARTE - Josue Avila.zip",
-              "type": "sequence",
-              "driveId": "1ymbAEvvNmPWhmg79NYvcwh0OtVALe-lu",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1ymbAEvvNmPWhmg79NYvcwh0OtVALe-lu",
               "compas": null,
               "bpm": null,
               "tonalidad": null,
