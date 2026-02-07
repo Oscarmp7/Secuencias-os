@@ -81,6 +81,7 @@ const App = () => {
   const [searchResults, setSearchResults] = useState(null);
   // Guarda la consulta que genero los resultados actuales (para evitar desfasajes).
   const [searchResultsQuery, setSearchResultsQuery] = useState('');
+  const [searchActive, setSearchActive] = useState(false);
 
   const [selectedArtist, setSelectedArtist] = useState(null);
   // Sidebar inicia abierto solo si NO estamos en mobile.
@@ -253,6 +254,7 @@ const App = () => {
       setViewMode(mode);
       setExpandedAlbums({});
       setShowContributeForm(false); // Cerrar formulario si está abierto
+      setSearchActive(false);
 
       if (mode === 'artists') {
         const artist = artistById.get(artistId);
@@ -278,6 +280,7 @@ const App = () => {
     setSelectedArtist(null);
     setViewMode('home');
     setSearchQuery('');
+    setSearchActive(false);
     setShowContributeForm(false);
     setSelectedResourceCategory(null);
     if (isMobile) {
@@ -307,6 +310,7 @@ const App = () => {
       setSelectedArtist(null);
       setShowContributeForm(false);
       setSearchQuery('');
+      setSearchActive(false);
       
       if (isMobile) {
         setSidebarOpen(false);
@@ -323,6 +327,7 @@ const App = () => {
     setViewMode('contribute');
     setSelectedArtist(null);
     setSearchQuery('');
+    setSearchActive(false);
     
     if (isMobile) {
       setSidebarOpen(false);
@@ -338,12 +343,19 @@ const App = () => {
   }, []);
 
   const handleSearchChange = useCallback((event) => {
-    setSearchQuery(event.target.value);
+    const nextValue = event.target.value;
+    setSearchQuery(nextValue);
+    setSearchActive(nextValue.trim().length > 0);
   }, []);
 
   const clearSearch = useCallback(() => {
     setSearchQuery('');
+    setSearchActive(false);
   }, []);
+
+  const handleSearchFocus = useCallback(() => {
+    setSearchActive(searchQuery.trim().length > 0);
+  }, [searchQuery]);
 
   // Artista actual por ID.
   const currentArtist = selectedArtist ? artistById.get(selectedArtist) : null;
@@ -389,6 +401,7 @@ const App = () => {
           searchQuery={searchQuery}
           onSearchChange={handleSearchChange}
           onClearSearch={clearSearch}
+          onSearchFocus={handleSearchFocus}
           onToggleSidebar={toggleSidebar}
           onGoHome={handleGoHome}
           theme={theme}
@@ -397,6 +410,7 @@ const App = () => {
 
         <MainContent
           searchResults={searchResults}
+          searchActive={searchActive}
           // Usa el query "debounced" que genero estos resultados.
           searchResultsQuery={searchResultsQuery}
           viewMode={viewMode}

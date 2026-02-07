@@ -26,7 +26,8 @@
     "toggleMenu": "Alternar menú",
     "clearSearch": "Limpiar búsqueda",
     "toggleTheme": "Cambiar tema",
-    "languageSelect": "Seleccionar idioma"
+    "languageSelect": "Seleccionar idioma",
+    "backToTop": "Volver arriba"
   },
   "search": {
     "placeholder": "Buscar canción, artista o álbum...",
@@ -65,6 +66,19 @@
     "filterDAWs": "DAWs",
     "filterPlugins": "Plugins",
     "filterUtilities": "Utilidades",
+    "instrumentFilter": "Instrumento",
+    "instrumentAll": "Todos",
+    "instruments": {
+      "keys": "Pianos / Teclados",
+      "drums": "Baterías / Percusión",
+      "guitars": "Guitarras / Bajos",
+      "pads": "Pads / Synths",
+      "strings": "Strings / Orquesta",
+      "vocals": "Voces / Coros",
+      "fx": "FX / Procesadores",
+      "samplers": "Samplers / Kontakt",
+      "other": "Otros"
+    },
     "resourceCount": "{{count}} recurso",
     "resourceCountPlural": "{{count}} recursos",
     "noResources": "No hay recursos disponibles",
@@ -97,6 +111,7 @@
     "softwareName": "Nombre del software",
     "subcategory": "Subcategoría",
     "description": "Descripción breve",
+    "instruments": "Instrumentos",
     "downloadUrl": "URL de Descarga",
     "name": "Nombre",
     "email": "Correo electrónico",
@@ -118,6 +133,7 @@
       "timeSignatureRequired": "El compás es obligatorio",
       "subcategoryRequired": "La subcategoría es obligatoria",
       "descriptionRequired": "La descripción es obligatoria",
+      "instrumentRequired": "Selecciona al menos un instrumento",
       "urlRequired": "Debes proporcionar una URL de descarga",
       "suggestionRequired": "Escribe tu sugerencia o comentario",
       "invalidEmail": "El correo electrónico no es válido",

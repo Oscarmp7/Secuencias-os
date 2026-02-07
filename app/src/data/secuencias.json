@@ -1,8 +1,8 @@
 {
-  "lastUpdated": "2026-02-06T13:29:43.245Z",
+  "lastUpdated": "2026-02-07T01:15:18.250Z",
   "stats": {
     "totalArtists": 763,
-    "totalSongs": 5810,
+    "totalSongs": 5791,
     "totalCharts": 703
   },
   "artists": [
@@ -3001,20 +3001,6 @@
               "compas": null,
               "bpm": 145,
               "tonalidad": "A",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1At-PQR6fJvnz0vjCLpFDFdqjyKYPT_qg",
-              "name": "Te Doy Gloria (feat. Marco Barrientos)-Bondadoso (En Vivo)-D-145.00bpm",
-              "fullName": "Te Doy Gloria (feat. Marco Barrientos)-Bondadoso (En Vivo)-D-145.00bpm.zip",
-              "type": "sequence",
-              "driveId": "1At-PQR6fJvnz0vjCLpFDFdqjyKYPT_qg",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1At-PQR6fJvnz0vjCLpFDFdqjyKYPT_qg",
-              "compas": null,
-              "bpm": 145,
-              "tonalidad": "D",
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
@@ -9829,20 +9815,6 @@
               "type": "sequence",
               "driveId": "1T0ROzwx0ZzaaZ00aGl32hIlbFrFMVTL5",
               "downloadUrl": "https://drive.google.com/uc?export=download&id=1T0ROzwx0ZzaaZ00aGl32hIlbFrFMVTL5",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": "B",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1_5xXa2lrscTb77wIRel7hTzYYckqfnf7",
-              "name": "Lion and the Lamb-Have It All-B",
-              "fullName": "Lion and the Lamb-Have It All-B.zip",
-              "type": "sequence",
-              "driveId": "1_5xXa2lrscTb77wIRel7hTzYYckqfnf7",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1_5xXa2lrscTb77wIRel7hTzYYckqfnf7",
               "compas": null,
               "bpm": null,
               "tonalidad": "B",
@@ -19336,20 +19308,6 @@
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
-            },
-            {
-              "id": "1B-KGEznxk_o8Oz5Fz4vrhscrs0CQrw9I",
-              "name": "Una Vez Mas-Canciones de un corazon que todavia tiene suenos-A-68.00bpm",
-              "fullName": "Una Vez Mas-Canciones de un corazon que todavia tiene suenos-A-68.00bpm.zip",
-              "type": "sequence",
-              "driveId": "1B-KGEznxk_o8Oz5Fz4vrhscrs0CQrw9I",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1B-KGEznxk_o8Oz5Fz4vrhscrs0CQrw9I",
-              "compas": null,
-              "bpm": 68,
-              "tonalidad": "A",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
             }
           ]
         },
@@ -27412,20 +27370,6 @@
               "comentarios": null
             },
             {
-              "id": "11uMSFRCcnaGzh2_3b4nbPJYCnLq5taFJ",
-              "name": "More Than Able-More Than Able-E-73.00bpm",
-              "fullName": "More Than Able-More Than Able-E-73.00bpm.zip",
-              "type": "sequence",
-              "driveId": "11uMSFRCcnaGzh2_3b4nbPJYCnLq5taFJ",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=11uMSFRCcnaGzh2_3b4nbPJYCnLq5taFJ",
-              "compas": null,
-              "bpm": 73,
-              "tonalidad": "E",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1gr2d6NTqxpuyyyK5DdgfoRV_qfwfMmiT",
               "name": "No Body-CAN YOU IMAGINE--A-67.00bpm",
               "fullName": "No Body-CAN YOU IMAGINE--A-67.00bpm.zip",
@@ -30923,20 +30867,6 @@
               "comentarios": null,
               "chartUrl": "https://drive.google.com/uc?export=download&id=1kqmcgRuXnU3bMj3soRniigIXk1DDKC1G",
               "chartName": "Resplandecio!-En Espiritu y en Verdad-Piedras Vivas.A.7"
-            },
-            {
-              "id": "1vFR58d_DGiFPaQlVQp4ywT1rcUhLOGbu",
-              "name": "Resplandecio!  - B",
-              "fullName": "Resplandecio!  - B.zip",
-              "type": "sequence",
-              "driveId": "1vFR58d_DGiFPaQlVQp4ywT1rcUhLOGbu",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1vFR58d_DGiFPaQlVQp4ywT1rcUhLOGbu",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": "B",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
             }
           ]
         },
@@ -40317,20 +40247,6 @@
               "comentarios": null
             },
             {
-              "id": "1TWYnpEtuMToRyYxxNl4oC_utr1NgZSrG",
-              "name": "El Shaddai (feat. Christine D'Clario) - Grande Y Fiel - E - 70bpm",
-              "fullName": "El Shaddai (feat. Christine D'Clario) - Grande Y Fiel - E - 70bpm.zip",
-              "type": "sequence",
-              "driveId": "1TWYnpEtuMToRyYxxNl4oC_utr1NgZSrG",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1TWYnpEtuMToRyYxxNl4oC_utr1NgZSrG",
-              "compas": null,
-              "bpm": 70,
-              "tonalidad": "E",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1PnDSOJVJVqQN27P3D2dLwFXjASE8_hhp",
               "name": "En Cristo Puedo (feat. Josh Morales) - Grande Y Fiel - C - 118bpm",
               "fullName": "En Cristo Puedo (feat. Josh Morales) - Grande Y Fiel - C - 118bpm.zip",
@@ -40452,20 +40368,6 @@
               "compas": null,
               "bpm": 69,
               "tonalidad": "D",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1DBuTjjATm8jPabVyYzwEk2nO2jjVwij2",
-              "name": "Ven Satura (feat. Christine D'Clario) - Grande Y Fiel - Eb - 69bpm",
-              "fullName": "Ven Satura (feat. Christine D'Clario) - Grande Y Fiel - Eb - 69bpm.zip",
-              "type": "sequence",
-              "driveId": "1DBuTjjATm8jPabVyYzwEk2nO2jjVwij2",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1DBuTjjATm8jPabVyYzwEk2nO2jjVwij2",
-              "compas": null,
-              "bpm": 69,
-              "tonalidad": "Eb",
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
@@ -40767,20 +40669,6 @@
               "compas": null,
               "bpm": null,
               "tonalidad": "D",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1FISz44ZyMuAQ2JK4S1iy1ogwHRHAECu2",
-              "name": "Dios y Rey (feat. Christine D'Clario) - Por Siempre Tuyo - A",
-              "fullName": "Dios y Rey (feat. Christine D'Clario) - Por Siempre Tuyo - A.zip",
-              "type": "sequence",
-              "driveId": "1FISz44ZyMuAQ2JK4S1iy1ogwHRHAECu2",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1FISz44ZyMuAQ2JK4S1iy1ogwHRHAECu2",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": "A",
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
@@ -49694,20 +49582,6 @@
               "comentarios": null
             },
             {
-              "id": "1G8If6_X_Gwf8UR_B7XiWxnWLfzkXmlQp",
-              "name": "Real Love-Youth Revival-D-140.00bpm",
-              "fullName": "Real Love-Youth Revival-D-140.00bpm.zip",
-              "type": "sequence",
-              "driveId": "1G8If6_X_Gwf8UR_B7XiWxnWLfzkXmlQp",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1G8If6_X_Gwf8UR_B7XiWxnWLfzkXmlQp",
-              "compas": null,
-              "bpm": 140,
-              "tonalidad": "D",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1-lGRuL0-7HYEO5wyB0dsJhKsrIhsqovP",
               "name": "This is Living - C",
               "fullName": "This is Living - C.zip",
@@ -49864,20 +49738,6 @@
               "compas": null,
               "bpm": null,
               "tonalidad": "E",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1h3q3T_I3npmWKJwgo5jKf3qjDC1MWhsX",
-              "name": "Medley I Love You Lord - Passion (Acoustic)-Youth Revival Acoustic-C",
-              "fullName": "Medley I Love You Lord - Passion (Acoustic)-Youth Revival Acoustic-C.zip",
-              "type": "sequence",
-              "driveId": "1h3q3T_I3npmWKJwgo5jKf3qjDC1MWhsX",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1h3q3T_I3npmWKJwgo5jKf3qjDC1MWhsX",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": "C",
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
@@ -64042,20 +63902,6 @@
               "chartName": "Yo Se-Marco Barrientos-Yo Se.B.7"
             },
             {
-              "id": "1E96_5ewCoDM1S7Pbbv196vUda9QlH0gg",
-              "name": "Yo Sé - B-100bpm",
-              "fullName": "Yo Sé - B-100bpm.zip",
-              "type": "sequence",
-              "driveId": "1E96_5ewCoDM1S7Pbbv196vUda9QlH0gg",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1E96_5ewCoDM1S7Pbbv196vUda9QlH0gg",
-              "compas": null,
-              "bpm": 100,
-              "tonalidad": "B",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "12PDETCALcII6dmgbSBzgUz_HhxXjr6x2",
               "name": "Yo Se-Exaltado-B-100.00bpm",
               "fullName": "Yo Se-Exaltado-B-100.00bpm.zip",
@@ -71645,20 +71491,6 @@
               "comentarios": null
             },
             {
-              "id": "1KKnAlNWaIAR1lA6L6lgIBiloRuEyLQtW",
-              "name": "Intro+Fiesta En El Desierto",
-              "fullName": "Intro+Fiesta En El Desierto.zip",
-              "type": "sequence",
-              "driveId": "1KKnAlNWaIAR1lA6L6lgIBiloRuEyLQtW",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1KKnAlNWaIAR1lA6L6lgIBiloRuEyLQtW",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "15fvMHn01HbBTcLAbkNxk0lHxo1hxSaV2",
               "name": "León + Quién Podrá",
               "fullName": "León + Quién Podrá.zip",
@@ -72635,20 +72467,6 @@
               "type": "sequence",
               "driveId": "13OciLDb3J8CQdabq64YV9WvIjsypJhVA",
               "downloadUrl": "https://drive.google.com/uc?export=download&id=13OciLDb3J8CQdabq64YV9WvIjsypJhVA",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": "Db",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1RMnoEaauFONWcmKJVqsj0bcX1PN063Sy",
-              "name": "Mi Sanador-Ambientes de Adoracion-Db",
-              "fullName": "Mi Sanador-Ambientes de Adoracion-Db.zip",
-              "type": "sequence",
-              "driveId": "1RMnoEaauFONWcmKJVqsj0bcX1PN063Sy",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1RMnoEaauFONWcmKJVqsj0bcX1PN063Sy",
               "compas": null,
               "bpm": null,
               "tonalidad": "Db",
@@ -93564,20 +93382,6 @@
               "comentarios": null
             },
             {
-              "id": "1YKErxH9hdRyOMmRLBlGCBMBb0t4qq0DE",
-              "name": "Medley yo quiero ver-160BPM",
-              "fullName": "Medley yo quiero ver-160BPM.zip",
-              "type": "sequence",
-              "driveId": "1YKErxH9hdRyOMmRLBlGCBMBb0t4qq0DE",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1YKErxH9hdRyOMmRLBlGCBMBb0t4qq0DE",
-              "compas": null,
-              "bpm": 160,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1rKHCa08JyTDDXlNyzNjFyOmbN-RRIW_a",
               "name": "Mi Dios Es Alegre",
               "fullName": "Mi Dios Es Alegre.zip",
@@ -94923,20 +94727,6 @@
               "comentarios": null
             },
             {
-              "id": "1kRCoCEryAqcUsObRzvrfvP_28Ff9qUYk",
-              "name": "Mi Cita del Cielo-Fragmentos del Cielo-Ab",
-              "fullName": "Mi Cita del Cielo-Fragmentos del Cielo-Ab.zip",
-              "type": "sequence",
-              "driveId": "1kRCoCEryAqcUsObRzvrfvP_28Ff9qUYk",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1kRCoCEryAqcUsObRzvrfvP_28Ff9qUYk",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": "Ab",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1b2ipSz4KywPc13uHxCCSzGdkjmbKKKWM",
               "name": "Mi Roca-Fragmentos del Cielo-Fm",
               "fullName": "Mi Roca-Fragmentos del Cielo-Fm.zip",
@@ -95639,20 +95429,6 @@
               "compas": null,
               "bpm": 49,
               "tonalidad": "C",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1I1xfqvNbwE9g5Y14zoHK2YMxKYc4etrR",
-              "name": "You Know My Name-Heart. Passion. Pursuit-A",
-              "fullName": "You Know My Name-Heart. Passion. Pursuit-A.zip",
-              "type": "sequence",
-              "driveId": "1I1xfqvNbwE9g5Y14zoHK2YMxKYc4etrR",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1I1xfqvNbwE9g5Y14zoHK2YMxKYc4etrR",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": "A",
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
@@ -97679,20 +97455,6 @@
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
-            },
-            {
-              "id": "1jAFj2rMa1GLB0jGRLVbVSNFGJmYHCt8O",
-              "name": "Mas Que Nunca-Mas Que Nunca-Ab-67.00bpm",
-              "fullName": "Mas Que Nunca-Mas Que Nunca-Ab-67.00bpm.zip",
-              "type": "sequence",
-              "driveId": "1jAFj2rMa1GLB0jGRLVbVSNFGJmYHCt8O",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1jAFj2rMa1GLB0jGRLVbVSNFGJmYHCt8O",
-              "compas": null,
-              "bpm": 67,
-              "tonalidad": "Ab",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
             }
           ]
         },
@@ -99440,20 +99202,6 @@
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
-            },
-            {
-              "id": "1UbkgaCin0JBeTPu7A1Xu_zXP4RVPYm4g",
-              "name": "Caribbean Joy Medley-Urbana 22 Live_ We Will Rise-A-124.00bpm",
-              "fullName": "Caribbean Joy Medley-Urbana 22 Live_ We Will Rise-A-124.00bpm.zip",
-              "type": "sequence",
-              "driveId": "1UbkgaCin0JBeTPu7A1Xu_zXP4RVPYm4g",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1UbkgaCin0JBeTPu7A1Xu_zXP4RVPYm4g",
-              "compas": null,
-              "bpm": 124,
-              "tonalidad": "A",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
             }
           ]
         }
@@ -100132,20 +99880,6 @@
               "compas": null,
               "bpm": 100,
               "tonalidad": "A",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1SXMNqOSJVJBw5zbGE5At2ddCaUCW9I1y",
-              "name": "Open Up the Heavens-Vertical Worship-B-100.00bpm",
-              "fullName": "Open Up the Heavens-Vertical Worship-B-100.00bpm.zip",
-              "type": "sequence",
-              "driveId": "1SXMNqOSJVJBw5zbGE5At2ddCaUCW9I1y",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1SXMNqOSJVJBw5zbGE5At2ddCaUCW9I1y",
-              "compas": null,
-              "bpm": 100,
-              "tonalidad": "B",
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null

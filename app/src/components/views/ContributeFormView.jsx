@@ -46,8 +46,10 @@ import {
   COMPAS_OPTIONS,
   APORTE_TYPES,
   SOFTWARE_CATEGORIES,
+  INSTRUMENT_OPTIONS,
 } from '../../utils/formValidation';
 import { generateXlsxBase64 } from '../../utils/xlsxGenerator';
+import { sanitizeFormData } from '../../utils/sanitize';
 import {
   sendContributionForm,
   sendThankYouEmail,
@@ -89,6 +91,7 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
     subcategoria: '',
     descripcion: '',
     urlDescarga: '',
+    instrumentos: [],
     nombre: '',
     email: '',
     sugerencias: '',
@@ -135,6 +138,13 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
     }
   }, [formData.urlDescarga]);
 
+  // Si cambia la subcategoría a algo distinto de plugins, limpiar instrumentos
+  useEffect(() => {
+    if (formData.subcategoria !== 'plugins' && formData.instrumentos?.length) {
+      setFormData(prev => ({ ...prev, instrumentos: [] }));
+    }
+  }, [formData.subcategoria, formData.instrumentos?.length]);
+
   // Handler genérico para cambios en inputs
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
@@ -142,6 +152,17 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
 
     // Marcar como tocado
     setTouched(prev => ({ ...prev, [name]: true }));
+  }, []);
+
+  const toggleInstrument = useCallback((value) => {
+    setFormData(prev => {
+      const current = Array.isArray(prev.instrumentos) ? prev.instrumentos : [];
+      const next = current.includes(value)
+        ? current.filter((v) => v !== value)
+        : [...current, value];
+      return { ...prev, instrumentos: next };
+    });
+    setTouched(prev => ({ ...prev, instrumentos: true }));
   }, []);
 
   // Handler para blur (validación al salir del campo)
@@ -201,28 +222,29 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
         pageUrl: window.location?.href || '',
         userAgent: navigator?.userAgent || '',
       };
+      const sanitizedData = sanitizeFormData(dataToSend);
 
       // Generar XLSX (no bloquear envío si falla)
       let xlsxBase64 = null;
       try {
-        xlsxBase64 = await generateXlsxBase64(dataToSend);
+        xlsxBase64 = await generateXlsxBase64(sanitizedData);
       } catch (xlsxError) {
         console.warn('⚠️ No se pudo generar XLSX adjunto:', xlsxError);
       }
 
       // Enviar formulario
-      const result = await sendContributionForm(dataToSend, xlsxBase64);
+      const result = await sendContributionForm(sanitizedData, xlsxBase64);
 
       if (result.success) {
         // Registrar envío exitoso
         recordSubmission();
 
         // Enviar correo de agradecimiento si hay email
-        if (formData.email) {
+        if (sanitizedData.email) {
           await sendThankYouEmail({
-            email: formData.email,
-            nombre: formData.nombre,
-            tipoAporte: formData.tipoAporte,
+            email: sanitizedData.email,
+            nombre: sanitizedData.nombre,
+            tipoAporte: sanitizedData.tipoAporte,
           });
         }
 
@@ -264,6 +286,7 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
             subcategoria: '',
             descripcion: '',
             urlDescarga: '',
+            instrumentos: [],
             nombre: prev.nombre,
             email: prev.email,
             sugerencias: '',
@@ -551,6 +574,27 @@ const ContributeFormView = memo(function ContributeFormView({ onClose }) {
                   <p className={errorClass}><AlertCircle size={14} /> {t('contribute.errors.descriptionRequired')}</p>
                 )}
               </div>
+
+              {formData.subcategoria === 'plugins' && (
+                <div>
+                  <label className={labelClass}>{t('contribute.instruments')} *</label>
+                  <div className="flex flex-wrap gap-2">
+                    {INSTRUMENT_OPTIONS.map((inst) => (
+                      <button
+                        key={inst.value}
+                        type="button"
+                        onClick={() => toggleInstrument(inst.value)}
+                        className={`filter-btn ${formData.instrumentos?.includes(inst.value) ? 'active' : ''}`}
+                      >
+                        {t(`resources.instruments.${inst.value}`)}
+                      </button>
+                    ))}
+                  </div>
+                  {touched.instrumentos && errors.instrumentos && (
+                    <p className={errorClass}><AlertCircle size={14} /> {t('contribute.errors.instrumentRequired')}</p>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         )}

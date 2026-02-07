@@ -72,6 +72,19 @@ export const SOFTWARE_CATEGORIES = [
   { value: 'utilidades', label: 'Utilidades' },
 ];
 
+// Instrumentos para plugins (ids usados en filtros)
+export const INSTRUMENT_OPTIONS = [
+  { value: 'keys', label: 'Pianos / Teclados' },
+  { value: 'drums', label: 'Baterías / Percusión' },
+  { value: 'guitars', label: 'Guitarras / Bajos' },
+  { value: 'pads', label: 'Pads / Synths' },
+  { value: 'strings', label: 'Strings / Orquesta' },
+  { value: 'vocals', label: 'Voces / Coros' },
+  { value: 'fx', label: 'FX / Procesadores' },
+  { value: 'samplers', label: 'Samplers / Kontakt' },
+  { value: 'other', label: 'Otros' },
+];
+
 // ═══════════════════════════════════════════════════════════════════════════════
 //   ✅ FUNCIONES DE VALIDACIÓN
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -134,6 +147,12 @@ export function validateContributeForm(formData) {
     }
     if (!formData.descripcion?.trim()) {
       errors.descripcion = 'La descripción es obligatoria';
+    }
+    if (formData.subcategoria === 'plugins') {
+      const instrumentos = Array.isArray(formData.instrumentos) ? formData.instrumentos : [];
+      if (instrumentos.length === 0) {
+        errors.instrumentos = 'Selecciona al menos un instrumento';
+      }
     }
 
     // URL de descarga obligatoria

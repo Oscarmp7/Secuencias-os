@@ -42,7 +42,7 @@ Worship Box es una aplicación web moderna para explorar y descargar secuencias 
 - Búsqueda rápida y filtrado por artista, álbum y canción.
 - Charts integrados por canción.
 - Catálogo de recursos: DAWs, plugins y utilidades con múltiples servicios de descarga.
-- Formulario de aportes con validación en tiempo real, control de frecuencia y notificaciones por EmailJS.
+- Formulario de aportes con validación en tiempo real, control de frecuencia y notificaciones por EmailJS (sin enlaces magnet/torrent).
 - Interfaz responsive, tema claro/oscuro y multilenguaje (ES/EN/PT).
 
 ## Tecnologías y versiones

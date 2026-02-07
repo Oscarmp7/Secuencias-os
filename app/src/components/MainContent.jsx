@@ -10,9 +10,9 @@
  * 5) Artista seleccionado.
  */
 
-import { memo } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Search } from 'lucide-react';
+import { ArrowUp, Search } from 'lucide-react';
 import SearchResultsView from './views/SearchResultsView';
 import HomeView from './views/HomeView';
 import ArtistView from './views/ArtistView';
@@ -21,6 +21,7 @@ import ResourcesView from './views/ResourcesView';
 
 const MainContent = memo(function MainContent({
   searchResults,
+  searchActive = false,
   searchResultsQuery,
   viewMode,
   selectedArtist,
@@ -40,16 +41,38 @@ const MainContent = memo(function MainContent({
   onResourceCategoryChange,
 }) {
   const { t } = useTranslation();
+  const mainRef = useRef(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const container = mainRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      setShowScrollTop(container.scrollTop > 600);
+    };
+
+    handleScroll();
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const handleScrollTop = () => {
+    if (!mainRef.current) return;
+    mainRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
-    <main className="flex-1 overflow-y-auto p-4 md:p-6 grain-bg scroll-smooth overscroll-contain">
+    <main ref={mainRef} className="flex-1 overflow-y-auto p-4 md:p-6 grain-bg scroll-smooth overscroll-contain">
       {/* Prioridad 1: Formulario de contribución */}
       {showContributeForm ? (
         <ContributeFormView onClose={onCloseContributeForm} />
-      ) : searchResults && searchResults.length > 0 ? (
+      ) : searchActive && searchResults && searchResults.length > 0 ? (
         /* Prioridad 2: Resultados de búsqueda */
         <SearchResultsView searchResults={searchResults} searchQuery={searchResultsQuery} />
-      ) : searchResults && searchResults.length === 0 ? (
+      ) : searchActive && searchResults && searchResults.length === 0 ? (
         /* Sin resultados de búsqueda */
         <div className="text-center py-12">
           <Search size={48} className="mx-auto text-[var(--text-subtle)] mb-4" />
@@ -78,6 +101,15 @@ const MainContent = memo(function MainContent({
           <ArtistView artist={currentArtist} expandedAlbums={expandedAlbums} onToggleAlbum={onToggleAlbum} />
         )
       )}
+
+      <button
+        type="button"
+        onClick={handleScrollTop}
+        aria-label={t('aria.backToTop')}
+        className={`scroll-top-btn ${showScrollTop ? 'show' : ''}`}
+      >
+        <ArrowUp size={18} />
+      </button>
     </main>
   );
 });

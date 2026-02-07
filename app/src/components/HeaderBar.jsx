@@ -24,6 +24,7 @@ const HeaderBar = memo(function HeaderBar({
   searchQuery,
   onSearchChange,
   onClearSearch,
+  onSearchFocus,
   onToggleSidebar,
   onGoHome,
   theme,
@@ -92,6 +93,7 @@ const HeaderBar = memo(function HeaderBar({
                 placeholder={t('search.placeholder')}
                 value={searchQuery}
                 onChange={onSearchChange}
+                onFocus={onSearchFocus}
                 className="w-full bg-[var(--input-bg)] text-[var(--text)] pl-12 pr-4 py-3 rounded-full border border-[var(--input-border)] focus:border-[var(--input-border-focus)] focus:outline-none transition-colors"
               />
               {searchQuery && (

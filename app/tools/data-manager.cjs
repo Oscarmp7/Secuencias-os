@@ -78,6 +78,83 @@ const CONFIG = {
   }
 };
 
+// Instrumentos para plugins (ids usados en la app)
+const INSTRUMENT_LABELS = {
+  keys: 'Pianos / Teclados',
+  drums: 'Baterías / Percusión',
+  guitars: 'Guitarras / Bajos',
+  pads: 'Pads / Synths',
+  strings: 'Strings / Orquesta',
+  vocals: 'Voces / Coros',
+  fx: 'FX / Procesadores',
+  samplers: 'Samplers / Kontakt',
+  other: 'Otros',
+};
+
+const INSTRUMENT_ALIASES = {
+  keys: 'keys',
+  teclado: 'keys',
+  teclados: 'keys',
+  piano: 'keys',
+  pianos: 'keys',
+  'pianos teclados': 'keys',
+  'pianos / teclados': 'keys',
+  'pianos y teclados': 'keys',
+  drums: 'drums',
+  bateria: 'drums',
+  baterias: 'drums',
+  percusion: 'drums',
+  'baterias percusion': 'drums',
+  'baterias / percusion': 'drums',
+  guitars: 'guitars',
+  guitarra: 'guitars',
+  guitarras: 'guitars',
+  bajo: 'guitars',
+  bajos: 'guitars',
+  'guitarras bajos': 'guitars',
+  pads: 'pads',
+  synth: 'pads',
+  synths: 'pads',
+  'pads synths': 'pads',
+  strings: 'strings',
+  string: 'strings',
+  orquesta: 'strings',
+  orquestra: 'strings',
+  vocals: 'vocals',
+  vocal: 'vocals',
+  voz: 'vocals',
+  voces: 'vocals',
+  coro: 'vocals',
+  coros: 'vocals',
+  fx: 'fx',
+  efectos: 'fx',
+  procesadores: 'fx',
+  processors: 'fx',
+  samplers: 'samplers',
+  sampler: 'samplers',
+  kontakt: 'samplers',
+  other: 'other',
+  otro: 'other',
+  otros: 'other',
+};
+
+function serializeInstrumentos(instrumentos) {
+  if (!Array.isArray(instrumentos) || instrumentos.length === 0) return '';
+  return instrumentos
+    .map((id) => INSTRUMENT_LABELS[id] || id)
+    .join(', ');
+}
+
+function parseInstrumentos(value) {
+  if (!value) return [];
+  const raw = value.toString();
+  const parts = raw.split(/[;,]+/).map((p) => normalizeText(p));
+  const ids = parts
+    .map((p) => INSTRUMENT_ALIASES[p] || INSTRUMENT_ALIASES[p.replace(/\s*\/\s*/g, ' / ')] || '')
+    .filter(Boolean);
+  return Array.from(new Set(ids));
+}
+
 // Colores para la consola
 const c = {
   reset: '\x1b[0m',
@@ -954,7 +1031,7 @@ function exportSoftwareToExcel(XLSX, hasStyleSupport, styles) {
     console.log(`${c.yellow}⚠ No se encontró software.json, creando estructura vacía${c.reset}`);
     softwareData = {
       lastUpdated: new Date().toISOString(),
-      stats: { totalCategories: 3, totalItems: 0 },
+      stats: { totalCategorias: 3, totalItems: 0, totalDaws: 0, totalPlugins: 0, totalUtilidades: 0 },
       categories: [
         { id: 'daws', name: 'DAWs', description: 'Digital Audio Workstations', icon: 'Music2', items: [] },
         { id: 'plugins', name: 'Plugins', description: 'VSTs y efectos', icon: 'Sliders', items: [] },
@@ -971,6 +1048,7 @@ function exportSoftwareToExcel(XLSX, hasStyleSupport, styles) {
     'Nombre',       // Nombre del software
     'Descripcion',  // Descripción
     'Tipo',         // Tipo específico (ej: "DAW", "Reverb", "Compresor")
+    'Instrumentos', // Instrumentos (solo plugins) - separados por coma
     'URL',          // URL de descarga
     'Version',      // Versión del software
     'Plataforma',   // Windows, Mac, Linux, All
@@ -989,6 +1067,7 @@ function exportSoftwareToExcel(XLSX, hasStyleSupport, styles) {
             item.name || '',                // Nombre
             item.description || '',         // Descripcion
             item.type || '',                // Tipo
+            serializeInstrumentos(item.instrumentos), // Instrumentos
             item.url || '',                 // URL
             item.version || '',             // Version
             item.platform || '',            // Plataforma
@@ -1002,9 +1081,9 @@ function exportSoftwareToExcel(XLSX, hasStyleSupport, styles) {
   // Si no hay datos, agregar filas de ejemplo
   if (softwareRows.length === 0) {
     softwareRows.push(
-      ['', 'daws', 'Ejemplo DAW', 'Descripción del DAW', 'DAW', 'https://ejemplo.com', '1.0', 'Windows', ''],
-      ['', 'plugins', 'Ejemplo Plugin', 'Descripción del plugin', 'Reverb', 'https://ejemplo.com', '2.0', 'All', ''],
-      ['', 'utilidades', 'Ejemplo Utilidad', 'Descripción de la utilidad', 'Audio Tool', 'https://ejemplo.com', '1.5', 'All', '']
+      ['', 'daws', 'Ejemplo DAW', 'Descripción del DAW', 'DAW', '', 'https://ejemplo.com', '1.0', 'Windows', ''],
+      ['', 'plugins', 'Ejemplo Plugin', 'Descripción del plugin', 'Reverb', 'Pianos / Teclados, Pads / Synths', 'https://ejemplo.com', '2.0', 'All', ''],
+      ['', 'utilidades', 'Ejemplo Utilidad', 'Descripción de la utilidad', 'Audio Tool', '', 'https://ejemplo.com', '1.5', 'All', '']
     );
   }
   
@@ -1035,6 +1114,7 @@ function exportSoftwareToExcel(XLSX, hasStyleSupport, styles) {
     ['   Nombre      →  Nombre del software (OBLIGATORIO)'],
     ['   Descripcion →  Descripción breve del software'],
     ['   Tipo        →  Tipo específico (DAW, Reverb, Compresor, etc.)'],
+    ['   Instrumentos→  Solo plugins. Separar por coma (Ej: Pianos / Teclados, Pads / Synths)'],
     ['   URL         →  Enlace de descarga (Google Drive, MEGA, TeraBox, etc.)'],
     ['   Version     →  Versión del software'],
     ['   Plataforma  →  Windows, Mac, Linux, All'],
@@ -1075,6 +1155,7 @@ function exportSoftwareToExcel(XLSX, hasStyleSupport, styles) {
     { wch: 30 },  // Nombre
     { wch: 50 },  // Descripcion
     { wch: 15 },  // Tipo
+    { wch: 30 },  // Instrumentos
     { wch: 50 },  // URL
     { wch: 12 },  // Version
     { wch: 15 },  // Plataforma
@@ -1251,7 +1332,7 @@ function importSoftwareFromExcel(XLSX, filePath) {
   } catch (e) {
     data = {
       lastUpdated: new Date().toISOString(),
-      stats: { totalCategories: 3, totalItems: 0 },
+      stats: { totalCategorias: 3, totalItems: 0, totalDaws: 0, totalPlugins: 0, totalUtilidades: 0 },
       categories: [
         { id: 'daws', name: 'DAWs', description: 'Digital Audio Workstations', icon: 'Music2', items: [] },
         { id: 'plugins', name: 'Plugins', description: 'VSTs y efectos', icon: 'Sliders', items: [] },
@@ -1305,6 +1386,7 @@ function importSoftwareFromExcel(XLSX, filePath) {
             name: name,
             description: row['Descripcion'] || '',
             type: row['Tipo'] || '',
+            instrumentos: categoryId === 'plugins' ? parseInstrumentos(row['Instrumentos']) : [],
             url: row['URL'] || '',
             version: row['Version'] || '',
             platform: row['Plataforma'] || 'All',
@@ -2885,6 +2967,18 @@ async function agregarAporteSoftware(rl) {
       console.log(`${c.red}❌ La subcategoría es obligatoria${c.reset}`);
       continue;
     }
+
+    let instrumentos = [];
+    if (subcategoria.trim().toLowerCase() === 'plugins') {
+      console.log(`${c.dim}   Instrumentos (separar por coma):${c.reset}`);
+      console.log(`${c.dim}   Ej: Pianos / Teclados, Pads / Synths${c.reset}`);
+      const instrumentosInput = await ask(rl, `${c.yellow}Instrumentos: ${c.reset}`);
+      instrumentos = parseInstrumentos(instrumentosInput);
+      if (instrumentos.length === 0) {
+        console.log(`${c.red}❌ Debes indicar al menos un instrumento${c.reset}`);
+        continue;
+      }
+    }
     
     const descripcion = await ask(rl, `${c.yellow}Descripción: ${c.reset}`);
     const urlDescarga = await ask(rl, `${c.yellow}URL de descarga: ${c.reset}`);
@@ -2897,6 +2991,7 @@ async function agregarAporteSoftware(rl) {
       fechaAporte: new Date().toISOString(),
       nombre: nombre.trim(),
       subcategoria: subcategoria.trim().toLowerCase(),
+      instrumentos,
       descripcion: descripcion.trim() || null,
       urlDescarga: urlDescarga.trim() || null,
       donante: donante.trim() || 'Anónimo',
@@ -2917,12 +3012,13 @@ async function agregarAporteSoftware(rl) {
       const filePath = path.join(CONFIG.APORTES_SOFTWARE_DIR, fileName);
       
       // Crear hoja con los datos
-      const headers = ['ID', 'Fecha', 'Nombre', 'Subcategoria', 'Descripcion', 'URL', 'Donante', 'Email', 'Estado'];
+      const headers = ['ID', 'Fecha', 'Nombre', 'Subcategoria', 'Instrumentos', 'Descripcion', 'URL', 'Donante', 'Email', 'Estado'];
       const row = [
         aporte.id,
         aporte.fechaAporte,
         aporte.nombre,
         aporte.subcategoria,
+        serializeInstrumentos(aporte.instrumentos),
         aporte.descripcion || '',
         aporte.urlDescarga || '',
         aporte.donante,
@@ -3764,7 +3860,7 @@ function eliminarAlbumesVacios() {
 /**
  * Elimina duplicados de tonos (mantiene solo el tono original/primero encontrado)
  */
-function eliminarDuplicadosTonos() {
+async function eliminarDuplicadosTonos(rl = null) {
   console.log(`\n${c.cyan}[D] Eliminando duplicados de tonos...${c.reset}\n`);
   
   const data = readDataJson('secuencias');
@@ -3780,6 +3876,18 @@ function eliminarDuplicadosTonos() {
     /\(([A-G][b#]?)\)$/i,               // (C), (Dm)
     /-([A-G][b#]?m?)-/i,                // -Cm- (con menor)
   ];
+  
+  function normalizeKey(text) {
+    if (!text) return '';
+    return text
+      .toString()
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
   
   /**
    * Extrae el nombre base de la cancion (sin tonalidad ni BPM)
@@ -3797,7 +3905,7 @@ function eliminarDuplicadosTonos() {
     // Limpiar guiones y espacios extra
     base = base.replace(/[-_]+$/, '').trim();
     
-    return normalizeText(base);
+    return normalizeKey(base);
   }
   
   /**
@@ -3807,11 +3915,14 @@ function eliminarDuplicadosTonos() {
     for (const pattern of tonalityPatterns) {
       const match = songName.match(pattern);
       if (match) {
-        return match[1].toUpperCase();
+        const raw = match[1];
+        return raw ? raw[0].toUpperCase() + raw.slice(1) : null;
       }
     }
     return null;
   }
+  
+  const gruposDuplicados = [];
   
   if (data.artists) {
     data.artists.forEach(artist => {
@@ -3821,46 +3932,136 @@ function eliminarDuplicadosTonos() {
             // Agrupar canciones por nombre base
             const songsByBase = new Map();
             
-            album.songs.forEach(song => {
+            album.songs.forEach((song, index) => {
               const baseName = getBaseName(song.name);
               const tonality = getTonality(song.name);
               
               if (!songsByBase.has(baseName)) {
                 songsByBase.set(baseName, []);
               }
-              songsByBase.get(baseName).push({ song, tonality });
+              songsByBase.get(baseName).push({ song, tonality, index });
             });
-            
-            // Filtrar: mantener solo la primera version de cada cancion
-            const cancionesAMantener = [];
-            const cancionesEliminadasDelAlbum = [];
             
             songsByBase.forEach((versions, baseName) => {
               if (versions.length > 1) {
-                // Hay duplicados - mantener la primera
-                const [primera, ...duplicadas] = versions;
-                cancionesAMantener.push(primera.song);
-                
-                duplicadas.forEach(dup => {
-                  cancionesEliminadasDelAlbum.push(dup.song.name);
-                  cancionesEliminadas++;
+                gruposDuplicados.push({
+                  artist,
+                  album,
+                  baseName,
+                  versions
                 });
-                
-                if (duplicadas.length > 0) {
-                  detalles.push(`  ${c.green}[v] ${artist.name} - ${album.name}${c.reset}`);
-                  detalles.push(`      ${c.dim}Mantiene: ${primera.song.name}${c.reset}`);
-                  duplicadas.forEach(dup => {
-                    detalles.push(`      ${c.red}x Elimina: ${dup.song.name}${c.reset}`);
-                  });
-                }
-              } else {
-                // Solo una version - mantener
-                cancionesAMantener.push(versions[0].song);
               }
             });
-            
-            // Actualizar el album con las canciones filtradas
-            album.songs = cancionesAMantener;
+          }
+        });
+      }
+    });
+  }
+  
+  if (gruposDuplicados.length === 0) {
+    console.log(`${c.dim}No se encontraron duplicados de tonos${c.reset}`);
+    return 0;
+  }
+  
+  console.log(`${c.yellow}⚠ Se encontraron ${gruposDuplicados.length} grupos con posibles duplicados de tonos:${c.reset}\n`);
+  
+  const maxPreview = 12;
+  gruposDuplicados.slice(0, maxPreview).forEach((grupo, idx) => {
+    console.log(`${c.cyan}${idx + 1}.${c.reset} ${grupo.artist.name} - ${grupo.album.name}`);
+    const sorted = [...grupo.versions].sort((a, b) => a.index - b.index);
+    sorted.forEach((version, vIdx) => {
+      const toneLabel = version.tonality ? ` (${version.tonality})` : '';
+      const prefix = vIdx === 0 ? `${c.green}✓${c.reset}` : `${c.red}x${c.reset}`;
+      console.log(`    ${prefix} ${version.song.name}${toneLabel}`);
+    });
+    console.log('');
+  });
+  
+  if (gruposDuplicados.length > maxPreview) {
+    console.log(`${c.dim}... y ${gruposDuplicados.length - maxPreview} grupos más${c.reset}\n`);
+  }
+  
+  let gruposAEliminar = gruposDuplicados;
+  
+  if (rl) {
+    console.log(`${c.dim}Opciones:${c.reset}`);
+    console.log(`  ${c.cyan}1.${c.reset} Eliminar todos los duplicados`);
+    console.log(`  ${c.cyan}2.${c.reset} Elegir grupos a eliminar`);
+    console.log(`  ${c.cyan}3.${c.reset} Cancelar`);
+    
+    const opcion = await ask(rl, `\n${c.yellow}Elige una opción: ${c.reset}`);
+    
+    if (opcion === '3') {
+      console.log(`${c.dim}Operación cancelada${c.reset}`);
+      return 0;
+    }
+    
+    if (opcion === '2') {
+      const seleccion = await ask(rl, `${c.yellow}Ingresa números o rangos (ej: 1,3-5): ${c.reset}`);
+      
+      const selectedIndexes = new Set();
+      seleccion.split(',').forEach(part => {
+        const value = part.trim();
+        if (!value) return;
+        if (value.includes('-')) {
+          const [startRaw, endRaw] = value.split('-').map(v => parseInt(v, 10));
+          if (!Number.isNaN(startRaw) && !Number.isNaN(endRaw)) {
+            const start = Math.min(startRaw, endRaw);
+            const end = Math.max(startRaw, endRaw);
+            for (let i = start; i <= end; i++) {
+              selectedIndexes.add(i);
+            }
+          }
+        } else {
+          const num = parseInt(value, 10);
+          if (!Number.isNaN(num)) {
+            selectedIndexes.add(num);
+          }
+        }
+      });
+      
+      const validIndexes = Array.from(selectedIndexes).filter(i => i >= 1 && i <= gruposDuplicados.length);
+      if (validIndexes.length === 0) {
+        console.log(`${c.red}No se seleccionaron grupos válidos${c.reset}`);
+        return 0;
+      }
+      
+      gruposAEliminar = validIndexes.map(i => gruposDuplicados[i - 1]);
+    }
+  } else {
+    console.log(`${c.dim}Modo no interactivo: eliminando todos los duplicados encontrados${c.reset}\n`);
+  }
+  
+  const cancionesAEliminar = new Set();
+  
+  gruposAEliminar.forEach(grupo => {
+    const sorted = [...grupo.versions].sort((a, b) => a.index - b.index);
+    const [primera, ...duplicadas] = sorted;
+    duplicadas.forEach(dup => cancionesAEliminar.add(dup.song));
+    
+    if (duplicadas.length > 0) {
+      detalles.push(`  ${c.green}[v] ${grupo.artist.name} - ${grupo.album.name}${c.reset}`);
+      detalles.push(`      ${c.dim}Mantiene: ${primera.song.name}${c.reset}`);
+      duplicadas.forEach(dup => {
+        detalles.push(`      ${c.red}x Elimina: ${dup.song.name}${c.reset}`);
+      });
+    }
+  });
+  
+  if (cancionesAEliminar.size === 0) {
+    console.log(`${c.dim}No hay canciones seleccionadas para eliminar${c.reset}`);
+    return 0;
+  }
+  
+  // Aplicar eliminaciones
+  if (data.artists) {
+    data.artists.forEach(artist => {
+      if (artist.albums) {
+        artist.albums.forEach(album => {
+          if (album.songs && album.songs.length > 0) {
+            const before = album.songs.length;
+            album.songs = album.songs.filter(song => !cancionesAEliminar.has(song));
+            cancionesEliminadas += before - album.songs.length;
           }
         });
       }
@@ -3868,7 +4069,6 @@ function eliminarDuplicadosTonos() {
   }
   
   if (cancionesEliminadas > 0) {
-    // Mostrar primeros 30 detalles
     if (detalles.length > 0) {
       console.log(`${c.bold}Duplicados eliminados:${c.reset}`);
       detalles.slice(0, 30).forEach(d => console.log(d));
@@ -3889,6 +4089,7 @@ function eliminarDuplicadosTonos() {
     saveDataJson(data, 'secuencias');
     
     console.log(`\n${c.green}[v] ${cancionesEliminadas} canciones duplicadas eliminadas${c.reset}`);
+    console.log(`${c.dim}ℹ Stats actualizadas automáticamente (puedes usar "Sincronizar estadísticas" para verificar).${c.reset}`);
   } else {
     console.log(`${c.dim}No se encontraron duplicados de tonos${c.reset}`);
   }
@@ -4332,7 +4533,7 @@ async function showMainMenu() {
         break;
         
       case '19':
-        eliminarDuplicadosTonos();
+        await eliminarDuplicadosTonos(rl);
         await ask(rl, `\n${c.dim}Presiona Enter para continuar...${c.reset}`);
         break;
         
@@ -4423,7 +4624,7 @@ async function main() {
     eliminarAlbumesVacios();
   } else if (args.includes('--eliminar-duplicados-tonos')) {
     showBanner();
-    eliminarDuplicadosTonos();
+    await eliminarDuplicadosTonos();
   } else if (args.includes('--fusionar-artistas')) {
     showBanner();
     const rl = createReadline();

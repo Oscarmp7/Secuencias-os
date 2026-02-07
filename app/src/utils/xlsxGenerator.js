@@ -6,6 +6,16 @@
  */
 
 import * as XLSX from 'xlsx';
+import { INSTRUMENT_OPTIONS } from './formValidation';
+
+const INSTRUMENT_LABELS = Object.fromEntries(
+  INSTRUMENT_OPTIONS.map((option) => [option.value, option.label])
+);
+
+function formatInstrumentos(value) {
+  if (!Array.isArray(value)) return '';
+  return value.map((item) => INSTRUMENT_LABELS[item] || item).join(', ');
+}
 
 /**
  * Genera un archivo XLSX desde los datos del formulario de contribución.
@@ -46,6 +56,7 @@ export function generateXlsxFromForm(formData) {
       ['Tipo de Aporte', 'Software / Herramienta'],
       ['Nombre del Software', formData.nombreRecurso || ''],
       ['Subcategoría', formData.subcategoria || ''],
+      ['Instrumentos', formatInstrumentos(formData.instrumentos)],
       ['Descripción', formData.descripcion || ''],
       ['URL de Descarga', formData.urlDescarga || ''],
       ['Drive ID', formData.driveId || ''],
