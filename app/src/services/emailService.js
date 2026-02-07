@@ -217,7 +217,7 @@ export async function sendThankYouEmail({ email, nombre, tipoAporte }) {
     // Descripción del tipo de aporte
     const tipoDescripcion = {
       secuencia: 'secuencia musical',
-      software: 'software/herramienta',
+      software: 'software y herramienta',
       sugerencia: 'sugerencia',
     }[tipoAporte] || 'aporte';
 
@@ -272,7 +272,7 @@ export function generateThankYouMessage(nombre, tipoAporte) {
   
   const tipoDescripcion = {
     secuencia: 'secuencia musical',
-    software: 'software/herramienta',
+    software: 'software y herramienta',
     sugerencia: 'sugerencia',
   }[tipoAporte] || 'aporte';
 
