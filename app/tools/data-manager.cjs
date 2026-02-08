@@ -1831,18 +1831,13 @@ function findDuplicates() {
   } else {
     console.log(`${c.yellow}⚠ Se encontraron ${duplicates.length} grupos de posibles duplicados:${c.reset}\n`);
     
-    duplicates.slice(0, 20).forEach((dup, index) => {
+    duplicates.slice(0, duplicates.length).forEach((dup, index) => {
       console.log(`${c.bold}${index + 1}. ${dup.songs[0].artist}${c.reset}`);
       dup.songs.forEach(s => {
         console.log(`   • ${s.album} → ${s.song}`);
       });
       console.log('');
     });
-    
-    if (duplicates.length > 20) {
-      console.log(`${c.dim}... y ${duplicates.length - 20} grupos más.${c.reset}\n`);
-    }
-    
     console.log(`${c.cyan}Tip: Exporta a Excel, marca con "Principal" la versión que quieras conservar, y ejecuta --import${c.reset}\n`);
   }
 }
@@ -3538,11 +3533,9 @@ function sincronizarStats() {
   const totalSongs = data.artists ? data.artists.reduce(
     (sum, a) => sum + (a.albums ? a.albums.reduce((s, al) => s + (al.songs ? al.songs.length : 0), 0) : 0), 0
   ) : 0;
-  const totalCharts = data.artists ? data.artists.reduce(
-    (sum, a) => sum + (a.albums ? a.albums.reduce(
-      (s, al) => s + (al.songs ? al.songs.filter(song => song.chartUrl).length : 0), 0
-    ) : 0), 0
-  ) : 0;
+  const totalCharts = data.charts
+    ? data.charts.reduce((sum, a) => sum + (a.charts ? a.charts.length : 0), 0)
+    : 0;
   
   console.log(`  • Artistas: ${totalArtists}`);
   console.log(`  • Secuencias: ${totalSongs}`);
@@ -3868,13 +3861,15 @@ async function eliminarDuplicadosTonos(rl = null) {
   const detalles = [];
   
   // Patrones para extraer tonalidad del nombre
-  // Ejemplos: "-A-120bpm", "-Bb-", "(C)", "- G -", etc.
+  // Ejemplos: "-A-120bpm", "_F", "(C)", "- G -", etc.
   const tonalityPatterns = [
-    /-([A-G][b#]?)-\d+\.?\d*bpm$/i,     // -A-120bpm, -Bb-72.00bpm
+    /-([A-G][b#]?)-\d+\.?\d*bpm$/i,      // -A-120bpm, -Bb-72.00bpm
     /-([A-G][b#]?)$/i,                   // -A, -Bb
-    /\s*-\s*([A-G][b#]?)\s*-?\s*$/i,    // - A -, - Bb
-    /\(([A-G][b#]?)\)$/i,               // (C), (Dm)
-    /-([A-G][b#]?m?)-/i,                // -Cm- (con menor)
+    /\s*-\s*([A-G][b#]?)\s*-?\s*$/i,     // - A -, - Bb
+    /\(([A-G][b#]?)\)$/i,                // (C), (Dm)
+    /-([A-G][b#]?m?)-/i,                 // -Cm- (con menor)
+    /_([A-G][b#]?m?)$/i,                 // ..._C, ..._Fm
+    /[_-]([A-G][b#]?m?)(?=[_-]?\d*\.?\d*\s*bpm$)/i // _F-68bpm
   ];
   
   function normalizeKey(text) {
@@ -3895,15 +3890,20 @@ async function eliminarDuplicadosTonos(rl = null) {
   function getBaseName(songName) {
     let base = songName;
     
-    // Remover tonalidad y BPM del final
-    base = base.replace(/-[A-G][b#]?m?-?\d*\.?\d*bpm$/i, '');
-    base = base.replace(/-[A-G][b#]?m?$/i, '');
-    base = base.replace(/\s*-\s*[A-G][b#]?m?\s*-?\s*$/i, '');
-    base = base.replace(/\([A-G][b#]?m?\)$/i, '');
-    base = base.replace(/-[A-G][b#]?m?-/gi, '-');
+    // Remover BPM donde sea (68BPM, 68.00bpm)
+    base = base.replace(/[_\-\s]?\d+\.?\d*\s*bpm/gi, '');
+    // Remover compás/time signature (4_4, 3/4, 6-8)
+    base = base.replace(/[_\-\s]?\d+[_\/-]\d+/g, '');
+    // Remover tonalidad al final con guion o underscore
+    base = base.replace(/[_\-\s][A-G][b#]?m?$/i, '');
+    base = base.replace(/[-_][A-G][b#]?m?[-_]?$/i, '');
     
-    // Limpiar guiones y espacios extra
-    base = base.replace(/[-_]+$/, '').trim();
+    // Colapsar títulos repetidos separados por guiones/underscores
+    const parts = base.split(/[-_]+/).filter(Boolean);
+    if (parts.length > 1) {
+      const normParts = parts.map(normalizeKey);
+      if (normParts.every(p => p === normParts[0])) base = parts[0];
+    }
     
     return normalizeKey(base);
   }
@@ -3965,7 +3965,8 @@ async function eliminarDuplicadosTonos(rl = null) {
   
   console.log(`${c.yellow}⚠ Se encontraron ${gruposDuplicados.length} grupos con posibles duplicados de tonos:${c.reset}\n`);
   
-  const maxPreview = 12;
+  // Mostrar todos los grupos encontrados (antes solo se previsualizaban 12)
+  const maxPreview = gruposDuplicados.length;
   gruposDuplicados.slice(0, maxPreview).forEach((grupo, idx) => {
     console.log(`${c.cyan}${idx + 1}.${c.reset} ${grupo.artist.name} - ${grupo.album.name}`);
     const sorted = [...grupo.versions].sort((a, b) => a.index - b.index);
@@ -4033,20 +4034,62 @@ async function eliminarDuplicadosTonos(rl = null) {
   }
   
   const cancionesAEliminar = new Set();
+  const elegirKeep = rl
+    ? (await ask(rl, `${c.yellow}¿Quieres elegir manualmente qué versión mantener en cada grupo? (s/n): ${c.reset}`))
+        .trim()
+        .toLowerCase()
+        .startsWith('s')
+    : false;
+
+  function reassignCharts(oldId, newId) {
+    if (!data.charts) return 0;
+    let moved = 0;
+    data.charts.forEach(artist => {
+      artist.charts?.forEach(chart => {
+        if (chart.songId === oldId) {
+          chart.songId = newId;
+          moved++;
+        }
+      });
+    });
+    return moved;
+  }
   
-  gruposAEliminar.forEach(grupo => {
+  for (const grupo of gruposAEliminar) {
     const sorted = [...grupo.versions].sort((a, b) => a.index - b.index);
-    const [primera, ...duplicadas] = sorted;
+    let keepIdx = 0;
+    
+    if (elegirKeep) {
+      console.log(`\n${c.bold}${grupo.artist.name} - ${grupo.album.name}${c.reset}`);
+      sorted.forEach((version, i) => {
+        const toneLabel = version.tonality ? ` (${version.tonality})` : '';
+        console.log(`  ${c.cyan}${i + 1}.${c.reset} ${version.song.name}${toneLabel}`);
+      });
+      const resp = await ask(rl, `${c.yellow}Número a conservar (Enter = 1): ${c.reset}`);
+      const num = parseInt(resp, 10);
+      if (!Number.isNaN(num) && num >= 1 && num <= sorted.length) {
+        keepIdx = num - 1;
+      }
+    }
+    
+    const keep = sorted[keepIdx];
+    const duplicadas = sorted.filter((_, i) => i !== keepIdx);
     duplicadas.forEach(dup => cancionesAEliminar.add(dup.song));
+    duplicadas.forEach(dup => {
+      const moved = reassignCharts(dup.song.id, keep.song.id);
+      if (moved > 0) {
+        detalles.push(`      ${c.dim}Charts movidos (${moved}): ${dup.song.name} -> ${keep.song.name}${c.reset}`);
+      }
+    });
     
     if (duplicadas.length > 0) {
       detalles.push(`  ${c.green}[v] ${grupo.artist.name} - ${grupo.album.name}${c.reset}`);
-      detalles.push(`      ${c.dim}Mantiene: ${primera.song.name}${c.reset}`);
+      detalles.push(`      ${c.dim}Mantiene: ${keep.song.name}${c.reset}`);
       duplicadas.forEach(dup => {
         detalles.push(`      ${c.red}x Elimina: ${dup.song.name}${c.reset}`);
       });
     }
-  });
+  }
   
   if (cancionesAEliminar.size === 0) {
     console.log(`${c.dim}No hay canciones seleccionadas para eliminar${c.reset}`);

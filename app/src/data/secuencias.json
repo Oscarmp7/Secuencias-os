@@ -1,9 +1,9 @@
 {
-  "lastUpdated": "2026-02-07T01:15:18.250Z",
+  "lastUpdated": "2026-02-08T03:53:20.130Z",
   "stats": {
     "totalArtists": 763,
-    "totalSongs": 5791,
-    "totalCharts": 703
+    "totalSongs": 5726,
+    "totalCharts": 709
   },
   "artists": [
     {
@@ -4764,20 +4764,6 @@
               "comentarios": null
             },
             {
-              "id": "1qTatoY8QdKyDGpP30N3WEG7cXpheNBGb",
-              "name": "Creo En Ti",
-              "fullName": "Creo En Ti.zip",
-              "type": "sequence",
-              "driveId": "1qTatoY8QdKyDGpP30N3WEG7cXpheNBGb",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1qTatoY8QdKyDGpP30N3WEG7cXpheNBGb",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "11bQC5_-QkkF2nB271KrkSvtZXIDvcTnl",
               "name": "Enamorado",
               "fullName": "Enamorado.zip",
@@ -4910,20 +4896,6 @@
               "type": "sequence",
               "driveId": "1-tmGuco5P9ll2fiKmeg013AngTFFyzIp",
               "downloadUrl": "https://drive.google.com/uc?export=download&id=1-tmGuco5P9ll2fiKmeg013AngTFFyzIp",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1K3z3bwdh3k2mAFnEsnGR8Z5EhQQn5vIG",
-              "name": "Solo Tu",
-              "fullName": "Solo Tu.zip",
-              "type": "sequence",
-              "driveId": "1K3z3bwdh3k2mAFnEsnGR8Z5EhQQn5vIG",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1K3z3bwdh3k2mAFnEsnGR8Z5EhQQn5vIG",
               "compas": null,
               "bpm": null,
               "tonalidad": null,
@@ -7013,34 +6985,6 @@
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
-            },
-            {
-              "id": "1TM06Yd68R97BiwqkYeFQGjoW7xGod8iw",
-              "name": "Quien Podra - D-72.00bpm",
-              "fullName": "Quien Podra - D-72.00bpm.zip",
-              "type": "sequence",
-              "driveId": "1TM06Yd68R97BiwqkYeFQGjoW7xGod8iw",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1TM06Yd68R97BiwqkYeFQGjoW7xGod8iw",
-              "compas": null,
-              "bpm": 72,
-              "tonalidad": "D",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1o9NLEXNYEKm0xS6YmP1mpearbDtCAijI",
-              "name": "Quien Podra - G-72.00bpm",
-              "fullName": "Quien Podra - G-72.00bpm.zip",
-              "type": "sequence",
-              "driveId": "1o9NLEXNYEKm0xS6YmP1mpearbDtCAijI",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1o9NLEXNYEKm0xS6YmP1mpearbDtCAijI",
-              "compas": null,
-              "bpm": 72,
-              "tonalidad": "G",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
             }
           ]
         },
@@ -8046,20 +7990,6 @@
               "comentarios": null,
               "chartUrl": "https://drive.google.com/uc?export=download&id=1RRzVfQLL4orwKam_jrK0sejVETnk41UX",
               "chartName": "Dios Sobrenatural (Live)-Barak-Fuego & Poder (Live).Db"
-            },
-            {
-              "id": "1GhrzVbctpAlUlT-bGlWn0v796MVD5San",
-              "name": "Fuego y Poder-Fuego y Poder-G-70.00bpm",
-              "fullName": "Fuego y Poder-Fuego y Poder-G-70.00bpm.zip",
-              "type": "sequence",
-              "driveId": "1GhrzVbctpAlUlT-bGlWn0v796MVD5San",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1GhrzVbctpAlUlT-bGlWn0v796MVD5San",
-              "compas": null,
-              "bpm": 70,
-              "tonalidad": "G",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
             },
             {
               "id": "1-iiM6HuVmy7Yn7eBFkMuM_eFWxUsAOAp",
@@ -11372,22 +11302,6 @@
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
-            },
-            {
-              "id": "1t5asgCc0dpvTWCDshZ-PkIJVkHrHmomy",
-              "name": "Glorioso-146BPM",
-              "fullName": "Glorioso-146BPM.zip",
-              "type": "sequence",
-              "driveId": "1t5asgCc0dpvTWCDshZ-PkIJVkHrHmomy",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1t5asgCc0dpvTWCDshZ-PkIJVkHrHmomy",
-              "compas": null,
-              "bpm": 146,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null,
-              "chartUrl": "https://drive.google.com/uc?export=download&id=14NICP0xyADLGlpHtAmpWtqokfH7TrhCr",
-              "chartName": "Glorioso-BJ Putnam-Mas y Mas.B"
             }
           ]
         },
@@ -12582,20 +12496,6 @@
               "comentarios": null
             },
             {
-              "id": "1odN3B2K9jCf1zLrFlT5PG8Hs99Ep1dCB",
-              "name": "Perfecto Amor (G)",
-              "fullName": "Perfecto Amor (G).zip",
-              "type": "sequence",
-              "driveId": "1odN3B2K9jCf1zLrFlT5PG8Hs99Ep1dCB",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1odN3B2K9jCf1zLrFlT5PG8Hs99Ep1dCB",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": "G",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1-58thabct3N-Vhh4qDdmhCf6PBpWkKBR",
               "name": "Todo Es Alabanza - Todo Es Alabanza-A-116.00bpm",
               "fullName": "Todo Es Alabanza - Todo Es Alabanza-A-116.00bpm.zip",
@@ -13279,20 +13179,6 @@
               "type": "sequence",
               "driveId": "1NcXY0a5R6558EJEGn069zYCj4vTl_Uth",
               "downloadUrl": "https://drive.google.com/uc?export=download&id=1NcXY0a5R6558EJEGn069zYCj4vTl_Uth",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1uGhXtstYiJumO0SPsmLHn3ed9x_ZW9GG",
-              "name": "Ceu e o meu Lugar",
-              "fullName": "Ceu e o meu Lugar.zip",
-              "type": "sequence",
-              "driveId": "1uGhXtstYiJumO0SPsmLHn3ed9x_ZW9GG",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1uGhXtstYiJumO0SPsmLHn3ed9x_ZW9GG",
               "compas": null,
               "bpm": null,
               "tonalidad": null,
@@ -17727,20 +17613,6 @@
           "image": null,
           "songs": [
             {
-              "id": "1sjQP-QpLT7831w0on8b2WRD2n6AZG4Vk",
-              "name": "A ti sea la gloria",
-              "fullName": "A ti sea la gloria.zip",
-              "type": "sequence",
-              "driveId": "1sjQP-QpLT7831w0on8b2WRD2n6AZG4Vk",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1sjQP-QpLT7831w0on8b2WRD2n6AZG4Vk",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1PIbXzSlRCoCwNH_dmRuUQEXShtiG41mQ",
               "name": "A Ti Sea La Gloria-136BPM-A",
               "fullName": "A Ti Sea La Gloria-136BPM-A.zip",
@@ -17750,20 +17622,6 @@
               "compas": null,
               "bpm": 136,
               "tonalidad": "A",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1IkQdEjZKQv9PNn6euMWM4b7v382AA3T0",
-              "name": "Alegrense",
-              "fullName": "Alegrense.zip",
-              "type": "sequence",
-              "driveId": "1IkQdEjZKQv9PNn6euMWM4b7v382AA3T0",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1IkQdEjZKQv9PNn6euMWM4b7v382AA3T0",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
@@ -18140,22 +17998,6 @@
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
-            },
-            {
-              "id": "1ZxC1C4tczpaRPtNAxaHzDyQsHof6_LY5",
-              "name": "Tu nombre es",
-              "fullName": "Tu nombre es.zip",
-              "type": "sequence",
-              "driveId": "1ZxC1C4tczpaRPtNAxaHzDyQsHof6_LY5",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1ZxC1C4tczpaRPtNAxaHzDyQsHof6_LY5",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null,
-              "chartUrl": "https://drive.google.com/uc?export=download&id=1fuA83FNiaRjaS0K6IIgAhIkpR4WV4wEN",
-              "chartName": "Tu Nombre Es-Coalo Zamorano-Gloria Sea A Ti.B"
             },
             {
               "id": "1-dRzhnXnA0GQ9l2f-klcGfYAXQkbAWu_",
@@ -21115,20 +20957,6 @@
               "comentarios": null
             },
             {
-              "id": "1bsr7JllGAFMnv08Lw86PC50TAxp0ss5O",
-              "name": "Con Mis Manos Levantadas",
-              "fullName": "Con Mis Manos Levantadas.zip",
-              "type": "sequence",
-              "driveId": "1bsr7JllGAFMnv08Lw86PC50TAxp0ss5O",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1bsr7JllGAFMnv08Lw86PC50TAxp0ss5O",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1ZRYWv8dmxr79Xld3wN5K3OgAGQtHMd1k",
               "name": "Con Mis Manos Levantadas - 64bpm - 4_4 - G",
               "fullName": "Con Mis Manos Levantadas - 64bpm - 4_4 - G.zip",
@@ -21143,20 +20971,6 @@
               "comentarios": null
             },
             {
-              "id": "1Nk55AlgtornoTA4yKdgZ9Zt865eKlhqR",
-              "name": "Dulce Refugio",
-              "fullName": "Dulce Refugio.zip",
-              "type": "sequence",
-              "driveId": "1Nk55AlgtornoTA4yKdgZ9Zt865eKlhqR",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1Nk55AlgtornoTA4yKdgZ9Zt865eKlhqR",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "13iZNrzG9MqJJb97Jkm2E26HkHr8qP3MC",
               "name": "Dulce Refugio - 62 - 5bpm - 4_4 - C",
               "fullName": "Dulce Refugio - 62 - 5bpm - 4_4 - C.zip",
@@ -21164,20 +20978,6 @@
               "driveId": "13iZNrzG9MqJJb97Jkm2E26HkHr8qP3MC",
               "downloadUrl": "https://drive.google.com/uc?export=download&id=13iZNrzG9MqJJb97Jkm2E26HkHr8qP3MC",
               "compas": "4/4",
-              "bpm": null,
-              "tonalidad": "C",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1OeLv7ZGD-zzM1pT2Q7t5SU9m1e1KO4nH",
-              "name": "DULCE REFUGIO C",
-              "fullName": "DULCE REFUGIO C.zip",
-              "type": "sequence",
-              "driveId": "1OeLv7ZGD-zzM1pT2Q7t5SU9m1e1KO4nH",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1OeLv7ZGD-zzM1pT2Q7t5SU9m1e1KO4nH",
-              "compas": null,
               "bpm": null,
               "tonalidad": "C",
               "duracion": null,
@@ -21224,34 +21024,6 @@
               "compas": null,
               "bpm": 150,
               "tonalidad": "G",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1XPKqkqe4Z78-wP5N1xc2UoaLZNt697RZ",
-              "name": "Sentado en su trono",
-              "fullName": "Sentado en su trono.zip",
-              "type": "sequence",
-              "driveId": "1XPKqkqe4Z78-wP5N1xc2UoaLZNt697RZ",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1XPKqkqe4Z78-wP5N1xc2UoaLZNt697RZ",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1bBvZM_4_9WHbv6KS1FyR_AV2w0SvtfFj",
-              "name": "Sentado En Su Trono - 63BPM - 4_4",
-              "fullName": "Sentado En Su Trono - 63BPM - 4_4.zip",
-              "type": "sequence",
-              "driveId": "1bBvZM_4_9WHbv6KS1FyR_AV2w0SvtfFj",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1bBvZM_4_9WHbv6KS1FyR_AV2w0SvtfFj",
-              "compas": null,
-              "bpm": 63,
-              "tonalidad": null,
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
@@ -21561,22 +21333,6 @@
               "comentarios": null
             },
             {
-              "id": "1y0pcVdXSfYQEst9pOXGPmJKPTkBXR4I_",
-              "name": "La casa de Dios-143BPM",
-              "fullName": "La casa de Dios-143BPM.zip",
-              "type": "sequence",
-              "driveId": "1y0pcVdXSfYQEst9pOXGPmJKPTkBXR4I_",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1y0pcVdXSfYQEst9pOXGPmJKPTkBXR4I_",
-              "compas": null,
-              "bpm": 143,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null,
-              "chartUrl": "https://drive.google.com/uc?export=download&id=1FS3Rep2RW2tLVNaN3Nq8p7ZwAT1wux1Z",
-              "chartName": "La Casa De Dios-Danilo Montero- Director Creativo-Cantare De Tu Amor.zip"
-            },
-            {
               "id": "1pJ5LJe6kvIJuFdWxIE9TLQRJiFqIxM-E",
               "name": "Te Adoro Señor Jesús - D - 96bpm_(PB)",
               "fullName": "Te Adoro Señor Jesús - D - 96bpm_(PB).zip",
@@ -21653,20 +21409,6 @@
               "compas": "4/4",
               "bpm": null,
               "tonalidad": "A",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1UD2nCe5HKAOIQI82m7ZPpICLQJU0_h5d",
-              "name": "Él es el Rey",
-              "fullName": "Él es el Rey.zip",
-              "type": "sequence",
-              "driveId": "1UD2nCe5HKAOIQI82m7ZPpICLQJU0_h5d",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1UD2nCe5HKAOIQI82m7ZPpICLQJU0_h5d",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
@@ -21856,20 +21598,6 @@
               "comentarios": null
             },
             {
-              "id": "1OhZw0ZYHuvR8tAi1RFGq9zXJtqVcjgLH",
-              "name": "Revelación",
-              "fullName": "Revelación.zip",
-              "type": "sequence",
-              "driveId": "1OhZw0ZYHuvR8tAi1RFGq9zXJtqVcjgLH",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1OhZw0ZYHuvR8tAi1RFGq9zXJtqVcjgLH",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1c_d-yRVc-ZhUgVavgIIRvbyTIN7zNRqh",
               "name": "Revelacion - E 136 bpm",
               "fullName": "Revelacion - E 136 bpm.zip",
@@ -21984,20 +21712,6 @@
               "compas": null,
               "bpm": 126,
               "tonalidad": "B",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "10-rw3LriYv0XrTSoKhNgRaOHlZ6uJUF_",
-              "name": "Bendito Jesús-123BPM",
-              "fullName": "Bendito Jesús-123BPM.rar",
-              "type": "sequence",
-              "driveId": "10-rw3LriYv0XrTSoKhNgRaOHlZ6uJUF_",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=10-rw3LriYv0XrTSoKhNgRaOHlZ6uJUF_",
-              "compas": null,
-              "bpm": 123,
-              "tonalidad": null,
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
@@ -22152,20 +21866,6 @@
           "image": null,
           "songs": [
             {
-              "id": "1P3zKKfKpftVkTeq-bsgXZHI4qWSnWENn",
-              "name": "AL ESTAR AQUI",
-              "fullName": "AL ESTAR AQUI.zip",
-              "type": "sequence",
-              "driveId": "1P3zKKfKpftVkTeq-bsgXZHI4qWSnWENn",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1P3zKKfKpftVkTeq-bsgXZHI4qWSnWENn",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1uTy0URjrZQcQ1WA8MLYFSF__PXVo9IvN",
               "name": "Al Estar Aqui-57.5BPM",
               "fullName": "Al Estar Aqui-57.5BPM.zip",
@@ -22202,20 +21902,6 @@
               "downloadUrl": "https://drive.google.com/uc?export=download&id=1BrZp8FRZuaAaPLWsiWNN88F-xEbqxhtR",
               "compas": null,
               "bpm": 132,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1R6WmgpkfIpvI7R3jJyM53aNqSEPbnIoM",
-              "name": "El es el Rey - 134BPM",
-              "fullName": "El es el Rey - 134BPM.zip",
-              "type": "sequence",
-              "driveId": "1R6WmgpkfIpvI7R3jJyM53aNqSEPbnIoM",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1R6WmgpkfIpvI7R3jJyM53aNqSEPbnIoM",
-              "compas": null,
-              "bpm": 134,
               "tonalidad": null,
               "duracion": null,
               "tipoSecuencia": null,
@@ -23481,20 +23167,6 @@
           "name": "Volver a Respirar",
           "image": null,
           "songs": [
-            {
-              "id": "1xRnNTceuyu4RxnxBTwmVaAMiVJpQHnKV",
-              "name": "Libre Soy",
-              "fullName": "Libre Soy.zip",
-              "type": "sequence",
-              "driveId": "1xRnNTceuyu4RxnxBTwmVaAMiVJpQHnKV",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1xRnNTceuyu4RxnxBTwmVaAMiVJpQHnKV",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
             {
               "id": "1pynAfq_xqMyjPG8LQiPCodE0pI2h4yx7",
               "name": "Libre soy-133BPM",
@@ -25122,20 +24794,6 @@
           "image": null,
           "songs": [
             {
-              "id": "141tqaTvdheVSY1e7MrGlQn1KCo9IL2aO",
-              "name": "É Ele - Bb",
-              "fullName": "É Ele - Bb.zip",
-              "type": "sequence",
-              "driveId": "141tqaTvdheVSY1e7MrGlQn1KCo9IL2aO",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=141tqaTvdheVSY1e7MrGlQn1KCo9IL2aO",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": "Bb",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "15Jdiqmxy9RjAtp8I8PZPJs2GTjFjldGm",
               "name": "E Ele - Bb-70.00bpm",
               "fullName": "E Ele - Bb-70.00bpm.zip",
@@ -25473,20 +25131,6 @@
           "name": "Campamento Celestial",
           "image": null,
           "songs": [
-            {
-              "id": "1EBS9P1JBLbUlohdBm8yNu5Llajwd_nNr",
-              "name": "Campamento Celestial",
-              "fullName": "Campamento Celestial.zip",
-              "type": "sequence",
-              "driveId": "1EBS9P1JBLbUlohdBm8yNu5Llajwd_nNr",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1EBS9P1JBLbUlohdBm8yNu5Llajwd_nNr",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
             {
               "id": "1DkkEMRfAMEJIU_1sUbBztRUaBbdBrlHr",
               "name": "Campamento Celestial 160 bpm",
@@ -37458,20 +37102,6 @@
           "image": null,
           "songs": [
             {
-              "id": "1L64SQE4jHlByhaKZc03gzsxY1unUNdqb",
-              "name": "Eu vou construir",
-              "fullName": "Eu vou construir.zip",
-              "type": "sequence",
-              "driveId": "1L64SQE4jHlByhaKZc03gzsxY1unUNdqb",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1L64SQE4jHlByhaKZc03gzsxY1unUNdqb",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1aI_fjr6J-B9yyfYN6Sza2EwFxrNOU3An",
               "name": "EU VOU CONSTRUIR 70BPM",
               "fullName": "EU VOU CONSTRUIR 70BPM.zip",
@@ -38624,20 +38254,6 @@
               "compas": null,
               "bpm": 68,
               "tonalidad": "D",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1AJdDBwziwSC6lrMj9r6VPcsm6FHS9MT7",
-              "name": "EU CREIO (Believe For It)",
-              "fullName": "EU CREIO (Believe For It).zip",
-              "type": "sequence",
-              "driveId": "1AJdDBwziwSC6lrMj9r6VPcsm6FHS9MT7",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1AJdDBwziwSC6lrMj9r6VPcsm6FHS9MT7",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
@@ -40529,20 +40145,6 @@
               "compas": null,
               "bpm": null,
               "tonalidad": "A",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1pN4l3HeSO-nM2onNSus6CYKZOEUyLDej",
-              "name": "Tu Amor Vence",
-              "fullName": "Tu Amor Vence.zip",
-              "type": "sequence",
-              "driveId": "1pN4l3HeSO-nM2onNSus6CYKZOEUyLDej",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1pN4l3HeSO-nM2onNSus6CYKZOEUyLDej",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
@@ -46626,22 +46228,6 @@
           "image": null,
           "songs": [
             {
-              "id": "1jcgiG3agVv_Quewp6GZby8shcPKZ92Qz",
-              "name": "From the inside out",
-              "fullName": "from the inside out.zip",
-              "type": "sequence",
-              "driveId": "1jcgiG3agVv_Quewp6GZby8shcPKZ92Qz",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1jcgiG3agVv_Quewp6GZby8shcPKZ92Qz",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null,
-              "chartUrl": "https://drive.google.com/uc?export=download&id=1fkc_4dqZV_-sZwMYBy7TukHHUwr9mP1U",
-              "chartName": "From The Inside Out-Hillsong United-United We Stand.A.7"
-            },
-            {
               "id": "11R1NupGqo8vtp_ne8t74TNx_vkdOVUwQ",
               "name": "From The Inside Out - C_69bpm",
               "fullName": "From The Inside Out - C_69bpm.zip",
@@ -50465,20 +50051,6 @@
               "comentarios": null
             },
             {
-              "id": "1yVSVL1eBVdLH4eUoVkxfIAH-UnohTj0L",
-              "name": "Que se llene tu casa",
-              "fullName": "Que se llene tu casa.zip",
-              "type": "sequence",
-              "driveId": "1yVSVL1eBVdLH4eUoVkxfIAH-UnohTj0L",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1yVSVL1eBVdLH4eUoVkxfIAH-UnohTj0L",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1D1FktIJAafiaRzpw355JFtPs4E6gpOqR",
               "name": "Que se llene tu casa Eb",
               "fullName": "Que se llene tu casa Eb.zip",
@@ -50570,20 +50142,6 @@
               "comentarios": null,
               "chartUrl": "https://drive.google.com/uc?export=download&id=1UPASV7h8Zq4MvbzJ44G5c0DCtC_XbrcW",
               "chartName": "Fe Ingrid Rosario - Fiel Amor, Vol.1"
-            },
-            {
-              "id": "1Fy_jOspdKdM7nViB4ZiHV6eq_LL52uwe",
-              "name": "FE-FE-Cm",
-              "fullName": "FE-FE-Cm.zip",
-              "type": "sequence",
-              "driveId": "1Fy_jOspdKdM7nViB4ZiHV6eq_LL52uwe",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1Fy_jOspdKdM7nViB4ZiHV6eq_LL52uwe",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": "Cm",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
             }
           ]
         },
@@ -50602,20 +50160,6 @@
               "compas": null,
               "bpm": 72,
               "tonalidad": "D",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1LMjtihe0eNTLZn7GXRIAsTk_2QjP9HRA",
-              "name": "El Poder de tu Amor",
-              "fullName": "El Poder de tu Amor.zip",
-              "type": "sequence",
-              "driveId": "1LMjtihe0eNTLZn7GXRIAsTk_2QjP9HRA",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1LMjtihe0eNTLZn7GXRIAsTk_2QjP9HRA",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
@@ -52885,20 +52429,6 @@
               "comentarios": null
             },
             {
-              "id": "1ddKb-B6tyFC3Wu3lgICTnOMB2zAQCOGq",
-              "name": "És Bem - Vindo_Bb_130bpm",
-              "fullName": "És Bem - Vindo_Bb_130bpm.zip",
-              "type": "sequence",
-              "driveId": "1ddKb-B6tyFC3Wu3lgICTnOMB2zAQCOGq",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1ddKb-B6tyFC3Wu3lgICTnOMB2zAQCOGq",
-              "compas": null,
-              "bpm": 130,
-              "tonalidad": "Bb",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1zaIg2wITkfppCWYk830qcAdCX8jdAUwt",
               "name": "És Bem - Vindo_D_130bpm",
               "fullName": "És Bem - Vindo_D_130bpm.zip",
@@ -53188,20 +52718,6 @@
               "comentarios": null
             },
             {
-              "id": "1B-ZouCt96T5Qs0k7oxesk3as8PHmrhlo",
-              "name": "Cantos de Jubilo",
-              "fullName": "Cantos de Jubilo.zip",
-              "type": "sequence",
-              "driveId": "1B-ZouCt96T5Qs0k7oxesk3as8PHmrhlo",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1B-ZouCt96T5Qs0k7oxesk3as8PHmrhlo",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1UdsLHEvl52yQjkcF4gG3d3YBtRcAYs_K",
               "name": "Cantos De Júbilo - Em_126bpm",
               "fullName": "Cantos De Júbilo - Em_126bpm.zip",
@@ -53267,20 +52783,6 @@
               "compas": null,
               "bpm": 64,
               "tonalidad": "E",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1dCGinJr1bfYbPajWhiNL7aETSf7ai8LI",
-              "name": "Eres Bendito - G_108bpm",
-              "fullName": "Eres Bendito - G_108bpm.zip",
-              "type": "sequence",
-              "driveId": "1dCGinJr1bfYbPajWhiNL7aETSf7ai8LI",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1dCGinJr1bfYbPajWhiNL7aETSf7ai8LI",
-              "compas": null,
-              "bpm": 108,
-              "tonalidad": "G",
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
@@ -53498,20 +53000,6 @@
               "compas": null,
               "bpm": 116,
               "tonalidad": "B",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1lv3OkoPFBW6SxPYbYzot5qwDrGsOjyBK",
-              "name": "Yo quiero mas de ti A",
-              "fullName": "Yo quiero mas de ti A.zip",
-              "type": "sequence",
-              "driveId": "1lv3OkoPFBW6SxPYbYzot5qwDrGsOjyBK",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1lv3OkoPFBW6SxPYbYzot5qwDrGsOjyBK",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": "A",
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
@@ -54076,20 +53564,6 @@
           "name": "Ayer te vi... fue más claro que la luna",
           "image": null,
           "songs": [
-            {
-              "id": "1kSfMu7k5SlwjDR63f_7PX5RxwIQOXODX",
-              "name": "Como la brisa",
-              "fullName": "Como la brisa.zip",
-              "type": "sequence",
-              "driveId": "1kSfMu7k5SlwjDR63f_7PX5RxwIQOXODX",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1kSfMu7k5SlwjDR63f_7PX5RxwIQOXODX",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
             {
               "id": "1nSFaiiE9jq5c7UsHRr494kVj8MaACTDg",
               "name": "Como la brisa-132BPM",
@@ -57743,20 +57217,6 @@
               "chartName": "El Dios de Israel es Poderoso - Medley-Juan Carlos Alvarado-El Dios de Israel es Poderoso - Medley.Dm.7"
             },
             {
-              "id": "1bQylJz1GtXd7qKTEi28R0wYSNSIQBbz1",
-              "name": "MEDLEY FUEGO - NUEVA VERSION 2023",
-              "fullName": "MEDLEY FUEGO - NUEVA VERSION 2023.zip",
-              "type": "sequence",
-              "driveId": "1bQylJz1GtXd7qKTEi28R0wYSNSIQBbz1",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1bQylJz1GtXd7qKTEi28R0wYSNSIQBbz1",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1pNQB7I8Kle97B9nGH-FwLlL0bem6zkfC",
               "name": "MEDLEY FUEGO - NUEVA VERSION 2023 155 BPM",
               "fullName": "MEDLEY FUEGO - NUEVA VERSION 2023 155 BPM.zip",
@@ -58061,20 +57521,6 @@
               "type": "sequence",
               "driveId": "1hHc_n_0_BK1y8vbixmZeYC4SfIDAMAW6",
               "downloadUrl": "https://drive.google.com/uc?export=download&id=1hHc_n_0_BK1y8vbixmZeYC4SfIDAMAW6",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1wPqtEepgdL9pUsN9gSp8NBhFfOTQK7KZ",
-              "name": "Vivire para alabarte",
-              "fullName": "Vivire para alabarte.zip",
-              "type": "sequence",
-              "driveId": "1wPqtEepgdL9pUsN9gSp8NBhFfOTQK7KZ",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1wPqtEepgdL9pUsN9gSp8NBhFfOTQK7KZ",
               "compas": null,
               "bpm": null,
               "tonalidad": null,
@@ -63488,20 +62934,6 @@
               "chartName": "Solo Tu Eres Mi Dios-Marco Barrientos-Ilumina.G"
             },
             {
-              "id": "1HAhQGuNySP39xW8DHuKlb0SR6YKKLmW2",
-              "name": "Tu Habitas",
-              "fullName": "Tu Habitas.zip",
-              "type": "sequence",
-              "driveId": "1HAhQGuNySP39xW8DHuKlb0SR6YKKLmW2",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1HAhQGuNySP39xW8DHuKlb0SR6YKKLmW2",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1FHTDLVMLz7E8hwckyBuaxuzlR65v-qcq",
               "name": "Tu Habitas - 149bpm - 4_4 - Em",
               "fullName": "Tu Habitas - 149bpm - 4_4 - Em.zip",
@@ -63838,22 +63270,6 @@
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
-            },
-            {
-              "id": "1UyiGe-b_GSVEASTsxPeroewqg_z3Prc_",
-              "name": "Para Siempre Te Bendecire - D-70bpm",
-              "fullName": "Para Siempre Te Bendecire - D-70bpm.zip",
-              "type": "sequence",
-              "driveId": "1UyiGe-b_GSVEASTsxPeroewqg_z3Prc_",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1UyiGe-b_GSVEASTsxPeroewqg_z3Prc_",
-              "compas": null,
-              "bpm": 70,
-              "tonalidad": "D",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null,
-              "chartUrl": "https://drive.google.com/uc?export=download&id=1w2HiOHL85Sa_k5GaZSzu69FMWxTng1YE",
-              "chartName": "Para Siempre Te Bendecire-Marco Barrientos-Para Siempre Te Bendecire.D.7"
             },
             {
               "id": "17GwKkjh7g63VvPxh8PRcLZGhtzF6J4xL",
@@ -65965,6 +65381,20 @@
               "chartName": "Dios_De_Pactos_Marcos_Witt_Director_Creativo_Dios_De_Pactos_A"
             },
             {
+              "id": "1DHHFvj6OkK7m5vtv5hRC2WF4DT3uMyrk",
+              "name": "Vivificame",
+              "fullName": "Vivificame.zip",
+              "type": "sequence",
+              "driveId": "1DHHFvj6OkK7m5vtv5hRC2WF4DT3uMyrk",
+              "downloadUrl": "https://drive.google.com/uc?export=download&id=1DHHFvj6OkK7m5vtv5hRC2WF4DT3uMyrk",
+              "compas": null,
+              "bpm": null,
+              "tonalidad": null,
+              "duracion": null,
+              "tipoSecuencia": "Cover",
+              "comentarios": "Añadido para enlazar chart existente"
+            },
+            {
               "id": "13bxb6v1O9EhTrlmfPYk8wF4wNnc8A36L",
               "name": "Lavame 108bpm 4 4 E",
               "fullName": "Lavame 108bpm 4 4 E.zip",
@@ -66514,20 +65944,6 @@
           "image": null,
           "songs": [
             {
-              "id": "1BBc4kht39IDVnrfB6kSXeAjEyQxEDvO4",
-              "name": "Enciende Una Luz",
-              "fullName": "Enciende Una Luz.zip",
-              "type": "sequence",
-              "driveId": "1BBc4kht39IDVnrfB6kSXeAjEyQxEDvO4",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1BBc4kht39IDVnrfB6kSXeAjEyQxEDvO4",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1e9hPclaK2cgl07UG-rNNDqyD84nfHFDA",
               "name": "Enciende Una Luz - 112bpm_4_4_Am",
               "fullName": "Enciende Una Luz - 112bpm_4_4_Am.zip",
@@ -66646,20 +66062,6 @@
           "name": "Homenaje a Jesus",
           "image": null,
           "songs": [
-            {
-              "id": "1GtTcqSSZsUgHGxrmyzTbZhXXdyUq5Tv0",
-              "name": "¿Quién Como Tú - G#m-120bpm",
-              "fullName": "¿Quién Como Tú - G#m-120bpm.zip",
-              "type": "sequence",
-              "driveId": "1GtTcqSSZsUgHGxrmyzTbZhXXdyUq5Tv0",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1GtTcqSSZsUgHGxrmyzTbZhXXdyUq5Tv0",
-              "compas": null,
-              "bpm": 120,
-              "tonalidad": "G#m",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
             {
               "id": "1EeXIdpNS0FZNOGzOLpwAKMRipWjbDN4X",
               "name": "Con Tu Sangre - 57bpm - 4_4 - D",
@@ -67626,20 +67028,6 @@
               "comentarios": null
             },
             {
-              "id": "1hLOIfZ7d02LOZLaipR8WeKzooujoansb",
-              "name": "Levántate y sálvame",
-              "fullName": "Levántate y sálvame.zip",
-              "type": "sequence",
-              "driveId": "1hLOIfZ7d02LOZLaipR8WeKzooujoansb",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1hLOIfZ7d02LOZLaipR8WeKzooujoansb",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1lZy0BIKV92PYHxxwoPPRms3SIEaQs_EM",
               "name": "Levantate Y Salvame 127bpm - 4_4 - Am",
               "fullName": "Levantate Y Salvame 127bpm - 4_4 - Am.zip",
@@ -68017,22 +67405,6 @@
               "comentarios": null
             },
             {
-              "id": "1iOs2zWlMYU3uf-TuusR9ccsSlRgD0ndr",
-              "name": "Tu Haras",
-              "fullName": "Tu Haras.zip",
-              "type": "sequence",
-              "driveId": "1iOs2zWlMYU3uf-TuusR9ccsSlRgD0ndr",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1iOs2zWlMYU3uf-TuusR9ccsSlRgD0ndr",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null,
-              "chartUrl": "https://drive.google.com/uc?export=download&id=1TS8mNu13c6y0NWqFOkYKJrFE8F7biXtp",
-              "chartName": "Cristo Eres Mi Senor - Tu Haras - En Los Montes- e-Marcos Witt-25 Concierto Conmemorativo.G"
-            },
-            {
               "id": "1lXHMmHNKl-i3UZZ55PzjN27YkgUkAA7u",
               "name": "Tu Haras 80bpm 4 4 G",
               "fullName": "Tu Haras 80bpm 4 4 G.zip",
@@ -68370,22 +67742,6 @@
               "comentarios": null
             },
             {
-              "id": "1IYlaWut30qhR-rviyx5hH1vNzYsWJnQs",
-              "name": "Cuan Bello Es El Señor",
-              "fullName": "Cuan Bello Es El Señor.zip",
-              "type": "sequence",
-              "driveId": "1IYlaWut30qhR-rviyx5hH1vNzYsWJnQs",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1IYlaWut30qhR-rviyx5hH1vNzYsWJnQs",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null,
-              "chartUrl": "https://drive.google.com/uc?export=download&id=1Zr0I58ud0zi0Kg262hKiIwHg57ezjw3P",
-              "chartName": "Cuán Bello Es El Señor (feat. Saraí Rivera) Marcos Witt, Sarai Rivera - Legado.zip"
-            },
-            {
               "id": "1MRGRBcGPUNX15TLtgCkMh1D5YJKYyd5C",
               "name": "Cuan Bello Es El Senor - 80BPM - 4_4 - D",
               "fullName": "Cuan Bello Es El Senor - 80BPM - 4_4 - D.zip",
@@ -68513,20 +67869,6 @@
               "downloadUrl": "https://drive.google.com/uc?export=download&id=1zVuwC4Yyvv25T44QMlU_gsuSxSyaTKYH",
               "compas": null,
               "bpm": 112,
-              "tonalidad": "D",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1D7H5utazp6mdQpQbrZ1bPXIrjTKJGSvw",
-              "name": "Al_que_es_digno_111BPM_4_4_D",
-              "fullName": "Al_que_es_digno_111BPM_4_4_D.zip",
-              "type": "sequence",
-              "driveId": "1D7H5utazp6mdQpQbrZ1bPXIrjTKJGSvw",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1D7H5utazp6mdQpQbrZ1bPXIrjTKJGSvw",
-              "compas": "4/4",
-              "bpm": 111,
               "tonalidad": "D",
               "duracion": null,
               "tipoSecuencia": null,
@@ -69631,20 +68973,6 @@
               "comentarios": null
             },
             {
-              "id": "1Tn17u4CiI1tXLOGyjRZwgjD4wQb1U1B8",
-              "name": "Tu Fuego Nos Consume",
-              "fullName": "Tu Fuego Nos Consume.zip",
-              "type": "sequence",
-              "driveId": "1Tn17u4CiI1tXLOGyjRZwgjD4wQb1U1B8",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1Tn17u4CiI1tXLOGyjRZwgjD4wQb1U1B8",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1W3dC2cIR7lNhUt264BTIJH9V4ScIwxcp",
               "name": "Tu Fuego Nos Consume - 70 BPM",
               "fullName": "Tu Fuego Nos Consume - 70 BPM.zip",
@@ -69653,20 +68981,6 @@
               "downloadUrl": "https://drive.google.com/uc?export=download&id=1W3dC2cIR7lNhUt264BTIJH9V4ScIwxcp",
               "compas": null,
               "bpm": 70,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "110aU5TtMciKDE4o9-rlXMq9zuH6UgpwL",
-              "name": "Viento Recio",
-              "fullName": "Viento Recio.zip",
-              "type": "sequence",
-              "driveId": "110aU5TtMciKDE4o9-rlXMq9zuH6UgpwL",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=110aU5TtMciKDE4o9-rlXMq9zuH6UgpwL",
-              "compas": null,
-              "bpm": null,
               "tonalidad": null,
               "duracion": null,
               "tipoSecuencia": null,
@@ -72655,22 +71969,6 @@
               "comentarios": null
             },
             {
-              "id": "1fELxLVNrWLXcRE-F5zNkRzmH9XtOQ_6c",
-              "name": "Eres Dios",
-              "fullName": "Eres Dios.zip",
-              "type": "sequence",
-              "driveId": "1fELxLVNrWLXcRE-F5zNkRzmH9XtOQ_6c",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1fELxLVNrWLXcRE-F5zNkRzmH9XtOQ_6c",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null,
-              "chartUrl": "https://drive.google.com/uc?export=download&id=1XPDWF2I9SoVD9-ekRxRSWxTvo1I0DsKD",
-              "chartName": "Eres Dios-Miel San Marcos-Avivamiento.A"
-            },
-            {
               "id": "1YuoJgCtEUXsPUUplfiDFE7dt433nNWhe",
               "name": "Eres Dios - Avivamiento - D - 122bpm",
               "fullName": "Eres Dios - Avivamiento - D - 122bpm.zip",
@@ -75425,20 +74723,6 @@
               "type": "sequence",
               "driveId": "1Xtvd3d2m1CtFC5ariPORoVg9dZzf00VW",
               "downloadUrl": "https://drive.google.com/uc?export=download&id=1Xtvd3d2m1CtFC5ariPORoVg9dZzf00VW",
-              "compas": null,
-              "bpm": 68,
-              "tonalidad": "D",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1wxiaSJ-pQIpdpZSrmQq3Zopo5CAfaxt5",
-              "name": "Bendice Alma Mia-Bendice Alma Mia-D-68.00bpm",
-              "fullName": "Bendice Alma Mia-Bendice Alma Mia-D-68.00bpm.zip",
-              "type": "sequence",
-              "driveId": "1wxiaSJ-pQIpdpZSrmQq3Zopo5CAfaxt5",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1wxiaSJ-pQIpdpZSrmQq3Zopo5CAfaxt5",
               "compas": null,
               "bpm": 68,
               "tonalidad": "D",
@@ -80446,90 +79730,6 @@
               "comentarios": null
             },
             {
-              "id": "1xfDX-7K-r7HuQ1uRkB8gSxjcI549qWfy",
-              "name": "Rojo - Navidad es Jesus feat Marcos Witt 115BPM 4 4 B",
-              "fullName": "Rojo - Navidad es Jesus feat Marcos Witt 115BPM 4 4 B.zip",
-              "type": "sequence",
-              "driveId": "1xfDX-7K-r7HuQ1uRkB8gSxjcI549qWfy",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1xfDX-7K-r7HuQ1uRkB8gSxjcI549qWfy",
-              "compas": null,
-              "bpm": 115,
-              "tonalidad": "B",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1_IyH4IyUb6tVbkxlkJfqSN9GPg35YCsf",
-              "name": "Rojo - Navidad es Jesus feat Marcos Witt 115BPM 4 4 C",
-              "fullName": "Rojo - Navidad es Jesus feat Marcos Witt 115BPM 4 4 C.zip",
-              "type": "sequence",
-              "driveId": "1_IyH4IyUb6tVbkxlkJfqSN9GPg35YCsf",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1_IyH4IyUb6tVbkxlkJfqSN9GPg35YCsf",
-              "compas": null,
-              "bpm": 115,
-              "tonalidad": "C",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1SptX5gxiixM4YrGjaNJXssVjtQ9bbczt",
-              "name": "Rojo - Navidad es Jesus feat Marcos Witt 115BPM 4 4 D",
-              "fullName": "Rojo - Navidad es Jesus feat Marcos Witt 115BPM 4 4 D.zip",
-              "type": "sequence",
-              "driveId": "1SptX5gxiixM4YrGjaNJXssVjtQ9bbczt",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1SptX5gxiixM4YrGjaNJXssVjtQ9bbczt",
-              "compas": null,
-              "bpm": 115,
-              "tonalidad": "D",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1PvybP9SP1UTHRWezlbG5Wrt5m6zoIY-6",
-              "name": "Rojo - Navidad es Jesus feat Marcos Witt 115BPM 4 4 E",
-              "fullName": "Rojo - Navidad es Jesus feat Marcos Witt 115BPM 4 4 E.zip",
-              "type": "sequence",
-              "driveId": "1PvybP9SP1UTHRWezlbG5Wrt5m6zoIY-6",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1PvybP9SP1UTHRWezlbG5Wrt5m6zoIY-6",
-              "compas": null,
-              "bpm": 115,
-              "tonalidad": "E",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1kyhAPE8VrVEg12EOYhMWq6piu1RGv75L",
-              "name": "Rojo - Navidad es Jesus feat Marcos Witt 115BPM 4 4 F",
-              "fullName": "Rojo - Navidad es Jesus feat Marcos Witt 115BPM 4 4 F.zip",
-              "type": "sequence",
-              "driveId": "1kyhAPE8VrVEg12EOYhMWq6piu1RGv75L",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1kyhAPE8VrVEg12EOYhMWq6piu1RGv75L",
-              "compas": null,
-              "bpm": 115,
-              "tonalidad": "F",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1A0jvvb4uZyflIZCJtSyuG2_bISBhdYjQ",
-              "name": "Rojo - Navidad es Jesus feat Marcos Witt 115BPM 4 4 G",
-              "fullName": "Rojo - Navidad es Jesus feat Marcos Witt 115BPM 4 4 G.zip",
-              "type": "sequence",
-              "driveId": "1A0jvvb4uZyflIZCJtSyuG2_bISBhdYjQ",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1A0jvvb4uZyflIZCJtSyuG2_bISBhdYjQ",
-              "compas": null,
-              "bpm": 115,
-              "tonalidad": "G",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1O8gjB3DXMU_qhatR3pDBjv91A866Fua9",
               "name": "Rojo - VENID Y ADOREMOS VENID PASTORCILLOS",
               "fullName": "Rojo - VENID Y ADOREMOS VENID PASTORCILLOS.zip",
@@ -81822,20 +81022,6 @@
               "comentarios": null
             },
             {
-              "id": "1TLEsVJs-D3aoii1beVqvOoolyjy1tlNc",
-              "name": "En Alta Voz-135BPM",
-              "fullName": "En Alta Voz-135BPM.zip",
-              "type": "sequence",
-              "driveId": "1TLEsVJs-D3aoii1beVqvOoolyjy1tlNc",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1TLEsVJs-D3aoii1beVqvOoolyjy1tlNc",
-              "compas": null,
-              "bpm": 135,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1hp3tQmhnavXVxLcfUNKQLfC6kepABNuq",
               "name": "Fuego Santo",
               "fullName": "Fuego Santo.zip",
@@ -82249,20 +81435,6 @@
               "compas": null,
               "bpm": 80,
               "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1OH2feb_q_Ux6FaS7OhTwdFpqzFRmqz4H",
-              "name": "El Poder de la Sangre - Dm",
-              "fullName": "El Poder de la Sangre - Dm.zip",
-              "type": "sequence",
-              "driveId": "1OH2feb_q_Ux6FaS7OhTwdFpqzFRmqz4H",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1OH2feb_q_Ux6FaS7OhTwdFpqzFRmqz4H",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": "Dm",
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
@@ -85537,20 +84709,6 @@
               "compas": "4/4",
               "bpm": 68,
               "tonalidad": "C",
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1YaskNCbm-Vko1Rbk-Zac3LEmoBnDYUoh",
-              "name": "Desde Mi Interior-Desde Mi Interior-F-68.00bpm",
-              "fullName": "Desde Mi Interior-Desde Mi Interior-F-68.00bpm.zip",
-              "type": "sequence",
-              "driveId": "1YaskNCbm-Vko1Rbk-Zac3LEmoBnDYUoh",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1YaskNCbm-Vko1Rbk-Zac3LEmoBnDYUoh",
-              "compas": null,
-              "bpm": 68,
-              "tonalidad": "F",
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
@@ -93144,20 +92302,6 @@
               "comentarios": null
             },
             {
-              "id": "1d3ULUXWfUY_k_AwW7fOLzMUYAb2UoQd_",
-              "name": "Anciano de Dias",
-              "fullName": "Anciano de Dias.zip",
-              "type": "sequence",
-              "driveId": "1d3ULUXWfUY_k_AwW7fOLzMUYAb2UoQd_",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1d3ULUXWfUY_k_AwW7fOLzMUYAb2UoQd_",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
               "id": "1cgARdEfVQFLUt0SaFU1aR9aY7j-932bM",
               "name": "Anciano de días-99BPM",
               "fullName": "Anciano de días-99BPM.zip",
@@ -93194,34 +92338,6 @@
               "downloadUrl": "https://drive.google.com/uc?export=download&id=1X1CsyhV8iL-gIvddT_SxOZWDkRimQ84M",
               "compas": null,
               "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1csM53zeqFc_vytKowSB_X1ptuo4I-qiR",
-              "name": "Eres Fiel",
-              "fullName": "Eres Fiel.zip",
-              "type": "sequence",
-              "driveId": "1csM53zeqFc_vytKowSB_X1ptuo4I-qiR",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1csM53zeqFc_vytKowSB_X1ptuo4I-qiR",
-              "compas": null,
-              "bpm": null,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "19ZZuwLwoR7fVhhooupO1XIncydU8cIKA",
-              "name": "Eres fiel-110BPM",
-              "fullName": "Eres fiel-110BPM.zip",
-              "type": "sequence",
-              "driveId": "19ZZuwLwoR7fVhhooupO1XIncydU8cIKA",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=19ZZuwLwoR7fVhhooupO1XIncydU8cIKA",
-              "compas": null,
-              "bpm": 110,
               "tonalidad": null,
               "duracion": null,
               "tipoSecuencia": null,
@@ -93348,20 +92464,6 @@
               "downloadUrl": "https://drive.google.com/uc?export=download&id=1jFWAA-Lxfaj3sp2DBRQARJUkw1F7wUpY",
               "compas": null,
               "bpm": 120,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1elV-XlO2kd_2nJ_QodRgIPs_zNLu6LYV",
-              "name": "MEDLEY YO QUIERO VER",
-              "fullName": "MEDLEY YO QUIERO VER.zip",
-              "type": "sequence",
-              "driveId": "1elV-XlO2kd_2nJ_QodRgIPs_zNLu6LYV",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1elV-XlO2kd_2nJ_QodRgIPs_zNLu6LYV",
-              "compas": null,
-              "bpm": null,
               "tonalidad": null,
               "duracion": null,
               "tipoSecuencia": null,
@@ -95679,20 +94781,6 @@
               "downloadUrl": "https://drive.google.com/uc?export=download&id=16dLd6V9hzQ5FsMLagSHJiTJdg_TBqj7G",
               "compas": null,
               "bpm": 130,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null
-            },
-            {
-              "id": "1kK_mt_11otoP0g-iXT5YkKYxVNgHRBpM",
-              "name": "Enamorados_98bpm",
-              "fullName": "Enamorados_98bpm.zip",
-              "type": "sequence",
-              "driveId": "1kK_mt_11otoP0g-iXT5YkKYxVNgHRBpM",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1kK_mt_11otoP0g-iXT5YkKYxVNgHRBpM",
-              "compas": null,
-              "bpm": 98,
               "tonalidad": null,
               "duracion": null,
               "tipoSecuencia": null,
@@ -98669,22 +97757,6 @@
               "duracion": null,
               "tipoSecuencia": null,
               "comentarios": null
-            },
-            {
-              "id": "1IAeLgCoTBCscftdsKMVw3bzC4qAvOnh6",
-              "name": "Bendita Esperanza-74BPM",
-              "fullName": "Bendita Esperanza-74BPM.zip",
-              "type": "sequence",
-              "driveId": "1IAeLgCoTBCscftdsKMVw3bzC4qAvOnh6",
-              "downloadUrl": "https://drive.google.com/uc?export=download&id=1IAeLgCoTBCscftdsKMVw3bzC4qAvOnh6",
-              "compas": null,
-              "bpm": 74,
-              "tonalidad": null,
-              "duracion": null,
-              "tipoSecuencia": null,
-              "comentarios": null,
-              "chartUrl": "https://drive.google.com/uc?export=download&id=1cEvCHQWBIFg0oqesj9Xv4xopcbm5pjLz",
-              "chartName": "Bendita Esperanza-UPPERROOM-Bendita Esperanza.A.7"
             },
             {
               "id": "1vcpmg-k1AZhj-EKMowWdRt2KDORWFsTL",
@@ -102290,7 +101362,7 @@
           "tonalidad": null,
           "compas": null,
           "comentarios": null,
-          "songId": "1CddMQv_2OgQ7acP0iiKMNB8191N2ECzD",
+          "songId": "1vAnzLN7O8_lRwBWHNPkXm15K54ab1yBc",
           "songName": "Barak\n - Jericó (COVER)"
         },
         {
@@ -102626,7 +101698,7 @@
           "tonalidad": null,
           "compas": null,
           "comentarios": null,
-          "songId": "1t5asgCc0dpvTWCDshZ-PkIJVkHrHmomy",
+          "songId": "1JbmDgAMXCpBkGFAn4saQBPCKzF77MKlQ",
           "songName": "BJ Putman - Glorioso-146BPM"
         }
       ]
@@ -103550,7 +102622,7 @@
           "tonalidad": null,
           "compas": null,
           "comentarios": null,
-          "songId": "1ZxC1C4tczpaRPtNAxaHzDyQsHof6_LY5",
+          "songId": "1-dRzhnXnA0GQ9l2f-klcGfYAXQkbAWu_",
           "songName": "Coalo Zamorano - Tu nombre es"
         },
         {
@@ -103934,7 +103006,7 @@
           "tonalidad": null,
           "compas": null,
           "comentarios": null,
-          "songId": "1y0pcVdXSfYQEst9pOXGPmJKPTkBXR4I_",
+          "songId": "1qtXR3Y9oiDWMENMNsBJqk4vGOO1_Lxfm",
           "songName": "Danilo Montero - La casa de Dios-143BPM"
         },
         {
@@ -105272,7 +104344,7 @@
           "tonalidad": null,
           "compas": null,
           "comentarios": null,
-          "songId": "1jcgiG3agVv_Quewp6GZby8shcPKZ92Qz",
+          "songId": "11R1NupGqo8vtp_ne8t74TNx_vkdOVUwQ",
           "songName": "Hillsong United - from the inside out"
         },
         {
@@ -105962,7 +105034,7 @@
           "tonalidad": null,
           "compas": null,
           "comentarios": null,
-          "songId": "1Gg2Hx0c5CxHD-a5u1TikMa7WCFJuhRLF",
+          "songId": "1VOmnOyUgMA8CSmuvjgV6FzxL3SPmYjWl",
           "songName": "Juan Carlos Alvarado - Cadena 1 Fuego (Le llaman Guerrero_cover as)"
         },
         {
@@ -105974,7 +105046,7 @@
           "tonalidad": null,
           "compas": null,
           "comentarios": null,
-          "songId": "1zuwcTLJ4C2u_3kP53OkaPmf_--QLAkyM",
+          "songId": "14RzfG5a4_68f1zyw5JQ1J5e2FPaozoN1",
           "songName": "Juan Carlos Alvarado - Cadena 2 Fuego (Libre_cover Oto Jimenez)"
         }
       ]
@@ -106784,7 +105856,7 @@
           "tonalidad": null,
           "compas": null,
           "comentarios": null,
-          "songId": "1UyiGe-b_GSVEASTsxPeroewqg_z3Prc_",
+          "songId": "17GwKkjh7g63VvPxh8PRcLZGhtzF6J4xL",
           "songName": "Marco Barrientos - Para Siempre Te Bendecire - D-70bpm"
         },
         {
@@ -107120,7 +106192,7 @@
           "tonalidad": null,
           "compas": null,
           "comentarios": null,
-          "songId": "1iOs2zWlMYU3uf-TuusR9ccsSlRgD0ndr",
+          "songId": "1lXHMmHNKl-i3UZZ55PzjN27YkgUkAA7u",
           "songName": "Marcos Witt - Tu Haras"
         },
         {
@@ -107132,7 +106204,7 @@
           "tonalidad": null,
           "compas": null,
           "comentarios": null,
-          "songId": "1IYlaWut30qhR-rviyx5hH1vNzYsWJnQs",
+          "songId": "1MRGRBcGPUNX15TLtgCkMh1D5YJKYyd5C",
           "songName": "Marcos Witt - Cuan Bello Es El Señor"
         },
         {
@@ -107228,7 +106300,7 @@
           "tonalidad": null,
           "compas": null,
           "comentarios": null,
-          "songId": "1AyOJXFwgl53_i-ICYsbsH_fEUe7tv8LS",
+          "songId": "1MniupIgdHioUK2rN-seYqBafTRTklBYB",
           "songName": "Marcos Witt - Dios deciende aqui - es aqui es ahora COVER"
         },
         {
@@ -107504,7 +106576,7 @@
           "tonalidad": null,
           "compas": null,
           "comentarios": null,
-          "songId": "1_05O5rCpcV6oDMi9QyNxLqOcUWUQ1z5n",
+          "songId": "1Gvq6nzyfUAWuJlRBmy7VPFhbLY5T61EN",
           "songName": "Marcos Witt - Somos - Somos el Pueblo de Dios - Cover"
         },
         {
@@ -108164,7 +107236,7 @@
           "tonalidad": null,
           "compas": null,
           "comentarios": null,
-          "songId": "1fELxLVNrWLXcRE-F5zNkRzmH9XtOQ_6c",
+          "songId": "1VJETNC8imbAF0VVPkeRYx_KtCwUciKiY",
           "songName": "Miel San Marcos - Eres Dios"
         },
         {
@@ -110528,7 +109600,7 @@
           "tonalidad": null,
           "compas": null,
           "comentarios": null,
-          "songId": "1IAeLgCoTBCscftdsKMVw3bzC4qAvOnh6",
+          "songId": "1vcpmg-k1AZhj-EKMowWdRt2KDORWFsTL",
           "songName": "Upperroom - Bendita Esperanza-74BPM"
         },
         {
