@@ -56,7 +56,9 @@
     "fileLabel": "Arquivo"
   },
   "songInfo": {
-    "key": "Tom"
+    "key": "Tom",
+    "typeCover": "Cover",
+    "typeOriginal": "Original"
   },
   "resources": {
     "title": "Software e Ferramentas",

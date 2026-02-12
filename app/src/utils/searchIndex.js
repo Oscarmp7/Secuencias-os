@@ -39,6 +39,7 @@ export const buildSearchIndex = (artists) => {
           downloadUrl: song.downloadUrl,
           chartUrl: song.chartUrl || null,
           chartName: song.chartName || null,
+          tipoSecuencia: song.tipoSecuencia || null,
           haystack: normalizeText(`${song.name} ${artistName} ${albumName}`),
         });
       });

@@ -1,15 +1,15 @@
-/**
+﻿/**
  * src/data/index.js
- * 
- * Archivo índice para exportar todos los datos de la aplicación.
- * Centraliza las importaciones de los diferentes JSON de datos
- * para facilitar su uso en el resto de la app.
+ *
+ * Archivo indice para exportar todos los datos de la aplicacion.
+ * Para la app publica usamos secuencias-public.json.
+ * secuencias.json queda como dataset completo para uso interno.
  */
 
-// Importar datos de secuencias (artistas, álbumes, canciones)
-import secuenciasData from './secuencias.json';
+// Datos de secuencias (publicos)
+import secuenciasData from './secuencias-public.json';
 
-// Importar datos de software y herramientas
+// Datos de software y herramientas
 import softwareData from './software.json';
 
 // Exportar datos de secuencias

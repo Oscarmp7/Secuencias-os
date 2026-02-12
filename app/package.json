@@ -9,10 +9,15 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "vercel --prod --yes"
+    "deploy": "vercel --prod --yes",
+    "links:audit": "node tools/audit-secuencias-links.cjs --input src/data/secuencias.json --output ../secuencias_link_health.json --simple ../secuencias_links_problematicos.json --csv ../secuencias_links_problematicos.csv",
+    "data:public": "node tools/build-public-secuencias.cjs --input src/data/secuencias.json --health ../secuencias_link_health.json --output src/data/secuencias-public.json --report ../secuencias_public_build_report.json",
+    "refresh:public": "npm run links:audit && npm run data:public",
+    "deploy:public": "npm run refresh:public && npm run build && npm run deploy"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
+    "@vercel/analytics": "^1.6.1",
     "i18next": "^23.12.2",
     "lucide-react": "^0.563.0",
     "react": "^19.2.0",

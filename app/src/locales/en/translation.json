@@ -56,7 +56,9 @@
     "fileLabel": "File"
   },
   "songInfo": {
-    "key": "Key"
+    "key": "Key",
+    "typeCover": "Cover",
+    "typeOriginal": "Original"
   },
   "resources": {
     "title": "Software & Tools",
