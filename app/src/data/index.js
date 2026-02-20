@@ -1,13 +1,12 @@
-﻿/**
+/**
  * src/data/index.js
  *
  * Archivo indice para exportar todos los datos de la aplicacion.
- * Para la app publica usamos secuencias-public.json.
- * secuencias.json queda como dataset completo para uso interno.
+ * La app usa secuencias.json como fuente principal.
  */
 
-// Datos de secuencias (publicos)
-import secuenciasData from './secuencias-public.json';
+// Datos de secuencias
+import secuenciasData from './secuencias.json';
 
 // Datos de software y herramientas
 import softwareData from './software.json';
@@ -28,3 +27,4 @@ export default {
   secuencias: secuenciasData,
   software: softwareData,
 };
+
